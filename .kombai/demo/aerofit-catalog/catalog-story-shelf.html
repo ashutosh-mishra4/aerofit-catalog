@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html><head>
+  <meta charset="utf-8">
+  <meta name="kombai-design-canvas" content="true">
+  
+  
+  
+  <script src="https://unpkg.com/@tailwindcss/browser@4.3.3/dist/index.global.js" integrity="sha384-2ql948lIdLcGEE0/qxNiudyTjgauA3RDJERu5xW75kFCvSl5a9odyQYCb6tEjnmB" crossorigin="anonymous"></script>
+  
+  <style>html, body { margin: 0; padding: 0; } #root { display: contents; }</style>
+</head><body>
+  <div id="root"><style>
+@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400;1,8..60,500&family=Inter:wght@400;500;600;700&display=swap');
+@import url("https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.48.0/dist/tabler-icons.min.css");
+.serif{font-family:'Source Serif 4',serif;}
+.sans{font-family:'Inter',sans-serif;}
+.ease{transition-timing-function:cubic-bezier(.16,.84,.44,1);}
+.starshape{clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);}
+.sparkle{clip-path:polygon(50% 0%,60% 40%,100% 50%,60% 60%,50% 100%,40% 60%,0% 50%,40% 40%);}
+/* hero */
+.hero .ring{position:absolute;top:50%;left:50%;border-radius:50%;transform:translate(-50%,-50%);border:1px solid rgba(42,11,20,.12);}
+.hero .r1{width:1180px;height:1180px;animation:spin 64s linear infinite}
+.hero .r2{width:800px;height:800px;border-color:rgba(200,85,61,.22);animation:spin 44s linear infinite reverse}
+.hero .r3{width:470px;height:470px;border-color:rgba(107,123,78,.25);animation:spin 30s linear infinite}
+.hero .planet{position:absolute;top:-8px;left:50%;width:16px;height:16px;border-radius:50%;transform:translateX(-50%)}
+@keyframes spin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+.hero-bg{animation:kenburns 22s ease-in-out infinite alternate;}
+@keyframes kenburns{from{transform:scale(1.02)}to{transform:scale(1.1) translateY(-10px)}}
+.hero .ln{display:block;overflow:hidden;padding-bottom:.06em}
+.hero .ln>span{display:block;transform:translateY(116%);transition:transform 1s cubic-bezier(.16,.84,.44,1)}
+.hero .ln:nth-child(2)>span{transition-delay:.12s}
+.hero.is-in .ln>span{transform:none}
+.hero .stg{opacity:0;transform:translateY(16px);transition:opacity .8s cubic-bezier(.16,.84,.44,1),transform .8s cubic-bezier(.16,.84,.44,1)}
+.hero.is-in .stg{opacity:1;transform:none}
+.hero.is-in .stg.d1{transition-delay:.05s}.hero.is-in .stg.d2{transition-delay:.5s}.hero.is-in .stg.d3{transition-delay:.62s}.hero.is-in .stg.d4{transition-delay:.74s}
+.bob{animation:bob 2.4s cubic-bezier(.16,.84,.44,1) infinite}
+@keyframes bob{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,7px)}}
+/* catalog */
+.clip-i{display:inline-block;clip-path:inset(0 100% 0 0);transition:clip-path 1s cubic-bezier(.16,.84,.44,1)}
+.is-in .clip-i{clip-path:inset(0 0 0 0)}
+.grid-scene{perspective:1500px}
+.band{transform-style:preserve-3d;transform:rotateX(calc(var(--my,0) * -6deg)) rotateY(calc(var(--mx,0) * 6deg)) translateZ(var(--zsep,0px));transition:transform .3s cubic-bezier(.16,.84,.44,1)}
+.band.rise{opacity:1}
+.band:hover{transform:rotateX(calc(var(--my,0) * -6deg)) rotateY(calc(var(--mx,0) * 6deg)) translateZ(calc(var(--zsep,0px) + 50px)) scale(1.02)}
+.band .peek{opacity:0;transition:opacity .4s ease}
+.band:hover .peek{opacity:1}
+/* stack panels */
+.panel-inner{transition:filter .7s cubic-bezier(.16,.84,.44,1),opacity .7s cubic-bezier(.16,.84,.44,1)}
+.panel.locked .panel-inner{filter:none;opacity:1}
+/* events-style timeline */
+.spine{background:repeating-linear-gradient(180deg,#6B7B4E 0 10px,transparent 10px 18px);transform:scaleY(0);transform-origin:top center}
+.ev{transition:opacity .8s ease,transform .8s cubic-bezier(.16,.84,.44,1)}
+.ev.rise{opacity:1;transform:none}
+.ev-h2{transform:translateY(34px) skewY(5deg);opacity:0;transition:transform 1s cubic-bezier(.16,.84,.44,1),opacity 1s ease}
+.is-in .ev-h2{transform:none;opacity:1}
+.reveal{transition:opacity .9s ease,transform .9s cubic-bezier(.16,.84,.44,1)}
+.reveal.rise{opacity:1;transform:none}
+.lift{transition:transform .35s cubic-bezier(.16,.84,.44,1),background .35s ease}
+.lift:hover{transform:translateY(-3px)}
+/* hero band playlist */
+.hv{opacity:0;transition:opacity .55s ease}
+.hv.on{opacity:1;z-index:2}
+.hv.was{opacity:1;z-index:1;transition:none}
+.hl{opacity:0;transform:translateY(-10px);transition:opacity .18s ease,transform .25s ease}
+.hl.on{opacity:1;transform:none;transition:opacity .45s ease .22s,transform .7s cubic-bezier(.16,.84,.44,1) .22s}
+.hl:not(.on){transform:translateY(-10px)}
+.hl.on~.hl:not(.on),.hl:not(.on){pointer-events:none}
+.hc{opacity:0;transform:translateY(8px);pointer-events:none;transition:opacity .18s ease,transform .25s ease,background-color .3s ease}
+.hc.on{opacity:1;transform:none;pointer-events:auto;transition:opacity .4s ease .2s,transform .6s cubic-bezier(.16,.84,.44,1) .2s,background-color .3s ease}
+</style>
+<div class="sans bg-[#FAF8F6] text-[#2A0B14] antialiased overflow-x-clip pb-4" data-kid="1" data-name="page layout container">
+<!-- ═════════ HERO ═════════ -->
+<section class="hero relative mx-4 mt-4 h-[880px] rounded-[28px] overflow-hidden flex flex-col justify-center isolate bg-[#F3EDE9] is-in" data-kid="1-1" data-name="hero section" id="hero">
+<div class="absolute inset-0 overflow-hidden" data-kid="1-1-1" data-name="hero background" style="transform: translateY(0px) scale(1);">
+<video aria-label="Woman checking her Aero Fit Pro mid-workout in a gym" autoplay="" class="hv absolute inset-0 w-full h-full object-cover object-left on" data-band="pro" data-kid="1-1-1-1" data-name="Pro gym video" id="heroBg" muted="" playsinline="" preload="auto" src="https://kombai-assets-dev.b-cdn.net/generated_assets/22958db3-c0cf-4d55-af69-a56c3814f90e/e876560358da44b0adf65507683a795a.mp4"></video>
+<video aria-label="Woman waking up wearing her Aero Fit Lite" class="hv absolute inset-0 w-full h-full object-cover object-left" data-band="lite" data-kid="1-1-1-2" data-name="Lite morning video" muted="" playsinline="" preload="auto" src="https://kombai-assets-dev.b-cdn.net/generated_assets/22958db3-c0cf-4d55-af69-a56c3814f90e/5f2c10d65df84821ae27987022fb2fd6.mp4"></video>
+<video aria-label="Trekker checking his Aero Fit Ultra in heavy rain" class="hv absolute inset-0 w-full h-full object-cover object-left" data-band="ultra" data-kid="1-1-1-3" data-name="Ultra rain trek video" muted="" playsinline="" preload="auto" src="https://kombai-assets-dev.b-cdn.net/generated_assets/22958db3-c0cf-4d55-af69-a56c3814f90e/0c70471eaeee4636a9c9e447b933cc86.mp4"></video>
+<video aria-label="Woman glancing at her Aero Fit Smart over coffee" class="hv absolute inset-0 w-full h-full object-cover object-left" data-band="smart" data-kid="1-1-1-4" data-name="Smart cafe video" muted="" playsinline="" preload="auto" src="https://kombai-assets-dev.b-cdn.net/generated_assets/22958db3-c0cf-4d55-af69-a56c3814f90e/bb9c975d23a24101bd7542fd08d01b19.mp4"></video>
+<video aria-label="Runner in headphones tapping his Aero Fit Music" class="hv absolute inset-0 w-full h-full object-cover object-left" data-band="music" data-kid="1-1-1-5" data-name="Music seaside video" muted="" playsinline="" preload="auto" src="https://kombai-assets-dev.b-cdn.net/generated_assets/22958db3-c0cf-4d55-af69-a56c3814f90e/84404b9e6abd40bca2f7d3bb06eae21d.mp4"></video>
+</div>
+<!-- nav -->
+<div class="absolute z-50 top-5 left-5 right-5 h-[68px] rounded-full bg-white/90 backdrop-blur-md shadow-[0_8px_28px_rgba(42,11,20,0.08)] border border-white/70 pl-7 pr-2 flex items-center justify-between" data-kid="1-1-4" data-name="floating navigation bar">
+<div class="flex items-center gap-3" data-kid="1-1-4-1" data-name="brand group">
+<img alt="Aero Fit logo" class="w-8 h-8" data-kid="1-1-4-1-1" data-name="logo mark" decoding="async" loading="lazy" src="../../../.kombai/canvas/assets/aerofit-mark.svg">
+<span class="serif text-[22px] font-medium tracking-tight" data-kid="1-1-4-1-2" data-name="wordmark">Aero Fit</span>
+<span class="text-[11px] italic text-[#6B4F57] leading-[1.3] max-w-[140px] ml-1" data-kid="1-1-4-1-3" data-name="brand tagline">five bands · one app · since 2016</span>
+</div>
+<div class="flex gap-2 text-[14px] font-medium" data-kid="1-1-4-2" data-name="primary navigation pills">
+<a class="h-10 px-4 rounded-full bg-[#F3EFEC] flex items-center hover:bg-[#ECE6E2] transition" data-kid="1-1-4-2-1" data-name="Lineup nav pill" href="#lineup">Lineup</a>
+<a class="h-10 px-4 rounded-full bg-[#F3EFEC] flex items-center hover:bg-[#ECE6E2] transition" data-kid="1-1-4-2-2" data-name="Band finder nav pill" href="#guide">Band finder</a>
+<a class="h-10 px-4 rounded-full bg-[#F3EFEC] flex items-center hover:bg-[#ECE6E2] transition" data-kid="1-1-4-2-3" data-name="Memberships nav pill" href="#plans">Memberships</a>
+<a class="h-10 px-4 rounded-full bg-[#F8F38A] flex items-center" data-kid="1-1-4-2-4" data-name="Compare nav pill (active)" href="#compare">Compare</a>
+</div>
+<div class="flex items-center gap-2" data-kid="1-1-4-3" data-name="header actions group">
+<button class="h-[52px] pl-5 pr-2 rounded-full border border-[#EFEAE6] bg-white text-[14px] font-medium flex items-center gap-2 hover:bg-[#F3EFEC] transition" data-kid="1-1-4-3-1" data-name="cart button">
+<span class="text-[18px] flex" data-kid="1-1-4-3-1-1"><i class="ti ti-shopping-bag" data-kid="1-1-4-3-1-1-1"></i></span>Cart
+          <span class="min-w-9 h-9 px-2 rounded-full bg-[#F3EFEC] text-[13px] flex items-center justify-center" data-dynamic="true" data-kid="1-1-4-3-1-2" data-name="cart count badge" data-reason="count replaced by script on add-to-cart" id="cartCount">0</span>
+</button>
+<button class="h-[52px] px-6 rounded-full bg-[#2A0B14] text-white text-[15px] font-medium hover:bg-[#45172A] transition" data-kid="1-1-4-3-2" data-name="join free button">Join Aero Fit free</button>
+</div>
+</div>
+<div class="absolute z-10 left-12 top-[150px] text-left" data-kid="1-1-5" data-name="hero copy block">
+<h1 class="serif text-[72px] leading-[1] font-medium tracking-[-0.03em] grid" data-dynamic="true" data-kid="1-1-5-1" data-name="hero headline (changes per band)" data-reason="each headline layer's visibility is toggled every 2s by the hero playlist script">
+<span class="hl col-start-1 row-start-1 on" data-kid="1-1-5-1-1" data-name="Pro headline" aria-hidden="false">Leave the phone<br data-kid="1-1-5-1-1-1">in the <span class="italic text-[#C8553D]" data-kid="1-1-5-1-1-2">locker.</span></span>
+<span aria-hidden="true" class="hl col-start-1 row-start-1" data-kid="1-1-5-1-2" data-name="Lite headline">Wear it to bed.<br data-kid="1-1-5-1-2-1"><span class="italic text-[#C8553D]" data-kid="1-1-5-1-2-2">Wake up knowing.</span></span>
+<span aria-hidden="true" class="hl col-start-1 row-start-1" data-kid="1-1-5-1-3" data-name="Ultra headline">Built for the<br data-kid="1-1-5-1-3-1"><span class="italic text-[#C8553D]" data-kid="1-1-5-1-3-2">long way</span> round.</span>
+<span aria-hidden="true" class="hl col-start-1 row-start-1" data-kid="1-1-5-1-4" data-name="Smart headline">One display,<br data-kid="1-1-5-1-4-1"><span class="italic text-[#C8553D]" data-kid="1-1-5-1-4-2">all day.</span></span>
+<span aria-hidden="true" class="hl col-start-1 row-start-1" data-kid="1-1-5-1-5" data-name="Music headline">500 songs.<br data-kid="1-1-5-1-5-1"><span class="italic text-[#C8553D]" data-kid="1-1-5-1-5-2">Zero phones.</span></span>
+</h1>
+</div>
+<div class="absolute z-10 right-6 bottom-6 w-[370px] h-[120px]" data-kid="1-1-6" data-name="product card stack">
+<a class="hc absolute inset-0 bg-white/92 backdrop-blur-md rounded-[22px] p-3 pr-5 shadow-[0_14px_40px_rgba(42,11,20,0.16)] flex items-center gap-4 text-[#2A0B14] hover:bg-white on" data-dynamic="true" data-kid="1-1-6-1" data-name="Pro product card" data-reason="card is shown/hidden every 2s by the hero playlist script" href="#lineup" aria-hidden="false" tabindex="0">
+<div class="w-[96px] h-[96px] rounded-[16px] bg-[radial-gradient(circle_at_50%_55%,#EEF0E4_0%,#E3E7D6_55%,#D9DEC8_100%)] flex items-center justify-center shrink-0" data-kid="1-1-6-1-1"><img alt="Aero Fit Pro" class="w-[84px] h-[84px] object-contain mix-blend-multiply brightness-110" data-kid="1-1-6-1-1-1" decoding="async" loading="lazy" src="https://kombai-assets.b-cdn.net/generated_assets/f9b46c42-f591-4385-bfc2-9b6663bcd54f/72180f80b3a64de99cbdef213dc621cd.jpg"></div>
+<div data-kid="1-1-6-1-2"><p class="serif text-[22px] font-medium leading-tight" data-kid="1-1-6-1-2-1">Aero Fit Pro</p><p class="mt-1 text-[14px] text-[#4A2A33]" data-kid="1-1-6-1-2-2">$279, or included with Peak</p><p class="mt-0.5 text-[13px] text-[#6B4F57]" data-kid="1-1-6-1-2-3">In stock · free returns</p></div>
+</a>
+<a aria-hidden="true" class="hc absolute inset-0 bg-white/92 backdrop-blur-md rounded-[22px] p-3 pr-5 shadow-[0_14px_40px_rgba(42,11,20,0.16)] flex items-center gap-4 text-[#2A0B14] hover:bg-white" data-dynamic="true" data-kid="1-1-6-2" data-name="Lite product card" data-reason="card is shown/hidden every 2s by the hero playlist script" href="#lineup" tabindex="-1">
+<div class="w-[96px] h-[96px] rounded-[16px] bg-[radial-gradient(circle_at_50%_55%,#F0F2F4_0%,#E3E7EB_55%,#D6DCE2_100%)] flex items-center justify-center shrink-0" data-kid="1-1-6-2-1"><img alt="Aero Fit Lite" class="w-[84px] h-[84px] object-contain mix-blend-multiply brightness-110" data-kid="1-1-6-2-1-1" decoding="async" loading="lazy" src="https://kombai-assets.b-cdn.net/generated_assets/f9b46c42-f591-4385-bfc2-9b6663bcd54f/da32fd7c279245b5ab743623f57ddf23.jpg"></div>
+<div data-kid="1-1-6-2-2"><p class="serif text-[22px] font-medium leading-tight" data-kid="1-1-6-2-2-1">Aero Fit Lite</p><p class="mt-1 text-[14px] text-[#4A2A33]" data-kid="1-1-6-2-2-2">$149, or included with One</p><p class="mt-0.5 text-[13px] text-[#6B4F57]" data-kid="1-1-6-2-2-3">18 g · the lightest band</p></div>
+</a>
+<a aria-hidden="true" class="hc absolute inset-0 bg-white/92 backdrop-blur-md rounded-[22px] p-3 pr-5 shadow-[0_14px_40px_rgba(42,11,20,0.16)] flex items-center gap-4 text-[#2A0B14] hover:bg-white" data-dynamic="true" data-kid="1-1-6-3" data-name="Ultra product card" data-reason="card is shown/hidden every 2s by the hero playlist script" href="#lineup" tabindex="-1">
+<div class="w-[96px] h-[96px] rounded-[16px] bg-[radial-gradient(circle,#F8F38A_0%,#FBF4B8_45%,#F4F1EE_80%)] flex items-center justify-center shrink-0" data-kid="1-1-6-3-1"><img alt="Aero Fit Ultra" class="w-[84px] h-[84px] object-contain mix-blend-multiply brightness-110" data-kid="1-1-6-3-1-1" decoding="async" loading="lazy" src="https://kombai-assets.b-cdn.net/generated_assets/f9b46c42-f591-4385-bfc2-9b6663bcd54f/76d7a24f75bc4dbeafec4d446b539a12.jpg"></div>
+<div data-kid="1-1-6-3-2"><p class="serif text-[22px] font-medium leading-tight" data-kid="1-1-6-3-2-1">Aero Fit Ultra</p><p class="mt-1 text-[14px] text-[#4A2A33]" data-kid="1-1-6-3-2-2">$399, or included with Life</p><p class="mt-0.5 text-[13px] text-[#6B4F57]" data-kid="1-1-6-3-2-3">Ships from November 4</p></div>
+</a>
+<a aria-hidden="true" class="hc absolute inset-0 bg-white/92 backdrop-blur-md rounded-[22px] p-3 pr-5 shadow-[0_14px_40px_rgba(42,11,20,0.16)] flex items-center gap-4 text-[#2A0B14] hover:bg-white" data-dynamic="true" data-kid="1-1-6-4" data-name="Smart product card" data-reason="card is shown/hidden every 2s by the hero playlist script" href="#lineup" tabindex="-1">
+<div class="w-[96px] h-[96px] rounded-[16px] bg-[radial-gradient(circle_at_50%_55%,#F6EEF0_0%,#EFE3E6_55%,#E6D6DA_100%)] flex items-center justify-center shrink-0" data-kid="1-1-6-4-1"><img alt="Aero Fit Smart" class="w-[84px] h-[84px] object-contain mix-blend-multiply brightness-110" data-kid="1-1-6-4-1-1" decoding="async" loading="lazy" src="https://kombai-assets.b-cdn.net/generated_assets/f9b46c42-f591-4385-bfc2-9b6663bcd54f/7754f0f6d49a4ed38f644dce2670c620.jpg"></div>
+<div data-kid="1-1-6-4-2"><p class="serif text-[22px] font-medium leading-tight" data-kid="1-1-6-4-2-1">Aero Fit Smart</p><p class="mt-1 text-[14px] text-[#4A2A33]" data-kid="1-1-6-4-2-2">$199, or included with One</p><p class="mt-0.5 text-[13px] text-[#6B4F57]" data-kid="1-1-6-4-2-3">24 g · skin temperature</p></div>
+</a>
+<a aria-hidden="true" class="hc absolute inset-0 bg-white/92 backdrop-blur-md rounded-[22px] p-3 pr-5 shadow-[0_14px_40px_rgba(42,11,20,0.16)] flex items-center gap-4 text-[#2A0B14] hover:bg-white" data-dynamic="true" data-kid="1-1-6-5" data-name="Music product card" data-reason="card is shown/hidden every 2s by the hero playlist script" href="#lineup" tabindex="-1">
+<div class="w-[96px] h-[96px] rounded-[16px] bg-[radial-gradient(circle_at_50%_55%,#FBEDE7_0%,#F6E0D8_55%,#EFD2C7_100%)] flex items-center justify-center shrink-0" data-kid="1-1-6-5-1"><img alt="Aero Fit Music" class="w-[84px] h-[84px] object-contain mix-blend-multiply brightness-110" data-kid="1-1-6-5-1-1" decoding="async" loading="lazy" src="https://kombai-assets.b-cdn.net/generated_assets/f9b46c42-f591-4385-bfc2-9b6663bcd54f/46a42b1d18d34403be756d1c74222484.jpg"></div>
+<div data-kid="1-1-6-5-2"><p class="serif text-[22px] font-medium leading-tight" data-kid="1-1-6-5-2-1">Aero Fit Music</p><p class="mt-1 text-[14px] text-[#4A2A33]" data-kid="1-1-6-5-2-2">$299, or included with Peak</p><p class="mt-0.5 text-[13px] text-[#6B4F57]" data-kid="1-1-6-5-2-3">4 GB · ~500 songs</p></div>
+</a>
+<div aria-hidden="true" class="hseg absolute left-[124px] right-5 bottom-3 flex gap-1 pointer-events-none" data-kid="1-1-6-6" data-name="clip progress">
+<i class="flex-1 h-[3px] rounded-full bg-[#2A0B14]/12 overflow-hidden" data-kid="1-1-6-6-1"><span class="block h-full bg-[#2A0B14] origin-left" data-dynamic="true" data-kid="1-1-6-6-1-1" data-name="Pro clip progress segment" data-reason="scaleX is reset and animated every 2s by the hero playlist script" style="transform: scaleX(1); transition: transform 2000ms linear;"></span></i>
+<i class="flex-1 h-[3px] rounded-full bg-[#2A0B14]/12 overflow-hidden" data-kid="1-1-6-6-2"><span class="block h-full bg-[#2A0B14] origin-left" data-dynamic="true" data-kid="1-1-6-6-2-1" data-name="Lite clip progress segment" data-reason="scaleX is reset and animated every 2s by the hero playlist script" style="transform: scaleX(0); transition: none;"></span></i>
+<i class="flex-1 h-[3px] rounded-full bg-[#2A0B14]/12 overflow-hidden" data-kid="1-1-6-6-3"><span class="block h-full bg-[#2A0B14] origin-left" data-dynamic="true" data-kid="1-1-6-6-3-1" data-name="Ultra clip progress segment" data-reason="scaleX is reset and animated every 2s by the hero playlist script" style="transform: scaleX(0); transition: none;"></span></i>
+<i class="flex-1 h-[3px] rounded-full bg-[#2A0B14]/12 overflow-hidden" data-kid="1-1-6-6-4"><span class="block h-full bg-[#2A0B14] origin-left" data-dynamic="true" data-kid="1-1-6-6-4-1" data-name="Smart clip progress segment" data-reason="scaleX is reset and animated every 2s by the hero playlist script" style="transform: scaleX(0); transition: none;"></span></i>
+<i class="flex-1 h-[3px] rounded-full bg-[#2A0B14]/12 overflow-hidden" data-kid="1-1-6-6-5"><span class="block h-full bg-[#2A0B14] origin-left" data-dynamic="true" data-kid="1-1-6-6-5-1" data-name="Music clip progress segment" data-reason="scaleX is reset and animated every 2s by the hero playlist script" style="transform: scaleX(0); transition: none;"></span></i>
+</div>
+</div>
+</section>
+<!-- ═════════ LINEUP (catalog) ═════════ -->
+<section class="relative mx-4 mt-4 rounded-[28px] overflow-hidden bg-white text-[#2A0B14] py-24" data-kid="1-2" data-name="band lineup section" id="lineup">
+<div class="max-w-[1240px] mx-auto px-8" data-kid="1-2-1">
+<div class="flex justify-between items-end gap-10 mb-9 is-in" data-kid="1-2-1-1" data-name="lineup header" id="catHead">
+<div data-kid="1-2-1-1-1">
+
+<h2 class="mt-3 serif text-[76px] leading-[0.98] font-medium tracking-[-0.03em]" data-kid="1-2-1-1-1-2" data-name="lineup headline"><span class="block" data-kid="1-2-1-1-1-2-1">Five bands,</span><span class="clip-i italic text-[#C8553D]" data-kid="1-2-1-1-1-2-2">one app.</span></h2>
+</div>
+
+</div>
+<div class="flex flex-wrap items-center gap-3 mb-12" data-dynamic="true" data-kid="1-2-1-2" data-name="filter and mode pills" data-reason="rendered by script from filter state" id="pills"><button data-act="filter" data-f="all" class="h-10 px-5 rounded-full text-[14px] font-medium transition bg-[#C8553D] text-white" data-kid="kj5ljha">All bands</button><button data-act="filter" data-f="sleep" class="h-10 px-5 rounded-full text-[14px] font-medium transition bg-[#F3EFEC] text-[#2A0B14] hover:bg-[#F8F38A]" data-kid="kb19gh3">Sleep</button><button data-act="filter" data-f="training" class="h-10 px-5 rounded-full text-[14px] font-medium transition bg-[#F3EFEC] text-[#2A0B14] hover:bg-[#F8F38A]" data-kid="k5jlhsm">Training</button><button data-act="filter" data-f="music" class="h-10 px-5 rounded-full text-[14px] font-medium transition bg-[#F3EFEC] text-[#2A0B14] hover:bg-[#F8F38A]" data-kid="k7ehxyw">Music</button><button data-act="filter" data-f="endurance" class="h-10 px-5 rounded-full text-[14px] font-medium transition bg-[#F3EFEC] text-[#2A0B14] hover:bg-[#F8F38A]" data-kid="kri2uo5">Endurance</button><span class="w-px h-9 bg-[#2A0B14]/15 mx-1.5" data-kid="kzclj6l"></span><button data-act="mode" data-mode="out" class="h-10 px-5 rounded-full text-[14px] font-medium transition bg-[#F8F38A] text-[#2A0B14]" data-kid="kxpfcdz">Buy outright</button><button data-act="mode" data-mode="mem" class="h-10 px-5 rounded-full text-[14px] font-medium transition border border-[#2A0B14]/20 text-[#2A0B14] hover:bg-[#F3EFEC]" data-kid="k02m0aj">With membership</button></div>
+<div class="grid-scene" data-kid="1-2-1-3" data-name="band grid scene">
+<div class="grid grid-cols-3 gap-8" data-dynamic="true" data-kid="1-2-1-3-1" data-name="band card grid" data-reason="rendered by script from product data" id="bandGrid" style="transform-style:preserve-3d"><article class="band rise" data-name="Ultra band card" data-kid="kmg58pz" style="transition-delay: 0s; --zsep: 0px; --mx: 0; --my: 0;">
+   <div class="relative aspect-[4/5] rounded-[22px] overflow-hidden shadow-[0_10px_28px_rgba(42,11,20,0.08)] flex items-center justify-center" style="background:radial-gradient(circle at 50% 55%,#F8F38A 0%,#FBF4B8 40%,#F4F1EE 78%)" data-kid="k00um75">
+    <img src="https://kombai-assets.b-cdn.net/generated_assets/f9b46c42-f591-4385-bfc2-9b6663bcd54f/76d7a24f75bc4dbeafec4d446b539a12.jpg" alt="Aero Fit Ultra in Titanium" class="w-[78%] h-[78%] object-contain mix-blend-multiply brightness-110 contrast-[1.05]" decoding="async" loading="lazy" data-kid="k7sjyi0">
+    <span class="absolute left-4 top-4 text-[12px] font-medium bg-white/90 text-[#2A0B14] rounded-full px-3 py-1" data-kid="ky1st43">Ships Nov 4</span>
+    
+    <div class="peek absolute inset-3 rounded-[16px] bg-[#FAF8F6]/95 text-[#2A0B14] p-6 flex flex-col justify-end" data-kid="kqvsult"><p class="text-[11px] font-semibold tracking-[0.24em] uppercase text-[#6B7B4E] mb-3" data-kid="k60t34p">At a glance</p><p class="serif italic text-[22px] leading-[1.3]" data-kid="kvvngmp">14-day battery</p><p class="serif italic text-[22px] leading-[1.3]" data-kid="ko3p2z8">Dual-band GPS</p><p class="serif italic text-[22px] leading-[1.3]" data-kid="k5k3c07">100 m water</p><p class="serif italic text-[22px] leading-[1.3]" data-kid="ku2pvsr">Titanium · 32 g</p></div>
+   </div>
+   <div class="mt-4" data-kid="k22lsru">
+    <h3 class="serif text-[28px] font-medium leading-none" data-kid="kko7w5h">Aero Fit Ultra</h3>
+    <p class="mt-2 text-[14px] italic text-[#6B4F57] leading-[1.45]" data-kid="kxixu9a">Titanium case, dual-band GPS and 14 days of battery for multi-day races.</p>
+    <div class="mt-3 flex items-center justify-between" data-kid="k0kglzr"><span class="text-[12px] font-semibold px-3 py-1 rounded-full" style="background:#F8F38A40;color:#2A0B14" data-kid="kx085ml">Titanium</span><div class="flex items-baseline" data-kid="kttup5k"><span class="serif text-[24px] font-semibold text-[#2A0B14]" data-kid="kpvt21i">$399</span></div></div>
+    <div class="mt-4 flex items-center gap-2" data-kid="k9s3ghg">
+     <div class="flex gap-1" data-kid="knzsqnk"><button data-act="color" data-id="ultra" data-i="0" aria-label="Titanium" class="w-7 h-7 rounded-full p-[3px] border-2 border-[#2A0B14]" data-kid="klkdm40"><span class="block w-full h-full rounded-full ring-1 ring-black/10" style="background:#8B8A87" data-kid="ksdxekp"></span></button><button data-act="color" data-id="ultra" data-i="1" aria-label="Black" class="w-7 h-7 rounded-full p-[3px] border-2 border-transparent" data-kid="kgthsye"><span class="block w-full h-full rounded-full ring-1 ring-black/10" style="background:#1F1F1F" data-kid="kwcvic1"></span></button><button data-act="color" data-id="ultra" data-i="2" aria-label="Trail" class="w-7 h-7 rounded-full p-[3px] border-2 border-transparent" data-kid="kqu81c8"><span class="block w-full h-full rounded-full ring-1 ring-black/10" style="background:#6B7B4E" data-kid="ktx8rrg"></span></button></div>
+     <div class="h-10 p-1 rounded-full bg-[#F3EFEC] flex ml-1" data-kid="khieh2t"><button data-act="size" data-id="ultra" data-s="S" title="130–160 mm" class="w-8 rounded-full text-[12px] font-medium text-[#6B4F57]" data-kid="k0fcsgu">S</button><button data-act="size" data-id="ultra" data-s="M" title="150–190 mm" class="w-8 rounded-full text-[12px] font-medium bg-white text-[#2A0B14] shadow-[0_1px_4px_rgba(42,11,20,0.12)]" data-kid="kj6szqu">M</button><button data-act="size" data-id="ultra" data-s="L" title="180–220 mm" class="w-8 rounded-full text-[12px] font-medium text-[#6B4F57]" data-kid="kgqdq90">L</button></div>
+     <button data-act="add" data-id="ultra" class="ml-auto h-10 px-4 rounded-full bg-[#F8F38A] text-[#2A0B14] text-[13px] font-medium hover:bg-[#F2EB6A] transition flex items-center gap-1.5" data-kid="k1ujqa7">Add <i class="ti ti-plus" data-kid="kbcsp11"></i></button>
+    </div>
+   </div></article><article class="band rise" data-name="Pro band card" data-kid="ku7vwvx" style="transition-delay: 0.08s; --zsep: 19.122615803814714px; --mx: 0; --my: 0;">
+   <div class="relative aspect-[4/5] rounded-[22px] overflow-hidden shadow-[0_10px_28px_rgba(42,11,20,0.08)] flex items-center justify-center" style="background:radial-gradient(circle at 50% 55%,#EEF0E4 0%,#E3E7D6 55%,#D9DEC8 100%)" data-kid="kx518j5">
+    <img src="https://kombai-assets.b-cdn.net/generated_assets/f9b46c42-f591-4385-bfc2-9b6663bcd54f/72180f80b3a64de99cbdef213dc621cd.jpg" alt="Aero Fit Pro in Graphite" class="w-[78%] h-[78%] object-contain mix-blend-multiply brightness-110 contrast-[1.05]" decoding="async" loading="lazy" data-kid="kmcl3bo">
+    <span class="absolute left-4 top-4 text-[12px] font-medium bg-white/90 text-[#2A0B14] rounded-full px-3 py-1" data-kid="k9a9jhf">Training</span>
+    
+    <div class="peek absolute inset-3 rounded-[16px] bg-[#FAF8F6]/95 text-[#2A0B14] p-6 flex flex-col justify-end" data-kid="kxcmb73"><p class="text-[11px] font-semibold tracking-[0.24em] uppercase text-[#6B7B4E] mb-3" data-kid="ke8hrp0">At a glance</p><p class="serif italic text-[22px] leading-[1.3]" data-kid="kkk37ak">10-day battery</p><p class="serif italic text-[22px] leading-[1.3]" data-kid="kbzwk4n">Built-in GPS</p><p class="serif italic text-[22px] leading-[1.3]" data-kid="kflt0lr">ECG Heart Screener</p><p class="serif italic text-[22px] leading-[1.3]" data-kid="k2wxfqk">Aluminum · 27 g</p></div>
+   </div>
+   <div class="mt-4" data-kid="knvujnr">
+    <h3 class="serif text-[28px] font-medium leading-none" data-kid="kdxy3g1">Aero Fit Pro</h3>
+    <p class="mt-2 text-[14px] italic text-[#6B4F57] leading-[1.45]" data-kid="k0fs9bg">Built-in GPS and ECG for structured training without your phone.</p>
+    <div class="mt-3 flex items-center justify-between" data-kid="kzlqgk1"><span class="text-[12px] font-semibold px-3 py-1 rounded-full" style="background:#A3B47F40;color:#2A0B14" data-kid="ktdnbis">Graphite</span><div class="flex items-baseline" data-kid="k5mp8di"><span class="serif text-[24px] font-semibold text-[#2A0B14]" data-kid="kmz1uwi">$279</span></div></div>
+    <div class="mt-4 flex items-center gap-2" data-kid="k2tmphz">
+     <div class="flex gap-1" data-kid="kkwm2y9"><button data-act="color" data-id="pro" data-i="0" aria-label="Graphite" class="w-7 h-7 rounded-full p-[3px] border-2 border-[#2A0B14]" data-kid="kxwa19v"><span class="block w-full h-full rounded-full ring-1 ring-black/10" style="background:#2E2E30" data-kid="kll2kzn"></span></button><button data-act="color" data-id="pro" data-i="1" aria-label="Volt" class="w-7 h-7 rounded-full p-[3px] border-2 border-transparent" data-kid="kxz55x5"><span class="block w-full h-full rounded-full ring-1 ring-black/10" style="background:#E3E86A" data-kid="k0drcru"></span></button><button data-act="color" data-id="pro" data-i="2" aria-label="Stone" class="w-7 h-7 rounded-full p-[3px] border-2 border-transparent" data-kid="k0eko5s"><span class="block w-full h-full rounded-full ring-1 ring-black/10" style="background:#BDB5AC" data-kid="kq0kyu6"></span></button></div>
+     <div class="h-10 p-1 rounded-full bg-[#F3EFEC] flex ml-1" data-kid="k02p7qv"><button data-act="size" data-id="pro" data-s="S" title="130–160 mm" class="w-8 rounded-full text-[12px] font-medium text-[#6B4F57]" data-kid="k8ew7sj">S</button><button data-act="size" data-id="pro" data-s="M" title="150–190 mm" class="w-8 rounded-full text-[12px] font-medium bg-white text-[#2A0B14] shadow-[0_1px_4px_rgba(42,11,20,0.12)]" data-kid="k89edyk">M</button><button data-act="size" data-id="pro" data-s="L" title="180–220 mm" class="w-8 rounded-full text-[12px] font-medium text-[#6B4F57]" data-kid="k6fgxg9">L</button></div>
+     <button data-act="add" data-id="pro" class="ml-auto h-10 px-4 rounded-full bg-[#F8F38A] text-[#2A0B14] text-[13px] font-medium hover:bg-[#F2EB6A] transition flex items-center gap-1.5" data-kid="k5v5iqt">Add <i class="ti ti-plus" data-kid="kh6ixca"></i></button>
+    </div>
+   </div></article><article class="band rise" data-name="Lite band card" data-kid="kses6oo" style="transition-delay: 0.16s; --zsep: 38.24523160762943px; --mx: 0; --my: 0;">
+   <div class="relative aspect-[4/5] rounded-[22px] overflow-hidden shadow-[0_10px_28px_rgba(42,11,20,0.08)] flex items-center justify-center" style="background:radial-gradient(circle at 50% 55%,#F0F2F4 0%,#E3E7EB 55%,#D6DCE2 100%)" data-kid="kfrddyh">
+    <img src="https://kombai-assets.b-cdn.net/generated_assets/f9b46c42-f591-4385-bfc2-9b6663bcd54f/da32fd7c279245b5ab743623f57ddf23.jpg" alt="Aero Fit Lite in Slate" class="w-[78%] h-[78%] object-contain mix-blend-multiply brightness-110 contrast-[1.05]" decoding="async" loading="lazy" data-kid="kdfh71g">
+    <span class="absolute left-4 top-4 text-[12px] font-medium bg-white/90 text-[#2A0B14] rounded-full px-3 py-1" data-kid="kv4tav6">Lightest</span>
+    
+    <div class="peek absolute inset-3 rounded-[16px] bg-[#FAF8F6]/95 text-[#2A0B14] p-6 flex flex-col justify-end" data-kid="kmw5o5w"><p class="text-[11px] font-semibold tracking-[0.24em] uppercase text-[#6B7B4E] mb-3" data-kid="kkfq7no">At a glance</p><p class="serif italic text-[22px] leading-[1.3]" data-kid="kgttw67">5-day battery</p><p class="serif italic text-[22px] leading-[1.3]" data-kid="kuus6ea">GPS via phone</p><p class="serif italic text-[22px] leading-[1.3]" data-kid="kkuus99">Mono OLED</p><p class="serif italic text-[22px] leading-[1.3]" data-kid="kw704ys">Polymer · 18 g</p></div>
+   </div>
+   <div class="mt-4" data-kid="kztm5iy">
+    <h3 class="serif text-[28px] font-medium leading-none" data-kid="k06bnam">Aero Fit Lite</h3>
+    <p class="mt-2 text-[14px] italic text-[#6B4F57] leading-[1.45]" data-kid="kogomsz">Featherweight tracking for sleep, steps and daily recovery.</p>
+    <div class="mt-3 flex items-center justify-between" data-kid="kwgdp94"><span class="text-[12px] font-semibold px-3 py-1 rounded-full" style="background:#B9C3CD40;color:#2A0B14" data-kid="ko88l01">Slate</span><div class="flex items-baseline" data-kid="kr0c61k"><span class="serif text-[24px] font-semibold text-[#2A0B14]" data-kid="kg5mvds">$149</span></div></div>
+    <div class="mt-4 flex items-center gap-2" data-kid="kg9alws">
+     <div class="flex gap-1" data-kid="ky8rrgi"><button data-act="color" data-id="lite" data-i="0" aria-label="Slate" class="w-7 h-7 rounded-full p-[3px] border-2 border-[#2A0B14]" data-kid="kc8pu7z"><span class="block w-full h-full rounded-full ring-1 ring-black/10" style="background:#5E6E7D" data-kid="k1sm98q"></span></button><button data-act="color" data-id="lite" data-i="1" aria-label="Black" class="w-7 h-7 rounded-full p-[3px] border-2 border-transparent" data-kid="knbkqwa"><span class="block w-full h-full rounded-full ring-1 ring-black/10" style="background:#1F1F1F" data-kid="ko7etc6"></span></button><button data-act="color" data-id="lite" data-i="2" aria-label="Sand" class="w-7 h-7 rounded-full p-[3px] border-2 border-transparent" data-kid="kustrsq"><span class="block w-full h-full rounded-full ring-1 ring-black/10" style="background:#D8C8B2" data-kid="k1kvz5x"></span></button></div>
+     <div class="h-10 p-1 rounded-full bg-[#F3EFEC] flex ml-1" data-kid="k5u6wj3"><button data-act="size" data-id="lite" data-s="S" title="130–160 mm" class="w-8 rounded-full text-[12px] font-medium text-[#6B4F57]" data-kid="kg4vtak">S</button><button data-act="size" data-id="lite" data-s="M" title="150–190 mm" class="w-8 rounded-full text-[12px] font-medium bg-white text-[#2A0B14] shadow-[0_1px_4px_rgba(42,11,20,0.12)]" data-kid="kq18ihg">M</button><button data-act="size" data-id="lite" data-s="L" title="180–220 mm" class="w-8 rounded-full text-[12px] font-medium text-[#6B4F57]" data-kid="k9y5r4m">L</button></div>
+     <button data-act="add" data-id="lite" class="ml-auto h-10 px-4 rounded-full bg-[#F8F38A] text-[#2A0B14] text-[13px] font-medium hover:bg-[#F2EB6A] transition flex items-center gap-1.5" data-kid="k20utjk">Add <i class="ti ti-plus" data-kid="ktbovsr"></i></button>
+    </div>
+   </div></article><article class="band rise" data-name="Smart band card" data-kid="k0wk9v9" style="transition-delay: 0.24s; --zsep: 0px; --mx: 0; --my: 0;">
+   <div class="relative aspect-[4/5] rounded-[22px] overflow-hidden shadow-[0_10px_28px_rgba(42,11,20,0.08)] flex items-center justify-center" style="background:radial-gradient(circle at 50% 55%,#F6EEF0 0%,#EFE3E6 55%,#E6D6DA 100%)" data-kid="kuvzqgc">
+    <img src="https://kombai-assets.b-cdn.net/generated_assets/f9b46c42-f591-4385-bfc2-9b6663bcd54f/7754f0f6d49a4ed38f644dce2670c620.jpg" alt="Aero Fit Smart in Black" class="w-[78%] h-[78%] object-contain mix-blend-multiply brightness-110 contrast-[1.05]" decoding="async" loading="lazy" data-kid="kszkb8t">
+    <span class="absolute left-4 top-4 text-[12px] font-medium bg-white/90 text-[#2A0B14] rounded-full px-3 py-1" data-kid="kr7nsih">Everyday</span>
+    
+    <div class="peek absolute inset-3 rounded-[16px] bg-[#FAF8F6]/95 text-[#2A0B14] p-6 flex flex-col justify-end" data-kid="k9i93wu"><p class="text-[11px] font-semibold tracking-[0.24em] uppercase text-[#6B7B4E] mb-3" data-kid="kebv34b">At a glance</p><p class="serif italic text-[22px] leading-[1.3]" data-kid="k5uw981">7-day battery</p><p class="serif italic text-[22px] leading-[1.3]" data-kid="kepbylp">Skin temperature</p><p class="serif italic text-[22px] leading-[1.3]" data-kid="kbey0g9">AMOLED display</p><p class="serif italic text-[22px] leading-[1.3]" data-kid="k81fpst">Aluminum · 24 g</p></div>
+   </div>
+   <div class="mt-4" data-kid="klas3hd">
+    <h3 class="serif text-[28px] font-medium leading-none" data-kid="kt6zo1e">Aero Fit Smart</h3>
+    <p class="mt-2 text-[14px] italic text-[#6B4F57] leading-[1.45]" data-kid="kxg9poa">Everyday sleep, strain and recovery on an always-on display.</p>
+    <div class="mt-3 flex items-center justify-between" data-kid="k8m0ge6"><span class="text-[12px] font-semibold px-3 py-1 rounded-full" style="background:#E3C3CB40;color:#2A0B14" data-kid="k0i5zt9">Black</span><div class="flex items-baseline" data-kid="kkt9pbl"><span class="serif text-[24px] font-semibold text-[#2A0B14]" data-kid="kc2c414">$199</span></div></div>
+    <div class="mt-4 flex items-center gap-2" data-kid="k8a00l7">
+     <div class="flex gap-1" data-kid="kn3vtym"><button data-act="color" data-id="smart" data-i="0" aria-label="Black" class="w-7 h-7 rounded-full p-[3px] border-2 border-[#2A0B14]" data-kid="kfynbpd"><span class="block w-full h-full rounded-full ring-1 ring-black/10" style="background:#1F1F1F" data-kid="kp3gl0c"></span></button><button data-act="color" data-id="smart" data-i="1" aria-label="Mist" class="w-7 h-7 rounded-full p-[3px] border-2 border-transparent" data-kid="kvh3zvb"><span class="block w-full h-full rounded-full ring-1 ring-black/10" style="background:#C8CDD2" data-kid="k76lwfz"></span></button><button data-act="color" data-id="smart" data-i="2" aria-label="Plum" class="w-7 h-7 rounded-full p-[3px] border-2 border-transparent" data-kid="ky2xx2o"><span class="block w-full h-full rounded-full ring-1 ring-black/10" style="background:#5B2439" data-kid="kgcs33d"></span></button></div>
+     <div class="h-10 p-1 rounded-full bg-[#F3EFEC] flex ml-1" data-kid="keys7no"><button data-act="size" data-id="smart" data-s="S" title="130–160 mm" class="w-8 rounded-full text-[12px] font-medium text-[#6B4F57]" data-kid="k4oyynh">S</button><button data-act="size" data-id="smart" data-s="M" title="150–190 mm" class="w-8 rounded-full text-[12px] font-medium bg-white text-[#2A0B14] shadow-[0_1px_4px_rgba(42,11,20,0.12)]" data-kid="k7384wt">M</button><button data-act="size" data-id="smart" data-s="L" title="180–220 mm" class="w-8 rounded-full text-[12px] font-medium text-[#6B4F57]" data-kid="kdr2fp9">L</button></div>
+     <button data-act="add" data-id="smart" class="ml-auto h-10 px-4 rounded-full bg-[#F8F38A] text-[#2A0B14] text-[13px] font-medium hover:bg-[#F2EB6A] transition flex items-center gap-1.5" data-kid="k8da9kt">Add <i class="ti ti-plus" data-kid="k574gh2"></i></button>
+    </div>
+   </div></article><article class="band rise" data-name="Music band card" data-kid="kxyfs7f" style="transition-delay: 0.32s; --zsep: 19.122615803814714px; --mx: 0; --my: 0;">
+   <div class="relative aspect-[4/5] rounded-[22px] overflow-hidden shadow-[0_10px_28px_rgba(42,11,20,0.08)] flex items-center justify-center" style="background:radial-gradient(circle at 50% 55%,#FBEDE7 0%,#F6E0D8 55%,#EFD2C7 100%)" data-kid="kjpncz9">
+    <img src="https://kombai-assets.b-cdn.net/generated_assets/f9b46c42-f591-4385-bfc2-9b6663bcd54f/46a42b1d18d34403be756d1c74222484.jpg" alt="Aero Fit Music in Black" class="w-[78%] h-[78%] object-contain mix-blend-multiply brightness-110 contrast-[1.05]" decoding="async" loading="lazy" data-kid="k01zbhq">
+    <span class="absolute left-4 top-4 text-[12px] font-medium bg-white/90 text-[#2A0B14] rounded-full px-3 py-1" data-kid="k4jm8zg">Offline</span>
+    
+    <div class="peek absolute inset-3 rounded-[16px] bg-[#FAF8F6]/95 text-[#2A0B14] p-6 flex flex-col justify-end" data-kid="k56h7e2"><p class="text-[11px] font-semibold tracking-[0.24em] uppercase text-[#6B7B4E] mb-3" data-kid="k5tvde9">At a glance</p><p class="serif italic text-[22px] leading-[1.3]" data-kid="k729vd0">6-day battery</p><p class="serif italic text-[22px] leading-[1.3]" data-kid="k6oqdm8">4 GB · ~500 songs</p><p class="serif italic text-[22px] leading-[1.3]" data-kid="kygpe4g">Bluetooth audio</p><p class="serif italic text-[22px] leading-[1.3]" data-kid="kfbvr4t">Aluminum · 28 g</p></div>
+   </div>
+   <div class="mt-4" data-kid="k737hcw">
+    <h3 class="serif text-[28px] font-medium leading-none" data-kid="k6j3fry">Aero Fit Music</h3>
+    <p class="mt-2 text-[14px] italic text-[#6B4F57] leading-[1.45]" data-kid="kisjkln">Stores 500 songs and plays to Bluetooth headphones on the run.</p>
+    <div class="mt-3 flex items-center justify-between" data-kid="kma494o"><span class="text-[12px] font-semibold px-3 py-1 rounded-full" style="background:#E8907A40;color:#2A0B14" data-kid="kgh8dwy">Black</span><div class="flex items-baseline" data-kid="knnghk6"><span class="serif text-[24px] font-semibold text-[#2A0B14]" data-kid="k3eszs9">$299</span></div></div>
+    <div class="mt-4 flex items-center gap-2" data-kid="kioa09f">
+     <div class="flex gap-1" data-kid="k1lpzsx"><button data-act="color" data-id="music" data-i="0" aria-label="Black" class="w-7 h-7 rounded-full p-[3px] border-2 border-[#2A0B14]" data-kid="kw6ze0g"><span class="block w-full h-full rounded-full ring-1 ring-black/10" style="background:#1F1F1F" data-kid="kzfdrg5"></span></button><button data-act="color" data-id="music" data-i="1" aria-label="Ember" class="w-7 h-7 rounded-full p-[3px] border-2 border-transparent" data-kid="kjzgu8n"><span class="block w-full h-full rounded-full ring-1 ring-black/10" style="background:#C8553D" data-kid="ks32t04"></span></button><button data-act="color" data-id="music" data-i="2" aria-label="Ice" class="w-7 h-7 rounded-full p-[3px] border-2 border-transparent" data-kid="kcpujua"><span class="block w-full h-full rounded-full ring-1 ring-black/10" style="background:#DDE6EE" data-kid="k3wlzc0"></span></button></div>
+     <div class="h-10 p-1 rounded-full bg-[#F3EFEC] flex ml-1" data-kid="ktuwdoj"><button data-act="size" data-id="music" data-s="S" title="130–160 mm" class="w-8 rounded-full text-[12px] font-medium text-[#6B4F57]" data-kid="kmnwqov">S</button><button data-act="size" data-id="music" data-s="M" title="150–190 mm" class="w-8 rounded-full text-[12px] font-medium bg-white text-[#2A0B14] shadow-[0_1px_4px_rgba(42,11,20,0.12)]" data-kid="k7rgaln">M</button><button data-act="size" data-id="music" data-s="L" title="180–220 mm" class="w-8 rounded-full text-[12px] font-medium text-[#6B4F57]" data-kid="kvtxduo">L</button></div>
+     <button data-act="add" data-id="music" class="ml-auto h-10 px-4 rounded-full bg-[#F8F38A] text-[#2A0B14] text-[13px] font-medium hover:bg-[#F2EB6A] transition flex items-center gap-1.5" data-kid="k2gab5e">Add <i class="ti ti-plus" data-kid="k7zjf41"></i></button>
+    </div>
+   </div></article></div>
+</div>
+<p class="mt-9 flex items-center gap-2.5 text-[14px] italic text-[#6B4F57]" data-kid="1-2-1-4" data-name="lineup hint"><span class="starshape w-3.5 h-3.5 bg-[#C8553D]" data-kid="1-2-1-4-1"></span>tilt your cursor across the shelf — hover any band to peek at its specs</p>
+</div>
+</section>
+<!-- ═════════ STACKED PANELS ═════════ -->
+<section class="relative mt-4" data-kid="1-3" data-name="band finder stacked panels" id="guide">
+<!-- p1 quiz -->
+<!-- p2 training -->
+<div class="panel sticky top-4 mx-4 mb-4 h-[880px] rounded-[28px] overflow-hidden bg-[#C8553D] flex items-center origin-top text-[#FAF8F6] locked" data-kid="1-3-2" data-name="training stat panel" style="transform: scale(0.981189);">
+<img alt="Man training on a forest path" class="absolute inset-0 w-full h-full object-cover" data-kid="1-3-2-1" data-name="training background photo" decoding="async" loading="lazy" src="https://images.unsplash.com/photo-1630254608294-d844a0242357?auto=format&amp;w=1600&amp;q=80&amp;fit=crop">
+<div class="absolute inset-0 bg-[#C8553D]/65" data-kid="1-3-2-2" data-name="ember overlay"></div>
+<div class="panel-inner relative z-10 w-full max-w-[1240px] mx-auto px-12" data-kid="1-3-2-3">
+<div class="max-w-[640px]" data-kid="1-3-2-3-1" data-name="panel content">
+<p class="serif text-[190px] leading-[0.82] font-medium tracking-[-0.04em]" data-kid="1-3-2-3-1-1" data-name="big number">120</p>
+<p class="mt-4 text-[13px] font-semibold tracking-[0.2em] uppercase opacity-90" data-kid="1-3-2-3-1-2" data-name="number label">workout types tracked on Aero Fit Pro</p>
+<p class="mt-4 serif text-[56px] leading-[1.02] font-medium tracking-[-0.02em]" data-kid="1-3-2-3-1-3" data-name="panel headline">Built-in GPS and <span class="italic" data-kid="1-3-2-3-1-3-1">ECG</span></p>
+<p class="mt-4 text-[18px] leading-[1.55] opacity-90 max-w-[42ch]" data-kid="1-3-2-3-1-4" data-name="panel text">Structured training without your phone. 10 days of battery, Heart Screener and Blood Pressure Insights included.</p>
+</div>
+</div>
+</div>
+<!-- p3 endurance -->
+<div class="panel sticky top-4 mx-4 mb-4 h-[880px] rounded-[28px] overflow-hidden bg-[#6B7B4E] flex items-center origin-top text-[#FAF8F6] locked" data-kid="1-3-3" data-name="endurance stat panel" style="transform: scale(0.986329);">
+<img alt="Hiker resting on a mountain ridge" class="absolute inset-0 w-full h-full object-cover" data-kid="1-3-3-1" data-name="endurance background photo" decoding="async" loading="lazy" src="https://images.unsplash.com/photo-1745692607831-66df9207b8bc?auto=format&amp;w=1600&amp;q=80&amp;fit=crop">
+<div class="absolute inset-0 bg-[#4F5C38]/65" data-kid="1-3-3-2" data-name="olive overlay"></div>
+<div class="panel-inner relative z-10 w-full max-w-[1240px] mx-auto px-12" data-kid="1-3-3-3">
+<div class="max-w-[680px]" data-kid="1-3-3-3-1" data-name="panel content">
+<p class="serif text-[190px] leading-[0.82] font-medium tracking-[-0.04em]" data-kid="1-3-3-3-1-1" data-name="big number">14<span class="text-[80px] italic ml-3" data-kid="1-3-3-3-1-1-1">days</span></p>
+<p class="mt-4 text-[13px] font-semibold tracking-[0.2em] uppercase opacity-90" data-kid="1-3-3-3-1-2" data-name="number label">on a single charge, Aero Fit Ultra</p>
+<p class="mt-6 serif italic text-[46px] leading-[1.1] max-w-[18ch]" data-kid="1-3-3-3-1-3" data-name="panel quote">“A week of trail miles fits between charges.”<span class="block not-italic sans text-[16px] font-semibold mt-5 opacity-90" data-kid="1-3-3-3-1-3-1">Titanium case · dual-band GPS · 100 m water</span></p>
+</div>
+</div>
+</div>
+<!-- p4 ships -->
+<div class="panel sticky top-4 mx-4 h-[880px] rounded-[28px] overflow-hidden bg-[#2A0B14] flex items-center origin-top text-[#FAF8F6] locked" data-kid="1-3-4" data-name="shipping call-to-action panel">
+<img alt="Aero Fit Ultra box tied with a plum ribbon" class="absolute inset-0 w-full h-full object-cover" data-kid="1-3-4-1" data-name="parcel background photo" decoding="async" loading="lazy" src="https://kombai-assets-dev.b-cdn.net/generated_assets/22958db3-c0cf-4d55-af69-a56c3814f90e/57c05c7ee47e4f02aaba61dccc783f97.jpg">
+<div class="absolute inset-0 bg-[linear-gradient(90deg,rgba(42,11,20,0.9)_0%,rgba(42,11,20,0.7)_45%,rgba(42,11,20,0.25)_100%)]" data-kid="1-3-4-2" data-name="plum overlay"></div>
+<div class="panel-inner relative z-10 w-full max-w-[1240px] mx-auto px-12" data-kid="1-3-4-3">
+<div class="max-w-[640px]" data-kid="1-3-4-3-1" data-name="panel content">
+<p class="text-[12px] font-semibold tracking-[0.28em] uppercase text-[#F8F38A]" data-kid="1-3-4-3-1-1" data-name="panel eyebrow">Aero Fit Ultra</p>
+<p class="mt-4 serif text-[84px] leading-[0.98] font-medium tracking-[-0.03em]" data-kid="1-3-4-3-1-2" data-name="panel headline">Ships from <span class="italic text-[#F8F38A]" data-kid="1-3-4-3-1-2-1">November 4</span></p>
+<p class="mt-5 text-[18px] leading-[1.55] opacity-90 max-w-[42ch]" data-kid="1-3-4-3-1-3" data-name="panel text">$399 one-time with free returns — or $0 for the band on an Aero Fit Life membership.</p>
+<div class="mt-9 flex gap-4" data-kid="1-3-4-3-1-4" data-name="panel ctas">
+<a class="lift h-14 px-8 rounded-full bg-[#F8F38A] text-[#2A0B14] text-[15px] font-medium flex items-center gap-2" data-kid="1-3-4-3-1-4-1" data-name="preorder Ultra button" href="#lineup">Pre-order Ultra <i class="ti ti-arrow-right" data-kid="1-3-4-3-1-4-1-1"></i></a>
+<a class="lift h-14 px-7 rounded-full border border-white/40 text-[15px] font-medium flex items-center gap-2.5 hover:bg-white/10" data-kid="1-3-4-3-1-4-2" data-name="see memberships button" href="#plans"><span class="starshape w-3.5 h-3.5 bg-[#F8F38A]" data-kid="1-3-4-3-1-4-2-1"></span>See memberships</a>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ═════════ MEMBERSHIPS — timeline ═════════ -->
+<!-- ═════════ COMPARE ═════════ -->
+<section class="max-w-[1240px] mx-auto px-8 pt-24" data-kid="1-5" data-name="comparison section" id="compare">
+<div class="flex justify-between items-end gap-10 mb-8 is-in" data-kid="1-5-1" data-name="comparison header" id="cmpHead">
+<div data-kid="1-5-1-1">
+
+<h2 class="ev-h2 mt-3 serif text-[76px] leading-[0.98] font-medium tracking-[-0.03em]" data-kid="1-5-1-1-2" data-name="comparison headline">How the five <span class="italic text-[#C8553D]" data-kid="1-5-1-1-2-1">differ.</span></h2>
+<p class="mt-4 text-[15px] text-[#4A2A33]" data-dynamic="true" data-kid="1-5-1-1-3" data-name="comparison note" data-reason="text replaced by script from selected use case" id="tableNote">The rows that decide most purchases come first. Rows for <span class="bg-[#F8F38A] px-1.5 rounded" data-kid="ko0bxoa">endurance</span> are highlighted.</p>
+</div>
+<div class="flex flex-wrap justify-end gap-2 max-w-[420px]" data-dynamic="true" data-kid="1-5-1-2" data-name="highlight chips" data-reason="rendered by script" id="useChips"><button data-act="use" data-use="sleep" class="h-10 px-4 rounded-full text-[14px] font-medium border transition bg-white border-[#EFEAE6] hover:bg-[#F3EFEC]" data-kid="kgbu0pp">Sleep</button><button data-act="use" data-use="training" class="h-10 px-4 rounded-full text-[14px] font-medium border transition bg-white border-[#EFEAE6] hover:bg-[#F3EFEC]" data-kid="kgxj263">Training</button><button data-act="use" data-use="music" class="h-10 px-4 rounded-full text-[14px] font-medium border transition bg-white border-[#EFEAE6] hover:bg-[#F3EFEC]" data-kid="kpm0aie">Music</button><button data-act="use" data-use="endurance" class="h-10 px-4 rounded-full text-[14px] font-medium border transition bg-[#2A0B14] text-white border-[#2A0B14]" data-kid="k6ilhv4">Endurance</button></div>
+</div>
+<div class="rounded-[24px] bg-white border border-[#EFEAE6] overflow-clip shadow-[0_10px_30px_rgba(42,11,20,0.06)]" data-kid="1-5-2" data-name="comparison table card">
+<div class="grid grid-cols-[260px_repeat(5,1fr)] border-b border-[#EFEAE6]" data-dynamic="true" data-kid="1-5-2-1" data-name="table header row" data-reason="rendered by script" id="tHead"><div class="p-6 flex items-end text-[13px] text-[#6B4F57]" data-kid="keyobuj">Buy outright</div><div class="p-5 flex flex-col items-center text-center" data-kid="khle600"><span class="w-[76px] h-[76px] rounded-full flex items-center justify-center" style="background:radial-gradient(circle at 50% 55%,#F0F2F4 0%,#E3E7EB 55%,#D6DCE2 100%)" data-kid="krja14e"><img src="https://kombai-assets.b-cdn.net/generated_assets/f9b46c42-f591-4385-bfc2-9b6663bcd54f/da32fd7c279245b5ab743623f57ddf23.jpg" alt="Aero Fit Lite" class="w-14 h-14 object-contain mix-blend-multiply brightness-110" decoding="async" loading="lazy" data-kid="k1qbpu2"></span><p class="mt-3 serif text-[22px] font-medium leading-none" data-kid="kg5mn1b">Lite</p><p class="mt-1 text-[13px] text-[#6B4F57]" data-kid="kqwyjai">$149</p></div><div class="p-5 flex flex-col items-center text-center" data-kid="kk5mom0"><span class="w-[76px] h-[76px] rounded-full flex items-center justify-center" style="background:radial-gradient(circle at 50% 55%,#F6EEF0 0%,#EFE3E6 55%,#E6D6DA 100%)" data-kid="kzvreiv"><img src="https://kombai-assets.b-cdn.net/generated_assets/f9b46c42-f591-4385-bfc2-9b6663bcd54f/7754f0f6d49a4ed38f644dce2670c620.jpg" alt="Aero Fit Smart" class="w-14 h-14 object-contain mix-blend-multiply brightness-110" decoding="async" loading="lazy" data-kid="kr154st"></span><p class="mt-3 serif text-[22px] font-medium leading-none" data-kid="k5gmm9n">Smart</p><p class="mt-1 text-[13px] text-[#6B4F57]" data-kid="ky1etib">$199</p></div><div class="p-5 flex flex-col items-center text-center" data-kid="kjd8pz6"><span class="w-[76px] h-[76px] rounded-full flex items-center justify-center" style="background:radial-gradient(circle at 50% 55%,#EEF0E4 0%,#E3E7D6 55%,#D9DEC8 100%)" data-kid="k19tam0"><img src="https://kombai-assets.b-cdn.net/generated_assets/f9b46c42-f591-4385-bfc2-9b6663bcd54f/72180f80b3a64de99cbdef213dc621cd.jpg" alt="Aero Fit Pro" class="w-14 h-14 object-contain mix-blend-multiply brightness-110" decoding="async" loading="lazy" data-kid="kgjrstz"></span><p class="mt-3 serif text-[22px] font-medium leading-none" data-kid="k4zg400">Pro</p><p class="mt-1 text-[13px] text-[#6B4F57]" data-kid="kk121l1">$279</p><p class="mt-2 text-[12px] font-medium bg-[#2A0B14] text-white rounded-full px-2.5 py-0.5" data-kid="k2u570s">Good for endurance</p></div><div class="p-5 flex flex-col items-center text-center" data-kid="kodkixm"><span class="w-[76px] h-[76px] rounded-full flex items-center justify-center" style="background:radial-gradient(circle at 50% 55%,#FBEDE7 0%,#F6E0D8 55%,#EFD2C7 100%)" data-kid="k65ry40"><img src="https://kombai-assets.b-cdn.net/generated_assets/f9b46c42-f591-4385-bfc2-9b6663bcd54f/46a42b1d18d34403be756d1c74222484.jpg" alt="Aero Fit Music" class="w-14 h-14 object-contain mix-blend-multiply brightness-110" decoding="async" loading="lazy" data-kid="kby6h8o"></span><p class="mt-3 serif text-[22px] font-medium leading-none" data-kid="kiqnwsz">Music</p><p class="mt-1 text-[13px] text-[#6B4F57]" data-kid="k1s0ovl">$299</p></div><div class="p-5 flex flex-col items-center text-center" data-kid="kocdcy7"><span class="w-[76px] h-[76px] rounded-full flex items-center justify-center" style="background:radial-gradient(circle at 50% 55%,#F8F38A 0%,#FBF4B8 40%,#F4F1EE 78%)" data-kid="k3ncitu"><img src="https://kombai-assets.b-cdn.net/generated_assets/f9b46c42-f591-4385-bfc2-9b6663bcd54f/76d7a24f75bc4dbeafec4d446b539a12.jpg" alt="Aero Fit Ultra" class="w-14 h-14 object-contain mix-blend-multiply brightness-110" decoding="async" loading="lazy" data-kid="kh3ruyy"></span><p class="mt-3 serif text-[22px] font-medium leading-none" data-kid="k67swex">Ultra</p><p class="mt-1 text-[13px] text-[#6B4F57]" data-kid="kb79agb">$399</p><p class="mt-2 text-[12px] font-medium bg-[#2A0B14] text-white rounded-full px-2.5 py-0.5" data-kid="ki5m71v">Good for endurance</p></div></div>
+<div data-dynamic="true" data-kid="1-5-2-2" data-name="table body" data-reason="rendered by script" id="tBody"><div class="grid grid-cols-[260px_repeat(5,1fr)] text-[14px]  bg-[#FBF7C8]" data-kid="k6t02gv"><p class="px-6 py-4 font-medium" data-kid="kw6gy6e">Battery life</p><div class="py-4 px-2 text-center" data-kid="k1hwjcn">5 days</div><div class="py-4 px-2 text-center" data-kid="k20gdkb">7 days</div><div class="py-4 px-2 text-center" data-kid="k3dbkyj">10 days</div><div class="py-4 px-2 text-center" data-kid="kbokcxk">6 days</div><div class="py-4 px-2 text-center" data-kid="k8lkz20">14 days</div></div><div class="grid grid-cols-[260px_repeat(5,1fr)] text-[14px] border-t border-[#F3EFEC] bg-[#FBF7C8]" data-kid="kil27hm"><p class="px-6 py-4 font-medium" data-kid="korvt5r">GPS</p><div class="py-4 px-2 text-center" data-kid="knhnh6u">Via phone</div><div class="py-4 px-2 text-center" data-kid="kb2192v">Via phone</div><div class="py-4 px-2 text-center" data-kid="k1awphu">Built-in</div><div class="py-4 px-2 text-center" data-kid="kzhho9j">Built-in</div><div class="py-4 px-2 text-center" data-kid="kc67f67">Dual-band</div></div><div class="grid grid-cols-[260px_repeat(5,1fr)] text-[14px] border-t border-[#F3EFEC] " data-kid="kotac1m"><p class="px-6 py-4 text-[#4A2A33]" data-kid="kiy0fri">ECG with Heart Screener</p><div class="py-4 px-2 text-center" data-kid="kdocii3"><span class="text-[16px] flex justify-center text-[#C9C0C2]" data-kid="k32s8z7"><i class="ti ti-minus" data-kid="ktgibij"></i></span></div><div class="py-4 px-2 text-center" data-kid="kxohhsn"><span class="text-[16px] flex justify-center text-[#C9C0C2]" data-kid="kakv63u"><i class="ti ti-minus" data-kid="k6snyw4"></i></span></div><div class="py-4 px-2 text-center" data-kid="ki6pxi4"><span class="text-[18px] flex justify-center" data-kid="k1i1ck8"><i class="ti ti-check" data-kid="k6pug7o"></i></span></div><div class="py-4 px-2 text-center" data-kid="k0tar8i"><span class="text-[16px] flex justify-center text-[#C9C0C2]" data-kid="kcl7rdj"><i class="ti ti-minus" data-kid="ke27xvb"></i></span></div><div class="py-4 px-2 text-center" data-kid="kjsfdyz"><span class="text-[18px] flex justify-center" data-kid="kh7n3l3"><i class="ti ti-check" data-kid="kwfqrdx"></i></span></div></div><div class="grid grid-cols-[260px_repeat(5,1fr)] text-[14px] border-t border-[#F3EFEC] " data-kid="kct581u"><p class="px-6 py-4 text-[#4A2A33]" data-kid="kn97ihc">Onboard music</p><div class="py-4 px-2 text-center" data-kid="kkw3j9t"><span class="text-[16px] flex justify-center text-[#C9C0C2]" data-kid="kguwahs"><i class="ti ti-minus" data-kid="kc6lrh4"></i></span></div><div class="py-4 px-2 text-center" data-kid="k8rrb3b"><span class="text-[16px] flex justify-center text-[#C9C0C2]" data-kid="kmrm76p"><i class="ti ti-minus" data-kid="kghhq4b"></i></span></div><div class="py-4 px-2 text-center" data-kid="k7frubv"><span class="text-[16px] flex justify-center text-[#C9C0C2]" data-kid="kpq03p1"><i class="ti ti-minus" data-kid="ktd0nn6"></i></span></div><div class="py-4 px-2 text-center" data-kid="kpbwhga">4 GB · ~500 songs</div><div class="py-4 px-2 text-center" data-kid="klm7ons"><span class="text-[16px] flex justify-center text-[#C9C0C2]" data-kid="kdy4qfm"><i class="ti ti-minus" data-kid="kdur0x1"></i></span></div></div><div class="grid grid-cols-[260px_repeat(5,1fr)] text-[14px] border-t border-[#F3EFEC] bg-[#FBF7C8]" data-kid="k948p6i"><p class="px-6 py-4 font-medium" data-kid="kimm250">Case material</p><div class="py-4 px-2 text-center" data-kid="kf0hcun">Polymer</div><div class="py-4 px-2 text-center" data-kid="kgfqv05">Aluminum</div><div class="py-4 px-2 text-center" data-kid="k6u7z7l">Aluminum</div><div class="py-4 px-2 text-center" data-kid="ky4yygx">Aluminum</div><div class="py-4 px-2 text-center" data-kid="k8itfw8">Titanium</div></div><div class="grid grid-cols-[260px_repeat(5,1fr)] text-[14px] border-t border-[#F3EFEC] " data-kid="kjnfoi8"><p class="px-6 py-4 text-[#4A2A33]" data-kid="kdol31g">Weight with band</p><div class="py-4 px-2 text-center" data-kid="kfl4uqp">18 g</div><div class="py-4 px-2 text-center" data-kid="km7bty0">24 g</div><div class="py-4 px-2 text-center" data-kid="kvfkcpt">27 g</div><div class="py-4 px-2 text-center" data-kid="kjfxljr">28 g</div><div class="py-4 px-2 text-center" data-kid="kamfqta">32 g</div></div><div class="grid grid-cols-[260px_repeat(5,1fr)] text-[14px] border-t border-[#F3EFEC] " data-kid="kp39mvr"><p class="px-6 py-4 text-[#4A2A33]" data-kid="katsj5e">Buy outright</p><div class="py-4 px-2 text-center" data-kid="kcpomer">$149</div><div class="py-4 px-2 text-center" data-kid="k5kdcxo">$199</div><div class="py-4 px-2 text-center" data-kid="kspi61m">$279</div><div class="py-4 px-2 text-center" data-kid="kvlh2rl">$299</div><div class="py-4 px-2 text-center" data-kid="kd7accj">$399</div></div><div class="grid grid-cols-[260px_repeat(5,1fr)] text-[14px] border-t border-[#F3EFEC] " data-kid="kstnpsk"><p class="px-6 py-4 text-[#4A2A33]" data-kid="ken2gid">Included with membership</p><div class="py-4 px-2 text-center" data-kid="kg8nbai">One, Peak, Life</div><div class="py-4 px-2 text-center" data-kid="knaquh0">One, Peak, Life</div><div class="py-4 px-2 text-center" data-kid="kho2kbl">Peak, Life</div><div class="py-4 px-2 text-center" data-kid="km40tty">Peak, Life</div><div class="py-4 px-2 text-center" data-kid="k1m00bk">Life only</div></div></div>
+<div class="border-t border-[#F3EFEC] p-4 flex justify-center" data-kid="1-5-2-3" data-name="show more row">
+<button class="h-11 px-5 rounded-full border border-[#2A0B14] text-[14px] font-medium hover:bg-[#2A0B14] hover:text-white transition" data-act="more" data-dynamic="true" data-kid="1-5-2-3-1" data-name="show all specs toggle" data-reason="label toggled by script" id="moreBtn">Show all 16 specs</button>
+</div>
+</div>
+</section>
+<!-- ═════════ FOOTER ═════════ -->
+<footer class="relative mx-4 mt-28 rounded-[28px] overflow-hidden bg-[#2A0B14] text-[#FAF8F6] pt-20 pb-10 bg-[radial-gradient(circle_at_15%_22%,rgba(248,243,138,0.07)_0%,transparent_38%),radial-gradient(circle_at_85%_78%,rgba(107,123,78,0.12)_0%,transparent_40%)]" data-kid="1-6" data-name="site footer">
+<span class="fshape starshape absolute top-10 left-14 w-[60px] h-[60px] bg-[#F8F38A] opacity-25 pointer-events-none" data-depth="-30" data-kid="1-6-1" data-name="floating star shape" style="transform: translateY(-1.75417px);"></span>
+<span class="fshape absolute top-28 right-28 w-[90px] h-[90px] rounded-full bg-[#C8553D] opacity-20 pointer-events-none" data-depth="-60" data-kid="1-6-2" data-name="floating circle shape" style="transform: translateY(-3.50833px);"></span>
+<span class="fshape sparkle absolute bottom-36 left-[34%] w-11 h-11 bg-[#A3B47F] opacity-30 pointer-events-none" data-depth="-45" data-kid="1-6-3" data-name="floating sparkle shape" style="transform: translateY(-2.63125px);"></span>
+<div class="relative z-10 max-w-[1240px] mx-auto px-8" data-kid="1-6-4">
+<div class="reveal grid grid-cols-[1.6fr_1fr_1fr_1fr_1fr] gap-7 text-[15px] rise" data-kid="1-6-4-3" data-name="footer columns" id="footCols">
+<div data-kid="1-6-4-3-1">
+<div class="flex items-center gap-2.5 mb-4" data-kid="1-6-4-3-1-1"><img alt="Aero Fit logo" class="w-9 h-9" data-kid="1-6-4-3-1-1-1" decoding="async" loading="lazy" src="../../../.kombai/canvas/assets/aerofit-mark.svg"><span class="serif text-[26px] font-medium" data-kid="1-6-4-3-1-1-2">Aero Fit</span></div>
+<p class="text-[13px] italic opacity-60 max-w-[30ch] leading-[1.6]" data-kid="1-6-4-3-1-2" data-name="footer blurb">Aero Fit features are intended for general wellness and fitness purposes. They are not intended to diagnose, treat, cure, or prevent any disease.</p>
+</div>
+<div data-kid="1-6-4-3-2"><p class="text-[11px] font-semibold tracking-[0.2em] uppercase text-[#F8F38A] mb-4" data-kid="1-6-4-3-2-1">Shop</p><ul class="space-y-2 opacity-85" data-kid="1-6-4-3-2-2"><li data-kid="1-6-4-3-2-2-1"><a class="hover:text-[#F8F38A]" data-kid="1-6-4-3-2-2-1-1" href="#">Aero Fit Lite</a></li><li data-kid="1-6-4-3-2-2-2"><a class="hover:text-[#F8F38A]" data-kid="1-6-4-3-2-2-2-1" href="#">Aero Fit Smart</a></li><li data-kid="1-6-4-3-2-2-3"><a class="hover:text-[#F8F38A]" data-kid="1-6-4-3-2-2-3-1" href="#">Aero Fit Pro</a></li><li data-kid="1-6-4-3-2-2-4"><a class="hover:text-[#F8F38A]" data-kid="1-6-4-3-2-2-4-1" href="#">Aero Fit Music</a></li><li data-kid="1-6-4-3-2-2-5"><a class="hover:text-[#F8F38A]" data-kid="1-6-4-3-2-2-5-1" href="#">Aero Fit Ultra</a></li></ul></div>
+<div data-kid="1-6-4-3-3"><p class="text-[11px] font-semibold tracking-[0.2em] uppercase text-[#F8F38A] mb-4" data-kid="1-6-4-3-3-1">Memberships</p><ul class="space-y-2 opacity-85" data-kid="1-6-4-3-3-2"><li data-kid="1-6-4-3-3-2-1"><a class="hover:text-[#F8F38A]" data-kid="1-6-4-3-3-2-1-1" href="#">Aero Fit One</a></li><li data-kid="1-6-4-3-3-2-2"><a class="hover:text-[#F8F38A]" data-kid="1-6-4-3-3-2-2-1" href="#">Aero Fit Peak</a></li><li data-kid="1-6-4-3-3-2-3"><a class="hover:text-[#F8F38A]" data-kid="1-6-4-3-3-2-3-1" href="#">Aero Fit Life</a></li><li data-kid="1-6-4-3-3-2-4"><a class="hover:text-[#F8F38A]" data-kid="1-6-4-3-3-2-4-1" href="#">Compare plans</a></li></ul></div>
+<div data-kid="1-6-4-3-4"><p class="text-[11px] font-semibold tracking-[0.2em] uppercase text-[#F8F38A] mb-4" data-kid="1-6-4-3-4-1">Support</p><ul class="space-y-2 opacity-85" data-kid="1-6-4-3-4-2"><li data-kid="1-6-4-3-4-2-1"><a class="hover:text-[#F8F38A]" data-kid="1-6-4-3-4-2-1-1" href="#">Help Center</a></li><li data-kid="1-6-4-3-4-2-2"><a class="hover:text-[#F8F38A]" data-kid="1-6-4-3-4-2-2-1" href="#">Sizing guide</a></li><li data-kid="1-6-4-3-4-2-3"><a class="hover:text-[#F8F38A]" data-kid="1-6-4-3-4-2-3-1" href="#">Accessories</a></li><li data-kid="1-6-4-3-4-2-4"><a class="hover:text-[#F8F38A]" data-kid="1-6-4-3-4-2-4-1" href="#">Download App</a></li></ul></div>
+<div data-kid="1-6-4-3-5"><p class="text-[11px] font-semibold tracking-[0.2em] uppercase text-[#F8F38A] mb-4" data-kid="1-6-4-3-5-1">Connect</p>
+<div class="flex gap-3" data-kid="1-6-4-3-5-2" data-name="social icons">
+<a aria-label="Instagram" class="w-9 h-9 rounded-full bg-white/12 flex items-center justify-center text-[18px] hover:bg-[#F8F38A] hover:text-[#2A0B14] transition" data-kid="1-6-4-3-5-2-1" href="#"><i class="ti ti-brand-instagram" data-kid="1-6-4-3-5-2-1-1"></i></a>
+<a aria-label="YouTube" class="w-9 h-9 rounded-full bg-white/12 flex items-center justify-center text-[18px] hover:bg-[#F8F38A] hover:text-[#2A0B14] transition" data-kid="1-6-4-3-5-2-2" href="#"><i class="ti ti-brand-youtube" data-kid="1-6-4-3-5-2-2-1"></i></a>
+<a aria-label="Podcast" class="w-9 h-9 rounded-full bg-white/12 flex items-center justify-center text-[18px] hover:bg-[#F8F38A] hover:text-[#2A0B14] transition" data-kid="1-6-4-3-5-2-3" href="#"><i class="ti ti-microphone" data-kid="1-6-4-3-5-2-3-1"></i></a>
+<a aria-label="Contact" class="w-9 h-9 rounded-full bg-white/12 flex items-center justify-center text-[18px] hover:bg-[#F8F38A] hover:text-[#2A0B14] transition" data-kid="1-6-4-3-5-2-4" href="#"><i class="ti ti-mail" data-kid="1-6-4-3-5-2-4-1"></i></a>
+</div>
+</div>
+</div>
+<div class="mt-12 pt-6 border-t border-white/15 flex justify-between items-center text-[13px] italic opacity-70" data-kid="1-6-4-4" data-name="fine print row">
+<span data-kid="1-6-4-4-1">© 2026 Aero Fit · membership plans are billed annually with a 12-month minimum term</span>
+<div class="flex gap-6" data-kid="1-6-4-4-2"><a data-kid="1-6-4-4-2-1" href="#">Terms &amp; Conditions</a><a data-kid="1-6-4-4-2-2" href="#">Privacy Policy</a><a data-kid="1-6-4-4-2-3" href="#">Accessibility</a></div>
+</div>
+</div>
+</footer>
+</div>
+<script>
+const IMG={lite:'https://kombai-assets.b-cdn.net/generated_assets/f9b46c42-f591-4385-bfc2-9b6663bcd54f/da32fd7c279245b5ab743623f57ddf23.jpg',smart:'https://kombai-assets.b-cdn.net/generated_assets/f9b46c42-f591-4385-bfc2-9b6663bcd54f/7754f0f6d49a4ed38f644dce2670c620.jpg',pro:'https://kombai-assets.b-cdn.net/generated_assets/f9b46c42-f591-4385-bfc2-9b6663bcd54f/72180f80b3a64de99cbdef213dc621cd.jpg',music:'https://kombai-assets.b-cdn.net/generated_assets/f9b46c42-f591-4385-bfc2-9b6663bcd54f/46a42b1d18d34403be756d1c74222484.jpg',ultra:'https://kombai-assets.b-cdn.net/generated_assets/f9b46c42-f591-4385-bfc2-9b6663bcd54f/76d7a24f75bc4dbeafec4d446b539a12.jpg'};
+const P=[
+{id:'ultra',n:'Ultra',tag:'Ships Nov 4',line:'Titanium case, dual-band GPS and 14 days of battery for multi-day races.',peek:['14-day battery','Dual-band GPS','100 m water','Titanium · 32 g'],price:399,min:3,c:[['Titanium','#8B8A87'],['Black','#1F1F1F'],['Trail','#6B7B4E']],ci:0,s:'M',tile:'radial-gradient(circle at 50% 55%,#F8F38A 0%,#FBF4B8 40%,#F4F1EE 78%)',tc:'#F8F38A'},
+{id:'pro',n:'Pro',tag:'Training',line:'Built-in GPS and ECG for structured training without your phone.',peek:['10-day battery','Built-in GPS','ECG Heart Screener','Aluminum · 27 g'],price:279,min:2,c:[['Graphite','#2E2E30'],['Volt','#E3E86A'],['Stone','#BDB5AC']],ci:0,s:'M',tile:'radial-gradient(circle at 50% 55%,#EEF0E4 0%,#E3E7D6 55%,#D9DEC8 100%)',tc:'#A3B47F'},
+{id:'lite',n:'Lite',tag:'Lightest',line:'Featherweight tracking for sleep, steps and daily recovery.',peek:['5-day battery','GPS via phone','Mono OLED','Polymer · 18 g'],price:149,min:1,c:[['Slate','#5E6E7D'],['Black','#1F1F1F'],['Sand','#D8C8B2']],ci:0,s:'M',tile:'radial-gradient(circle at 50% 55%,#F0F2F4 0%,#E3E7EB 55%,#D6DCE2 100%)',tc:'#B9C3CD'},
+{id:'smart',n:'Smart',tag:'Everyday',line:'Everyday sleep, strain and recovery on an always-on display.',peek:['7-day battery','Skin temperature','AMOLED display','Aluminum · 24 g'],price:199,min:1,c:[['Black','#1F1F1F'],['Mist','#C8CDD2'],['Plum','#5B2439']],ci:0,s:'M',tile:'radial-gradient(circle at 50% 55%,#F6EEF0 0%,#EFE3E6 55%,#E6D6DA 100%)',tc:'#E3C3CB'},
+{id:'music',n:'Music',tag:'Offline',line:'Stores 500 songs and plays to Bluetooth headphones on the run.',peek:['6-day battery','4 GB · ~500 songs','Bluetooth audio','Aluminum · 28 g'],price:299,min:2,c:[['Black','#1F1F1F'],['Ember','#C8553D'],['Ice','#DDE6EE']],ci:0,s:'M',tile:'radial-gradient(circle at 50% 55%,#FBEDE7 0%,#F6E0D8 55%,#EFD2C7 100%)',tc:'#E8907A'}];
+const ORDER=['lite','smart','pro','music','ultra'];
+const PL={1:['One',16,199],2:['Peak',25,299],3:['Life',33,399]};
+const USE={sleep:{n:'sleep',fit:['lite','smart'],rows:['sleep','temp','weight','battery']},training:{n:'training',fit:['pro','ultra'],rows:['gps','modes','ecg','recovery']},music:{n:'music',fit:['music','pro'],rows:['storage','bt','gps']},endurance:{n:'endurance',fit:['ultra','pro'],rows:['battery','gps','water','case']}};
+const ROWS=[
+ ['battery','Battery life',['5 days','7 days','10 days','6 days','14 days'],1],
+ ['gps','GPS',['Via phone','Via phone','Built-in','Built-in','Dual-band'],1],
+ ['ecg','ECG with Heart Screener',[0,0,1,0,1],1],
+ ['storage','Onboard music',[0,0,0,'4 GB · ~500 songs',0],1],
+ ['case','Case material',['Polymer','Aluminum','Aluminum','Aluminum','Titanium'],1],
+ ['weight','Weight with band',['18 g','24 g','27 g','28 g','32 g'],1],
+ ['outright','Buy outright',['$149','$199','$279','$299','$399'],1],
+ ['incl','Included with membership',['One, Peak, Life','One, Peak, Life','Peak, Life','Peak, Life','Life only'],1],
+ ['display','Display',['Mono OLED','AMOLED','AMOLED','AMOLED','AMOLED, sapphire'],0],
+ ['water','Water resistance',['50 m','50 m','50 m','50 m','100 m'],0],
+ ['sleep','Sleep stages & Sleep Performance',[1,1,1,1,1],0],
+ ['recovery','Recovery & Strain scores',[1,1,1,1,1],0],
+ ['temp','Skin temperature',[0,1,1,1,1],0],
+ ['bp','Blood Pressure Insights',[0,0,1,0,1],0],
+ ['modes','Workout types',['20','40','120','80','150'],0],
+ ['bt','Bluetooth headphones',[0,0,0,1,0],0]];
+const SIZE={S:'130–160 mm',M:'150–190 mm',L:'180–220 mm'};
+let mode='out',plan=2,use='endurance',filter='all',cart=0,more=false,q={use:'training',night:'light',pay:'mem'};
+const $=id=>document.getElementById(id);const byId=i=>P.find(p=>p.id===i);
+
+function priceLine(p){
+ if(mode==='out')return `<span class="serif text-[24px] font-semibold text-[#2A0B14]">$${p.price}</span>`;
+ if(plan>=p.min)return `<span class="serif text-[24px] font-semibold text-[#2A0B14]">$0</span><span class="text-[12px] text-[#6B4F57] ml-1">with ${PL[plan][0]}</span>`;
+ return `<span class="text-[13px] font-medium text-[#C8553D]">Needs ${PL[p.min][0]}</span>`;
+}
+function renderLineup(){
+ $('lineNote').innerHTML=mode==='out'?'Every band runs the same Aero Fit app, coaching and Recovery scores. Buy one outright and add a membership any time.':`On ${PL[plan][0]} ($${PL[plan][2]}/yr) bands it covers are $0. 12-month minimum.`;
+ const f=(k,l)=>`<button data-act="filter" data-f="${k}" class="h-10 px-5 rounded-full text-[14px] font-medium transition ${filter===k?'bg-[#C8553D] text-white':'bg-[#F3EFEC] text-[#2A0B14] hover:bg-[#F8F38A]'}">${l}</button>`;
+ const m=(k,l)=>`<button data-act="mode" data-mode="${k}" class="h-10 px-5 rounded-full text-[14px] font-medium transition ${mode===k?'bg-[#F8F38A] text-[#2A0B14]':'border border-[#2A0B14]/20 text-[#2A0B14] hover:bg-[#F3EFEC]'}">${l}</button>`;
+ $('pills').innerHTML=f('all','All bands')+f('sleep','Sleep')+f('training','Training')+f('music','Music')+f('endurance','Endurance')+'<span class="w-px h-9 bg-[#2A0B14]/15 mx-1.5"></span>'+m('out','Buy outright')+m('mem','With membership')+(mode==='mem'?[1,2,3].map(t=>`<button data-act="plan" data-plan="${t}" class="h-10 px-4 rounded-full text-[13px] transition ${t===plan?'bg-[#2A0B14]/[0.06] ring-1 ring-[#2A0B14] text-[#2A0B14] font-medium':'border border-[#2A0B14]/15 text-[#4A2A33] hover:bg-[#F3EFEC]'}">${PL[t][0]} · $${PL[t][2]}/yr</button>`).join(''):'');
+ $('bandGrid').innerHTML=P.map((p,i)=>{
+  const dim=filter!=='all'&&!USE[filter].fit.includes(p.id);const fit=filter!=='all'&&!dim;const blocked=mode==='mem'&&plan<p.min;
+  return `<article class="band ${dim?'!opacity-35':''}" data-name="${p.n} band card">
+   <div class="relative aspect-[4/5] rounded-[22px] overflow-hidden shadow-[0_10px_28px_rgba(42,11,20,0.08)] flex items-center justify-center" style="background:${p.tile}">
+    <img src="${IMG[p.id]}" alt="Aero Fit ${p.n} in ${p.c[p.ci][0]}" class="w-[78%] h-[78%] object-contain mix-blend-multiply brightness-110 contrast-[1.05]" decoding="async" loading="lazy">
+    <span class="absolute left-4 top-4 text-[12px] font-medium bg-white/90 text-[#2A0B14] rounded-full px-3 py-1">${p.tag}</span>
+    ${fit?`<span class="absolute left-4 bottom-4 text-[12px] font-medium bg-[#F8F38A] text-[#2A0B14] rounded-full px-3 py-1">Good for ${filter}</span>`:''}
+    <div class="peek absolute inset-3 rounded-[16px] bg-[#FAF8F6]/95 text-[#2A0B14] p-6 flex flex-col justify-end"><p class="text-[11px] font-semibold tracking-[0.24em] uppercase text-[#6B7B4E] mb-3">At a glance</p>${p.peek.map(s=>`<p class="serif italic text-[22px] leading-[1.3]">${s}</p>`).join('')}</div>
+   </div>
+   <div class="mt-4">
+    <h3 class="serif text-[28px] font-medium leading-none">Aero Fit ${p.n}</h3>
+    <p class="mt-2 text-[14px] italic text-[#6B4F57] leading-[1.45]">${p.line}</p>
+    <div class="mt-3 flex items-center justify-between"><span class="text-[12px] font-semibold px-3 py-1 rounded-full" style="background:${p.tc}40;color:#2A0B14">${p.c[p.ci][0]}</span><div class="flex items-baseline">${priceLine(p)}</div></div>
+    <div class="mt-4 flex items-center gap-2">
+     <div class="flex gap-1">${p.c.map((c,j)=>`<button data-act="color" data-id="${p.id}" data-i="${j}" aria-label="${c[0]}" class="w-7 h-7 rounded-full p-[3px] border-2 ${j===p.ci?'border-[#2A0B14]':'border-transparent'}"><span class="block w-full h-full rounded-full ring-1 ring-black/10" style="background:${c[1]}"></span></button>`).join('')}</div>
+     <div class="h-10 p-1 rounded-full bg-[#F3EFEC] flex ml-1">${['S','M','L'].map(s=>`<button data-act="size" data-id="${p.id}" data-s="${s}" title="${SIZE[s]}" class="w-8 rounded-full text-[12px] font-medium ${s===p.s?'bg-white text-[#2A0B14] shadow-[0_1px_4px_rgba(42,11,20,0.12)]':'text-[#6B4F57]'}">${s}</button>`).join('')}</div>
+     ${blocked?`<button data-act="plan" data-plan="${p.min}" class="ml-auto h-10 px-4 rounded-full border border-[#2A0B14]/30 text-[13px] font-medium">Switch to ${PL[p.min][0]}</button>`:`<button data-act="add" data-id="${p.id}" class="ml-auto h-10 px-4 rounded-full bg-[#F8F38A] text-[#2A0B14] text-[13px] font-medium hover:bg-[#F2EB6A] transition flex items-center gap-1.5">Add <i class="ti ti-plus"></i></button>`}
+    </div>
+   </div></article>`}).join('');
+ bindTilt();
+}
+const Q=[['use','What will you use it for most?',[['sleep','Sleep'],['training','Training'],['music','Music on runs'],['endurance','Long days outdoors']]],['night','How do you feel about wearing it overnight?',[['light','I want the lightest band'],['any',"Weight doesn't matter"]]],['pay','How would you like to pay?',[['out','Buy the band outright'],['mem','Include it in a membership']]]];
+const PAIRS={sleep:{light:['lite','smart'],any:['smart','pro']},training:{light:['pro','smart'],any:['pro','ultra']},music:{light:['music','smart'],any:['music','pro']},endurance:{light:['pro','smart'],any:['ultra','pro']}};
+const WHY={lite:'18 g, the lightest band',smart:'24 g with skin temperature',pro:'built-in GPS and ECG',ultra:'14-day battery, dual-band GPS',music:'4 GB of onboard music'};
+function renderQuiz(){
+ if(!$('quiz'))return;
+ $('quiz').innerHTML=Q.map(([k,t,o],i)=>`<div class="rounded-[20px] bg-white p-5 shadow-[0_4px_18px_rgba(42,11,20,0.05)]"><p class="text-[13px] text-[#6B4F57]">Question ${i+1} of 3</p><p class="mt-1 serif text-[22px] font-medium">${t}</p><div class="mt-3 flex flex-wrap gap-2">${o.map(([v,l])=>`<button data-act="q" data-k="${k}" data-v="${v}" class="h-10 px-4 rounded-full text-[14px] border transition ${q[k]===v?'bg-[#2A0B14] border-[#2A0B14] text-white':'border-[#E3DDDA] hover:bg-[#FAF8F6]'}">${l}</button>`).join('')}</div></div>`).join('');
+ const pair=PAIRS[q.use][q.night].map(byId);
+ const payNote=q.pay==='out'?`$${pair[0].price} and $${pair[1].price} outright`:pair.map(p=>`${p.n} from $0 on ${PL[p.min][0]}`).join(', ');
+ $('quizResult').innerHTML=`<div class="flex items-center gap-5"><div class="flex -space-x-4 shrink-0">${pair.map(p=>`<span class="w-16 h-16 rounded-full bg-white flex items-center justify-center ring-4 ring-[#2A0B14]"><img src="${IMG[p.id]}" alt="Aero Fit ${p.n}" class="w-12 h-12 object-contain mix-blend-multiply brightness-110" decoding="async" loading="lazy"></span>`).join('')}</div><div><p class="text-[13px] text-white/70">Start by comparing</p><p class="serif text-[30px] font-medium leading-tight">${pair[0].n} <span class="italic text-[#E8907A]">and</span> ${pair[1].n}</p><p class="mt-1.5 text-[14px] text-white/80">${pair[0].n}: ${WHY[pair[0].id]}. ${pair[1].n}: ${WHY[pair[1].id]}. ${payNote}.</p></div></div><button data-act="use" data-use="${q.use}" class="shrink-0 h-11 px-5 rounded-full bg-[#F8F38A] text-[#2A0B14] text-[14px] font-medium">Compare ${pair[0].n} and ${pair[1].n}</button>`;
+}
+function renderPlans(){
+ if(!$('planList'))return;
+ const info={1:['Sleep, Recovery and Strain scores, plus daily coaching in the app.','Lite or Smart included'],2:['Everything in One, plus training plans, ECG history and music sync.','Lite, Smart, Pro or Music included'],3:['Everything in Peak, plus the Ultra, expedition maps and priority support.','Any band, including Ultra']};
+ const col={1:'#6B7B4E',2:'#C8553D',3:'#2A0B14'};const star={1:'#A3B47F',2:'#C8553D',3:'#F8F38A'};
+ $('planList').innerHTML=[1,2,3].map(t=>{const bands=ORDER.filter(i=>byId(i).min<=t);const on=mode==='mem'&&plan===t;return `<div class="ev relative mb-8" data-name="${PL[t][0]} membership card">
+  <div class="absolute -left-[66px] top-7 w-[30px] h-[30px] starshape" style="background:${star[t]}"></div>
+  <div class="bg-white rounded-[22px] p-7 grid grid-cols-[150px_1fr_auto] gap-8 items-center shadow-[0_10px_30px_rgba(42,11,20,0.08)] ${on?'ring-2 ring-[#2A0B14]':''}">
+   <div><p class="text-[12px] font-semibold tracking-[0.16em] uppercase" style="color:${col[t]}">Aero Fit</p><p class="serif text-[56px] leading-[0.85] font-medium" style="color:${col[t]}">${PL[t][0]}</p><p class="mt-2 text-[13px] italic text-[#6B4F57]">$${PL[t][1]}/mo · $${PL[t][2]}/yr</p></div>
+   <div><p class="text-[13px] italic text-[#6B4F57]">${info[t][1]}</p><p class="mt-1 serif text-[22px] leading-[1.2] font-medium">${info[t][0]}</p><button data-act="plan" data-plan="${t}" class="mt-3 text-[14px] font-medium border-b-2 pb-0.5" style="border-color:${col[t]};color:${col[t]}">${on?'Selected — prices updated above':'Price the lineup on '+PL[t][0]+' →'}</button></div>
+   <div class="flex items-center gap-4 text-right"><div><p class="text-[14px] font-semibold">${bands.length} band${bands.length>1?'s':''}</p><p class="text-[13px] italic text-[#6B4F57]">${bands.map(i=>byId(i).n).join(', ')}</p></div><div class="flex">${bands.map((i,j)=>`<span class="w-14 h-14 rounded-full border-[3px] border-[#FAF8F6] flex items-center justify-center ${j?'-ml-4':''}" style="background:${byId(i).tile}"><img src="${IMG[i]}" alt="Aero Fit ${byId(i).n}" class="w-10 h-10 object-contain mix-blend-multiply brightness-110" decoding="async" loading="lazy"></span>`).join('')}</div></div>
+  </div></div>`}).join('')+`<div class="text-center mt-8"><a href="#compare" class="text-[#C8553D] font-semibold border-b-2 border-[#C8553D] pb-0.5">See every spec side by side (16 rows)</a></div>`;
+}
+function renderTable(){
+ const U=USE[use];
+ $('useChips').innerHTML=Object.keys(USE).map(k=>`<button data-act="use" data-use="${k}" class="h-10 px-4 rounded-full text-[14px] font-medium border transition ${k===use?'bg-[#2A0B14] text-white border-[#2A0B14]':'bg-white border-[#EFEAE6] hover:bg-[#F3EFEC]'}">${k[0].toUpperCase()+k.slice(1)}</button>`).join('');
+ $('tableNote').innerHTML=`The rows that decide most purchases come first. Rows for <span class="bg-[#F8F38A] px-1.5 rounded">${U.n}</span> are highlighted.`;
+ $('tHead').innerHTML='<div class="p-6 flex items-end text-[13px] text-[#6B4F57]">'+(mode==='out'?'Buy outright':'With '+PL[plan][0]+' membership')+'</div>'+ORDER.map(i=>{const p=byId(i);const hp=mode==='out'?'$'+p.price:(plan>=p.min?'$0 band':'Needs '+PL[p.min][0]);const fit=U.fit.includes(i);return `<div class="p-5 flex flex-col items-center text-center"><span class="w-[76px] h-[76px] rounded-full flex items-center justify-center" style="background:${p.tile}"><img src="${IMG[i]}" alt="Aero Fit ${p.n}" class="w-14 h-14 object-contain mix-blend-multiply brightness-110" decoding="async" loading="lazy"></span><p class="mt-3 serif text-[22px] font-medium leading-none">${p.n}</p><p class="mt-1 text-[13px] text-[#6B4F57]">${hp}</p>${fit?`<p class="mt-2 text-[12px] font-medium bg-[#2A0B14] text-white rounded-full px-2.5 py-0.5">Good for ${U.n}</p>`:''}</div>`}).join('');
+ const cell=v=>v===1?'<span class="text-[18px] flex justify-center"><i class="ti ti-check"></i></span>':v===0?'<span class="text-[16px] flex justify-center text-[#C9C0C2]"><i class="ti ti-minus"></i></span>':v;
+ $('tBody').innerHTML=ROWS.filter(r=>r[3]||more).map(([k,l,v],ri)=>{const hi=U.rows.includes(k);return `<div class="grid grid-cols-[260px_repeat(5,1fr)] text-[14px] ${ri?'border-t border-[#F3EFEC]':''} ${hi?'bg-[#FBF7C8]':''}"><p class="px-6 py-4 ${hi?'font-medium':'text-[#4A2A33]'}">${l}</p>${v.map(x=>`<div class="py-4 px-2 text-center">${cell(x)}</div>`).join('')}</div>`}).join('');
+ $('moreBtn').textContent=more?'Show fewer specs':'Show all 16 specs';
+}
+function render(){renderLineup();renderQuiz();renderPlans();renderTable();observeAll();}
+
+/* tilt */
+function bindTilt(){
+ const grid=$('bandGrid');const cards=grid.querySelectorAll('.band');
+ cards.forEach((b,i)=>{b.style.transitionDelay=(i*0.08)+'s';});
+ grid.onmousemove=e=>{const r=grid.getBoundingClientRect();const x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;cards.forEach(b=>{b.style.setProperty('--mx',x);b.style.setProperty('--my',y);});};
+ grid.onmouseleave=()=>cards.forEach(b=>{b.style.setProperty('--mx',0);b.style.setProperty('--my',0);});
+}
+
+/* events */
+document.addEventListener('click',e=>{const t=e.target.closest('[data-act]');if(!t)return;const a=t.dataset.act,p=byId(t.dataset.id);
+ if(a==='use')use=t.dataset.use;else if(a==='filter')filter=t.dataset.f;else if(a==='mode')mode=t.dataset.mode;else if(a==='plan'){plan=+t.dataset.plan;mode='mem'}
+ else if(a==='color')p.ci=+t.dataset.i;else if(a==='size')p.s=t.dataset.s;else if(a==='more')more=!more;else if(a==='q')q[t.dataset.k]=t.dataset.v;
+ else if(a==='add'){cart++;$('cartCount').textContent=cart;$('cartCount').className='min-w-9 h-9 px-2 rounded-full bg-[#F8F38A] text-[13px] font-medium flex items-center justify-center';}
+ render();
+ document.querySelectorAll('.band,.ev').forEach(x=>x.classList.add('rise'));
+});
+
+/* reveals */
+const io=new IntersectionObserver(es=>es.forEach(en=>{if(!en.isIntersecting)return;const t=en.target;
+ if(['catHead','evHead','cmpHead'].includes(t.id))t.classList.add('is-in');
+ else if(t.classList.contains('panel'))t.classList.add('locked');
+ else if(t.id==='joinNum')countUp(t);
+ else t.classList.add('rise');
+ io.unobserve(t);}),{threshold:0.12});
+function observeAll(){['catHead','evHead','cmpHead','newsBlock','footCols','joinNum'].forEach(id=>{const e=$(id);if(e)io.observe(e)});document.querySelectorAll('.band,.ev,.panel').forEach(e=>{if(!e.classList.contains('rise')&&!e.classList.contains('locked'))io.observe(e)});document.querySelectorAll('.ev').forEach((e,i)=>e.style.transitionDelay=(i*0.1)+'s');}
+function countUp(el){const target=+el.dataset.target;let st=null;const step=ts=>{if(!st)st=ts;const p=Math.min(1,(ts-st)/1600);el.textContent=Math.floor((1-Math.pow(1-p,3))*target).toLocaleString('en-US');if(p<1)requestAnimationFrame(step)};requestAnimationFrame(step);}
+
+render();
+const hero=$('hero');requestAnimationFrame(()=>requestAnimationFrame(()=>hero.classList.add('is-in')));
+
+/* scroll loop: hero parallax, catalog z-sep, panel stack scale, spine draw, footer shapes */
+const panels=[...document.querySelectorAll('.panel')];const heroCopy=hero.querySelector('.relative.z-10');
+function update(){
+ const vh=innerHeight,sy=scrollY;
+ const hp=Math.min(1,Math.max(0,sy/(vh*0.9)));
+ $('heroBg').parentElement.style.transform=`translateY(${hp*-40}px) scale(${1+hp*0.08})`;
+ const cr=$('lineup').getBoundingClientRect();const cp=Math.min(1,Math.max(0,1-cr.top/vh));
+ document.querySelectorAll('.band').forEach((b,i)=>b.style.setProperty('--zsep',(cp*(i%3)*22)+'px'));
+ panels.forEach((p,i)=>{if(i<panels.length-1){const nr=panels[i+1].getBoundingClientRect();const prog=Math.min(1,Math.max(0,1-(nr.top-16)/vh));p.style.transform=`scale(${1-prog*0.04})`;}});
+ if($('thread')&&$('spine')){const tr=$('thread').getBoundingClientRect();const tp=Math.min(1,Math.max(0,(vh*0.85-tr.top)/(tr.height*0.85)));
+ $('spine').style.transform=`scaleY(${document.documentElement.scrollHeight<=vh*1.2?1:tp})`;}
+ const fr=document.querySelector('footer').getBoundingClientRect();
+ document.querySelectorAll('.fshape').forEach(s=>s.style.transform=`translateY(${(vh-fr.top)/vh*(+s.dataset.depth)}px)`);
+}
+let tick=false;addEventListener('scroll',()=>{if(!tick){requestAnimationFrame(()=>{update();tick=false});tick=true}},{passive:true});
+update();
+</script>
+<script>
+/* hero playlist: one 2s clip per band, matching headline + product card */
+(function(){
+ const h=document.getElementById('hero');if(!h)return;
+ const vids=[...h.querySelectorAll('.hv')],hls=[...h.querySelectorAll('.hl')],cards=[...h.querySelectorAll('.hc')],segs=[...h.querySelectorAll('.hseg span')];
+ const N=vids.length,DUR=2000;let cur=-1;
+ function show(n){
+  const v=vids[n];try{v.currentTime=0}catch(e){}const p=v.play();if(p&&p.catch)p.catch(()=>{});
+  [hls,cards].forEach(set=>set.forEach((el,i)=>{const on=i===n;el.classList.toggle('on',on);el.setAttribute('aria-hidden',on?'false':'true');if(el.tagName==='A')el.tabIndex=on?0:-1;}));
+  vids.forEach((el,i)=>{el.classList.toggle('on',i===n);el.classList.toggle('was',i===cur&&i!==n);});
+  segs.forEach((s,i)=>{s.style.transition='none';s.style.transform='scaleX('+(i<n?1:0)+')';});
+  void segs[n].offsetWidth;segs[n].style.transition='transform '+DUR+'ms linear';segs[n].style.transform='scaleX(1)';
+  const nx=vids[(n+1)%N];if(nx.preload!=='auto'){nx.preload='auto';nx.load();}
+  const prev=cur;setTimeout(()=>{if(prev>=0&&prev!==n){vids[prev].classList.remove('was');vids[prev].pause();}},650);
+  cur=n;
+ }
+ show(0);setInterval(()=>show((cur+1)%N),DUR);
+})();
+</script>
+</div>
+</body></html>
