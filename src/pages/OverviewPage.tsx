@@ -4,20 +4,27 @@ import { buttonClasses } from '../components/ui/buttonStyles'
 import { PLANS } from '../data/catalog'
 import { HOW_IT_WORKS_IMAGE } from '../data/membership'
 import { PLANS_ANCHOR, ROUTES } from '../data/navigation'
+import { useSmoothScroll } from '../hooks/useSmoothScroll'
 import { formatPrice } from '../lib/catalog'
-import { BandsStripSection } from '../sections/overview/BandsStripSection'
+import { BandsStackSection } from '../sections/overview/BandsStackSection'
 import { DayTimelineSection } from '../sections/overview/DayTimelineSection'
-import { MetricsSection } from '../sections/overview/MetricsSection'
+import { MorningScoreSection } from '../sections/overview/MorningScoreSection'
 import { OverviewHero } from '../sections/overview/OverviewHero'
+import { ScoresTrackSection } from '../sections/overview/ScoresTrackSection'
+import { SignalCollageSection } from '../sections/overview/SignalCollageSection'
 
 export function OverviewPage() {
+  useSmoothScroll()
+
   return (
     <>
-      <title>Overview — Aero Fit</title>
+      <title>Aero Fit — Know what your body is ready for today</title>
       <OverviewHero />
-      <MetricsSection />
+      <SignalCollageSection />
+      <MorningScoreSection />
+      <ScoresTrackSection />
       <DayTimelineSection />
-      <BandsStripSection />
+      <BandsStackSection />
       <CtaBanner
         title="You pay for the membership. The band comes with it."
         description={`Plans start at ${formatPrice(PLANS[1].yearly)} a year with Lite or Smart included at $0. One yearly charge, no separate bill for the hardware.`}
