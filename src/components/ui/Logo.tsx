@@ -1,10 +1,12 @@
 import { Link } from 'react-router'
+import { ROUTES } from '../../data/navigation'
 import { cn } from '../../lib/cn'
 
-type LogoSize = 'md' | 'lg'
+type LogoSize = 'md' | 'footer' | 'lg'
 
 const SIZES: Record<LogoSize, { wrapper: string; mark: string; text: string }> = {
   md: { wrapper: 'gap-2', mark: 'size-8', text: 'text-[22px]' },
+  footer: { wrapper: 'gap-2.5', mark: 'size-9', text: 'text-[26px]' },
   lg: { wrapper: 'gap-2.5', mark: 'size-10', text: 'text-[32px]' },
 }
 
@@ -14,7 +16,7 @@ interface LogoProps {
   className?: string
 }
 
-export function Logo({ size = 'md', href = '/overview', className }: LogoProps) {
+export function Logo({ size = 'md', href = ROUTES.overview, className }: LogoProps) {
   const s = SIZES[size]
   return (
     <Link

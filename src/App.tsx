@@ -12,10 +12,10 @@ function App() {
       <CatalogProvider>
         <Routes>
           <Route element={<PageLayout />}>
-            <Route index element={<CatalogPage />} />
-            <Route path={ROUTES.overview} element={<OverviewPage />} />
+            <Route index element={<OverviewPage />} />
+            <Route path={ROUTES.shop} element={<CatalogPage />} />
             <Route path={ROUTES.howItWorks} element={<HowItWorksPage />} />
-            <Route path="*" element={<Navigate to={ROUTES.shop} replace />} />
+            <Route path="*" element={<Navigate to={ROUTES.overview} replace />} />
           </Route>
         </Routes>
       </CatalogProvider>
