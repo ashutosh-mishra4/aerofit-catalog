@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Aero Fit Stories</title>
+  <script src="https://unpkg.com/@tailwindcss/browser@4.3.3/dist/index.global.js" integrity="sha384-2ql948lIdLcGEE0/qxNiudyTjgauA3RDJERu5xW75kFCvSl5a9odyQYCb6tEjnmB" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=Inter:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.48.0/dist/tabler-icons.min.css">
+  <script src="assets/catalog/aerofit-catalog.js"></script>
+  <style>
+    html, body { margin: 0; padding: 0; background: #FAF8F6; scroll-behavior: smooth; }
+    .serif { font-family: 'Source Serif 4', serif; }
+    .sans { font-family: 'Inter', sans-serif; }
+    .chapter { scroll-margin-top: 104px; }
+    .rise { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s cubic-bezier(.2,.8,.2,1); }
+    .rise.in { opacity: 1; transform: none; }
+    @media (prefers-reduced-motion: reduce) { .rise { opacity: 1; transform: none; transition: none; } html { scroll-behavior: auto; } }
+  </style>
+</head><body>
+<div class="sans bg-[#FAF8F6] text-[#2A0B14] antialiased pt-5 pb-5">
+
+  <!-- Product bar -->
+  <div class="mx-4 h-[68px] rounded-full bg-white shadow-[0_4px_18px_rgba(42,11,20,0.06)] border border-[#EFEAE6] pl-7 pr-2 flex items-center justify-between">
+    <div class="flex items-center gap-6">
+      <a href="index.html" class="serif text-[22px] font-medium tracking-tight flex items-center gap-2 whitespace-nowrap">
+        <svg viewBox="0 0 100 100" class="w-8 h-8" fill="none" aria-hidden="true"><defs><linearGradient id="af" x1="8" y1="92" x2="82" y2="10" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#E4470A"/><stop offset="1" stop-color="#FF9B2F"/></linearGradient></defs><g stroke="url(#af)" stroke-linecap="round" stroke-linejoin="round"><path d="M9 88 C 28 79, 46 71, 60 64 C 66 50, 71 31, 70 11" stroke-width="10"/><path d="M60 64 C 73 59, 86 60, 92 76" stroke-width="9"/><path d="M33 38 C 41 46, 50 54, 58 60" stroke-width="8"/></g><circle cx="49" cy="30" r="8.5" fill="url(#af)"/></svg>
+        Aero Fit
+      </a>
+      <nav class="hidden md:flex gap-2 text-[14px] font-medium">
+        <a class="h-10 px-4 rounded-full bg-[#F3EFEC] flex items-center hover:bg-[#ECE6E2] transition" href="index.html">Overview</a>
+        <a class="h-10 px-4 rounded-full bg-[#F3EFEC] flex items-center hover:bg-[#ECE6E2] transition" href="#">How it works</a>
+        <a class="h-10 px-4 rounded-full bg-[#F8F38A] flex items-center" href="#">Shop wearables</a>
+      </nav>
+    </div>
+    <div class="flex items-center gap-2">
+      <button class="h-[52px] w-[52px] rounded-full bg-[#F3EFEC] flex items-center justify-center text-[20px] relative" aria-label="Bag">
+        <i class="ti ti-shopping-bag"></i>
+        <span id="bagCount" class="absolute -top-0.5 -right-0.5 min-w-5 h-5 px-1 rounded-full bg-[#2A0B14] text-white text-[10px] font-semibold items-center justify-center hidden">0</span>
+      </button>
+      <button class="hidden sm:block h-[52px] px-6 rounded-full bg-[#2A0B14] text-white text-[15px] font-medium hover:bg-[#45172A] transition">Join Aero Fit free</button>
+    </div>
+  </div>
+
+  <!-- Hero: split card, mirrors the overview hero -->
+  <section class="mx-4 mt-5 rounded-[28px] bg-[#F3EDE9] overflow-hidden grid lg:grid-cols-[560px_1fr]">
+    <div class="px-6 lg:pl-[96px] lg:pr-10 py-16 lg:py-0 flex flex-col justify-center">
+      <p class="text-[15px] font-medium">The Aero Fit collection</p>
+      <h1 class="serif mt-4 text-[44px] lg:text-[56px] leading-[1.06] font-medium tracking-[-0.015em]">Five ways to wear what your body knows</h1>
+      <p class="mt-5 text-[16px] leading-[1.55] text-[#4A2A33] max-w-[420px]">Same sensors, same coach, same 24/7 insights. Choose the form that suits how you sleep, train and move.</p>
+      <div class="mt-7 flex gap-2">
+        <a href="#lite" class="h-11 px-5 rounded-full bg-[#F8F38A] text-[14px] font-medium hover:bg-[#F2EB6A] transition flex items-center">Meet the lineup</a>
+        <a href="#specs" class="h-11 px-5 rounded-full border border-[#D9D0CB] bg-white text-[14px] font-medium hover:bg-[#F3EFEC] transition flex items-center">Compare specs</a>
+      </div>
+    </div>
+    <div id="fan" class="relative h-[420px] lg:h-[600px] bg-[radial-gradient(ellipse_at_60%_80%,#F7E36E_0%,#F8EE93_30%,#FBF4CF_55%,#F3EDE9_80%)] flex items-center justify-center overflow-hidden"></div>
+  </section>
+
+  <!-- Sticky chapter index -->
+  <nav id="index" class="sticky top-3 z-30 mx-auto mt-10 w-fit max-w-[calc(100%-32px)] overflow-x-auto bg-white/90 backdrop-blur-md rounded-full border border-[#EFEAE6] shadow-[0_8px_30px_rgba(42,11,20,0.08)] p-1.5 flex gap-1 text-[14px] font-medium"></nav>
+
+  <!-- Chapters -->
+  <main id="chapters" class="max-w-[1160px] mx-auto px-4 md:px-[60px] pt-16 space-y-28"></main>
+
+  <!-- Spec spread -->
+  <section id="specs" class="chapter max-w-[1160px] mx-auto px-4 md:px-[60px] pt-32 pb-24">
+    <p class="text-[14px] font-medium">Spec spread</p>
+    <h2 class="serif mt-3 text-[40px] md:text-[52px] leading-[1.08] font-medium tracking-[-0.015em] max-w-[640px]">The whole family, line by line</h2>
+    <div class="mt-10 rounded-[24px] bg-white border border-[#EFEAE6] overflow-x-auto">
+      <table id="specTable" class="w-full min-w-[760px] text-[14px]"></table>
+    </div>
+  </section>
+
+  <!-- Closing -->
+  <section class="mx-4 rounded-[28px] bg-[#2A0B14] text-white px-6 md:px-[96px] py-16 grid md:grid-cols-[1fr_auto] gap-8 items-center">
+    <div>
+      <h3 class="serif text-[36px] leading-[1.1] font-medium tracking-[-0.01em]">Still between two?</h3>
+      <p class="mt-3 text-[15px] leading-[1.6] text-white/70 max-w-[520px]">Wear any Aero Fit for 30 nights. If it isn't the one, swap it for another model at no cost.</p>
+    </div>
+    <div class="flex flex-wrap gap-2">
+      <button class="h-11 px-5 rounded-full bg-[#F8F38A] text-[#2A0B14] text-[14px] font-medium hover:bg-[#F2EB6A] transition">Take the 60-second quiz</button>
+      <button class="h-11 px-5 rounded-full border border-white/30 text-[14px] font-medium hover:bg-white/10 transition">Talk to a coach</button>
+    </div>
+  </section>
+
+  <footer class="mx-4 mt-4 rounded-[28px] bg-[#F3EDE9] px-6 md:px-[80px] py-8 flex flex-wrap justify-between gap-4 text-[13px] text-[#6B4F57]">
+    <span>© 2026 Aero Fit, Inc.</span>
+    <span class="flex gap-6"><a href="#">Shipping</a><a href="#">Returns</a><a href="#">Warranty</a><a href="#">Privacy</a></span>
+  </footer>
+</div>
+
+<script>
+  const { products, band } = window.AEROFIT;
+  const glow = { lite: '#EADFD3', smart: '#F8D3CC', music: '#E2D5EE', pro: '#CFE0D4', ultra: '#F8CDB4' };
+  const state = { bag: 0, color: {} };
+
+  // Signature moment per model, shown as the floating data card (like the overview feature rows)
+  const moments = {
+    lite:  { chip: 'Sleep', icon: 'moon', line: 'You slept 7h 48m with 92% Sleep Performance. Bedtime tonight: 10:40 pm.' },
+    smart: { chip: 'Strain', icon: 'flame', line: 'Day Strain 14.2. Two more zone-2 minutes hits today\'s target.' },
+    music: { chip: 'Run', icon: 'music', line: '10.4 km, phone at home. "Long Run Mix" played start to finish.' },
+    pro:   { chip: 'Heart', icon: 'heart-rate-monitor', line: 'ECG reading: normal sinus rhythm. Resting HR down 3 bpm this month.' },
+    ultra: { chip: 'Expedition', icon: 'mountain', line: 'Day 9 on trail, 61% battery left. Dual-band GPS locked at 3,850 m.' },
+  };
+  const checks = {
+    lite:  ['Recommended bedtime each night', 'Sleep stages and consistency', 'Silent haptic Smart Alarm'],
+    smart: ['Live Strain and Recovery on the wrist', 'Coaching nudges as you move', 'Skin temperature trends'],
+    music: ['Offline Spotify and podcasts', 'Bluetooth earbuds pairing', 'Built-in GPS for routes and pace'],
+    pro:   ['On-demand medical-grade ECG', 'Heart Screener with AFib alerts', 'Multi-sport GPS and 10 ATM'],
+    ultra: ['Titanium case, sapphire glass', 'Dual-band GPS and offline maps', 'Dive-rated to 40 m'],
+  };
+
+  // Hero fan: five bands, smallest to largest
+  const fanPos = [[-36, -26, .62], [-18, -12, .74], [0, 0, .9], [18, 12, .74], [36, 26, .62]];
+  fan.innerHTML = [products[0], products[1], products[4], products[3], products[2]].map((p, i) => {
+    const [x, r, s] = fanPos[i];
+    return `<div class="absolute h-[78%]" style="transform:translateX(${x * 4.2}px) rotate(${r}deg) scale(${s});z-index:${i === 2 ? 5 : 5 - Math.abs(2 - i)}">${band(p, { cls: 'h-full w-auto drop-shadow-[0_24px_30px_rgba(42,11,20,0.18)]' })}</div>`;
+  }).join('');
+
+  index.innerHTML = products.map((p) => `
+    <a href="#${p.id}" data-idx="${p.id}" class="h-10 px-4 rounded-full flex items-center gap-2 whitespace-nowrap transition hover:bg-[#F3EFEC]">
+      <span class="w-2.5 h-2.5 rounded-full" style="background:${p.art.strap}"></span>${p.short}<span class="text-[#9A8E91] font-normal">$${p.price}</span>
+    </a>`).join('') + `<a href="#specs" data-idx="specs" class="h-10 px-4 rounded-full flex items-center whitespace-nowrap transition hover:bg-[#F3EFEC]">Specs</a>`;
+
+  function chapter(p, i) {
+    const flip = i % 2 === 1;
+    const strap = state.color[p.id] || p.colors[0][1];
+    const m = moments[p.id];
+    return `
+    <section id="${p.id}" class="chapter rise grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+      <div class="relative h-[420px] md:h-[500px] ${flip ? 'lg:order-2' : ''}">
+        <div class="absolute inset-x-[6%] inset-y-[4%] rounded-full blur-[14px]" style="background:radial-gradient(circle, ${glow[p.id]} 0%, ${glow[p.id]}99 45%, transparent 70%)"></div>
+        <div class="absolute inset-0 flex items-center justify-center"><div class="h-[82%]">${band(p, { strap, cls: 'h-full w-auto drop-shadow-[0_30px_40px_rgba(42,11,20,0.16)]' })}</div></div>
+        <div class="absolute ${flip ? 'right-0' : 'left-0'} bottom-0 w-[min(320px,85%)] rounded-[20px] bg-[#2A0B14] text-white p-5 shadow-[0_18px_40px_rgba(42,11,20,0.25)]">
+          <span class="inline-flex items-center gap-1 text-[11px] font-medium bg-[#F8F38A] text-[#2A0B14] rounded-full px-2 py-0.5"><i class="ti ti-${m.icon}"></i>${m.chip}</span>
+          <p class="mt-3 text-[17px] leading-[1.4]">${m.line}</p>
+        </div>
+        <div class="absolute ${flip ? 'left-0' : 'right-0'} top-6 rounded-[16px] bg-white px-4 py-3 shadow-[0_10px_30px_rgba(42,11,20,0.08)] text-[12px]">
+          <p class="text-[#6B4F57]">Battery</p><p class="text-[22px] font-semibold leading-none mt-1">${p.battery} days</p>
+          <p class="text-[#9A8E91] mt-1">${p.weight} · ${p.specs.water}</p>
+        </div>
+      </div>
+      <div class="${flip ? 'lg:order-1' : ''}">
+        <p class="text-[14px] font-medium text-[#6B4F57]">0${i + 1} · ${p.tag}</p>
+        <h2 class="serif mt-3 text-[44px] md:text-[52px] leading-[1.06] font-medium tracking-[-0.015em]">${p.name}</h2>
+        <p class="mt-4 text-[16px] leading-[1.6] text-[#4A2A33] max-w-[440px]">${p.blurb}</p>
+        <ul class="mt-7 space-y-3 text-[14px]">${checks[p.id].map((c) => `<li class="flex items-center gap-2.5"><i class="ti ti-check"></i>${c}</li>`).join('')}</ul>
+        <div class="mt-8 flex items-center gap-3">
+          ${p.colors.map(([n, hex]) => `<button data-color="${p.id}|${hex}" title="${n}" aria-label="${n}" class="w-7 h-7 rounded-full border-2 ${strap === hex ? 'border-[#2A0B14]' : 'border-[#FAF8F6]'} shadow-[0_0_0_1px_#E5DDD8]" style="background:${hex}"></button>`).join('')}
+          <span class="text-[13px] text-[#6B4F57]">${p.colors.find((c) => c[1] === strap)[0]}</span>
+        </div>
+        <div class="mt-8 flex flex-wrap items-center gap-3">
+          <button data-add="${p.id}" class="h-11 px-5 rounded-full bg-[#2A0B14] text-white text-[14px] font-medium hover:bg-[#45172A] transition">Add to bag · $${p.price}</button>
+          <a href="#" class="h-11 px-5 rounded-full border border-[#D9D0CB] bg-white text-[14px] font-medium hover:bg-[#F3EFEC] transition flex items-center">Explore ${p.short}</a>
+        </div>
+      </div>
+    </section>`;
+  }
+
+  function renderChapters() {
+    chapters.innerHTML = products.map(chapter).join('');
+    chapters.querySelectorAll('.rise').forEach((el) => riseObs.observe(el));
+    chapters.querySelectorAll('.chapter').forEach((el) => navObs.observe(el));
+  }
+
+  const yes = (v) => v ? `<i class="ti ti-circle-check-filled text-[#2BB673] text-[18px]"></i>` : `<span class="text-[#C9BEC1]">—</span>`;
+  const rows = [
+    ['Price', (p) => `<span class="font-semibold">$${p.price}</span>`], ['Battery', (p) => `${p.battery} days`], ['Weight', (p) => p.weight],
+    ['Display', (p) => p.specs.display || 'Screenless'], ['GPS', (p) => p.specs.gps], ['Music storage', (p) => yes(p.specs.music)],
+    ['ECG', (p) => yes(p.specs.ecg)], ['Blood oxygen', (p) => yes(p.specs.spo2)], ['Skin temperature', (p) => yes(p.specs.temp)],
+    ['Water resistance', (p) => p.specs.water], ['Case', (p) => p.specs.material],
+  ];
+  specTable.innerHTML = `
+    <thead><tr><th class="sticky left-0 bg-white"></th>${products.map((p) => `<th class="px-4 pt-6 pb-4 align-bottom"><div class="h-[96px] flex justify-center">${band(p, { cls: 'h-full w-auto' })}</div><p class="serif text-[19px] font-medium mt-2">${p.short}</p></th>`).join('')}</tr></thead>
+    <tbody>${rows.map(([l, f]) => `<tr class="border-t border-[#EFEAE6]"><td class="sticky left-0 bg-white py-3.5 pl-6 pr-4 text-[#6B4F57] whitespace-nowrap">${l}</td>${products.map((p) => `<td class="py-3.5 px-4 text-center">${f(p)}</td>`).join('')}</tr>`).join('')}</tbody>`;
+
+  const riseObs = new IntersectionObserver((es) => es.forEach((e) => e.isIntersecting && e.target.classList.add('in')), { threshold: 0.15 });
+  const navObs = new IntersectionObserver((es) => es.forEach((e) => {
+    if (!e.isIntersecting) return;
+    index.querySelectorAll('[data-idx]').forEach((a) => {
+      const on = a.dataset.idx === e.target.id;
+      a.classList.toggle('bg-[#2A0B14]', on); a.classList.toggle('text-white', on); a.classList.toggle('hover:bg-[#F3EFEC]', !on);
+    });
+  }), { rootMargin: '-45% 0px -50% 0px' });
+  navObs.observe(document.getElementById('specs'));
+
+  document.addEventListener('click', (e) => {
+    const t = e.target.closest('[data-color],[data-add]');
+    if (!t) return;
+    if (t.dataset.color) {
+      const [id, hex] = t.dataset.color.split('|'); state.color[id] = hex;
+      const el = document.getElementById(id); el.outerHTML = chapter(products.find((p) => p.id === id), products.findIndex((p) => p.id === id));
+      const fresh = document.getElementById(id); fresh.classList.add('in'); navObs.observe(fresh);
+    }
+    if (t.dataset.add) { state.bag++; bagCount.textContent = state.bag; bagCount.classList.replace('hidden', 'flex'); const txt = t.textContent; t.textContent = 'Added'; setTimeout(() => (t.textContent = txt), 1200); }
+  });
+
+  renderChapters();
+</script>
+</body></html>

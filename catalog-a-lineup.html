@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Aero Fit Lineup</title>
+  <script src="https://unpkg.com/@tailwindcss/browser@4.3.3/dist/index.global.js" integrity="sha384-2ql948lIdLcGEE0/qxNiudyTjgauA3RDJERu5xW75kFCvSl5a9odyQYCb6tEjnmB" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=Inter:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.48.0/dist/tabler-icons.min.css">
+  <script src="assets/catalog/aerofit-catalog.js"></script>
+  <style>
+    html, body { margin: 0; padding: 0; background: #FAF8F6; }
+    .serif { font-family: 'Source Serif 4', serif; }
+    .sans { font-family: 'Inter', sans-serif; }
+    .band-float { transition: transform .5s cubic-bezier(.2,.8,.2,1); }
+    .group:hover .band-float { transform: translateY(-8px) rotate(-3deg); }
+  </style>
+</head><body>
+<div class="sans bg-[#FAF8F6] text-[#2A0B14] antialiased pt-5 pb-5">
+
+  <!-- Product bar -->
+  <div class="mx-4 h-[68px] rounded-full bg-white shadow-[0_4px_18px_rgba(42,11,20,0.06)] border border-[#EFEAE6] pl-7 pr-2 flex items-center justify-between">
+    <div class="flex items-center gap-6">
+      <a href="index.html" class="serif text-[22px] font-medium tracking-tight flex items-center gap-2 whitespace-nowrap">
+        <svg viewBox="0 0 100 100" class="w-8 h-8" fill="none" aria-hidden="true"><defs><linearGradient id="af" x1="8" y1="92" x2="82" y2="10" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#E4470A"/><stop offset="1" stop-color="#FF9B2F"/></linearGradient></defs><g stroke="url(#af)" stroke-linecap="round" stroke-linejoin="round"><path d="M9 88 C 28 79, 46 71, 60 64 C 66 50, 71 31, 70 11" stroke-width="10"/><path d="M60 64 C 73 59, 86 60, 92 76" stroke-width="9"/><path d="M33 38 C 41 46, 50 54, 58 60" stroke-width="8"/></g><circle cx="49" cy="30" r="8.5" fill="url(#af)"/></svg>
+        Aero Fit
+      </a>
+      <nav class="hidden md:flex gap-2 text-[14px] font-medium">
+        <a class="h-10 px-4 rounded-full bg-[#F3EFEC] flex items-center hover:bg-[#ECE6E2] transition" href="index.html">Overview</a>
+        <a class="h-10 px-4 rounded-full bg-[#F3EFEC] flex items-center hover:bg-[#ECE6E2] transition" href="#">How it works</a>
+        <a class="h-10 px-4 rounded-full bg-[#F8F38A] flex items-center" href="#">Shop wearables</a>
+      </nav>
+    </div>
+    <div class="flex items-center gap-2">
+      <button class="h-[52px] w-[52px] rounded-full bg-[#F3EFEC] flex items-center justify-center text-[20px] relative" aria-label="Bag">
+        <i class="ti ti-shopping-bag"></i>
+        <span id="bagCount" class="absolute -top-0.5 -right-0.5 min-w-5 h-5 px-1 rounded-full bg-[#2A0B14] text-white text-[10px] font-semibold items-center justify-center hidden">0</span>
+      </button>
+      <button class="h-[52px] px-6 rounded-full bg-[#2A0B14] text-white text-[15px] font-medium hover:bg-[#45172A] transition">Join Aero Fit free</button>
+    </div>
+  </div>
+
+  <!-- Hero: the lineup as a ladder -->
+  <section class="mx-4 mt-5 rounded-[28px] bg-[radial-gradient(ellipse_at_50%_110%,#F7E36E_0%,#F8EE93_28%,#F3EDE9_70%)] overflow-hidden px-6 md:px-[96px] pt-20 pb-10">
+    <div class="text-center">
+      <p class="text-[15px] font-medium">Five wearables · One membership</p>
+      <h1 class="serif mt-4 text-[44px] md:text-[64px] leading-[1.04] font-medium tracking-[-0.02em]">Find the Aero Fit<br>that fits your life</h1>
+      <p class="mt-5 text-[16px] leading-[1.55] text-[#4A2A33] max-w-[480px] mx-auto">From a featherweight sleep band to a titanium expedition watch. Every model includes Aero Fit Coach, 24/7 health insights and a 1-month free trial.</p>
+    </div>
+    <div id="ladder" class="mt-14 grid grid-cols-5 items-end gap-2 md:gap-6 max-w-[1080px] mx-auto"></div>
+  </section>
+
+  <!-- Promo strip -->
+  <div class="mx-4 mt-4 rounded-[22px] bg-[#2A0B14] text-white px-7 py-4 flex flex-wrap items-center gap-x-8 gap-y-2 text-[14px]">
+    <span class="flex items-center gap-2"><i class="ti ti-truck-delivery text-[#F8F38A] text-[18px]"></i>Free 2-day shipping</span>
+    <span class="flex items-center gap-2"><i class="ti ti-refresh text-[#F8F38A] text-[18px]"></i>30-night wear test</span>
+    <span class="flex items-center gap-2"><i class="ti ti-shield-check text-[#F8F38A] text-[18px]"></i>2-year warranty</span>
+    <span class="flex items-center gap-2 md:ml-auto"><i class="ti ti-gift text-[#F8F38A] text-[18px]"></i>1 month of membership free with any wearable</span>
+  </div>
+
+  <!-- Shop grid -->
+  <section class="px-4 md:px-[80px] pt-24 pb-24">
+    <div class="flex flex-wrap items-end justify-between gap-6">
+      <div>
+        <p class="text-[14px] font-medium">Shop all wearables</p>
+        <h2 class="serif mt-3 text-[40px] md:text-[52px] leading-[1.08] font-medium tracking-[-0.015em]">Built for every kind of day</h2>
+      </div>
+      <div id="filters" class="flex flex-wrap gap-2 text-[14px] font-medium"></div>
+    </div>
+    <div id="grid" class="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+  </section>
+
+  <!-- Membership note -->
+  <section class="mx-4 rounded-[28px] bg-[#F3EDE9] px-6 md:px-[96px] py-16 grid md:grid-cols-[1fr_auto] gap-8 items-center">
+    <div>
+      <h3 class="serif text-[36px] leading-[1.1] font-medium tracking-[-0.01em]">The hardware is half of it</h3>
+      <p class="mt-3 text-[15px] leading-[1.6] text-[#4A2A33] max-w-[520px]">Each wearable pairs with an Aero Fit membership: One, Peak or Life. Your band, your coach and your data upgrade together.</p>
+    </div>
+    <div class="flex gap-2">
+      <button class="h-11 px-5 rounded-full bg-[#F8F38A] text-[14px] font-medium hover:bg-[#F2EB6A] transition">Compare memberships</button>
+      <button class="h-11 px-5 rounded-full border border-[#D9D0CB] bg-white text-[14px] font-medium hover:bg-[#F3EFEC] transition">Take the 60-second quiz</button>
+    </div>
+  </section>
+
+  <footer class="mx-4 mt-4 rounded-[28px] bg-[#F3EDE9] px-6 md:px-[80px] py-8 flex flex-wrap justify-between gap-4 text-[13px] text-[#6B4F57]">
+    <span>© 2026 Aero Fit, Inc.</span>
+    <span class="flex gap-6"><a href="#">Shipping</a><a href="#">Returns</a><a href="#">Warranty</a><a href="#">Privacy</a></span>
+  </footer>
+
+  <!-- Compare tray -->
+  <div id="tray" class="fixed left-1/2 -translate-x-1/2 bottom-5 z-40 bg-white rounded-full shadow-[0_14px_40px_rgba(42,11,20,0.18)] border border-[#EFEAE6] pl-6 pr-2 h-[64px] items-center gap-5 hidden">
+    <span class="text-[14px] font-medium">Compare</span>
+    <div id="trayItems" class="flex gap-2"></div>
+    <button id="openCompare" class="h-12 px-5 rounded-full bg-[#2A0B14] text-white text-[14px] font-medium disabled:opacity-40">Compare now</button>
+  </div>
+
+  <!-- Compare dialog -->
+  <dialog id="compareDlg" class="m-auto w-[min(920px,calc(100vw-32px))] rounded-[28px] p-0 backdrop:bg-[#2A0B14]/40 text-[#2A0B14] sans">
+    <div class="p-8">
+      <div class="flex items-center justify-between">
+        <h3 class="serif text-[32px] font-medium">Side by side</h3>
+        <button onclick="compareDlg.close()" class="w-10 h-10 rounded-full bg-[#F3EFEC] text-[18px]" aria-label="Close"><i class="ti ti-x"></i></button>
+      </div>
+      <div id="compareBody" class="mt-6 overflow-x-auto"></div>
+    </div>
+  </dialog>
+</div>
+
+<script>
+  const { products, band, byId } = window.AEROFIT;
+  const tint = { lite: '#F4EEE7', smart: '#FBE9E6', music: '#EFE9F5', pro: '#E7EEE9', ultra: '#FBE7DC' };
+  const heights = { lite: 150, smart: 175, music: 195, pro: 215, ultra: 240 };
+  const state = { filter: 'all', compare: new Set(), bag: 0, color: {} };
+
+  // Hero ladder
+  ladder.innerHTML = products.map((p) => `
+    <a href="#card-${p.id}" class="group flex flex-col items-center text-center">
+      <div class="band-float" style="height:${heights[p.id]}px">${band(p, { cls: 'h-full w-auto' })}</div>
+      <p class="serif mt-4 text-[18px] md:text-[22px] font-medium">${p.short}</p>
+      <p class="text-[12px] md:text-[13px] text-[#6B4F57]">${p.tag}</p>
+      <p class="mt-1 text-[13px] font-medium">From $${p.price}</p>
+    </a>`).join('');
+
+  const filters = [['all', 'All'], ['sleep', 'Sleep'], ['everyday', 'Everyday'], ['training', 'Training'], ['music', 'Music'], ['adventure', 'Adventure']];
+  function renderFilters() {
+    document.getElementById('filters').innerHTML = filters.map(([k, l]) => `
+      <button data-f="${k}" class="h-10 px-4 rounded-full transition ${state.filter === k ? 'bg-[#2A0B14] text-white' : 'bg-[#F3EFEC] hover:bg-[#ECE6E2]'}">${l}</button>`).join('');
+  }
+
+  const icon = { 'Sleep & recovery score': 'moon-stars', '7-day battery': 'battery-3', 'Screenless, 18 g': 'feather', 'AMOLED always-on display': 'device-watch', 'Live Strain coaching': 'flame', '10-day battery': 'battery-3', '4 GB · 600+ songs': 'music', 'Bluetooth earbuds': 'headphones', 'Built-in GPS': 'map-pin', 'Medical-grade ECG': 'heart-rate-monitor', 'Multi-sport GPS': 'route', '14-day battery': 'battery-4', 'Titanium + sapphire': 'diamond', 'Dual-band GPS': 'satellite', '21-day battery': 'battery-4' };
+
+  function card(p) {
+    const featured = p.id === 'ultra' && state.filter === 'all';
+    const strap = state.color[p.id] || p.colors[0][1];
+    const checked = state.compare.has(p.id);
+    return `
+    <article id="card-${p.id}" class="group rounded-[24px] overflow-hidden flex ${featured ? 'lg:col-span-2 flex-col md:flex-row' : 'flex-col'}" style="background:${tint[p.id]}">
+      <div class="relative ${featured ? 'md:w-[46%] h-[340px] md:h-auto' : 'h-[300px]'} flex items-center justify-center">
+        <span class="absolute left-5 top-5 text-[12px] font-medium px-3 py-1 rounded-full ${p.id === 'smart' ? 'bg-[#F8F38A]' : 'bg-white/80'}">${p.tag}</span>
+        <div class="band-float h-[78%]">${band(p, { strap, cls: 'h-full w-auto' })}</div>
+      </div>
+      <div class="flex-1 bg-white/70 backdrop-blur m-2 rounded-[18px] p-6 flex flex-col">
+        <div class="flex items-start justify-between gap-4">
+          <h3 class="serif text-[28px] leading-tight font-medium">${p.name}</h3>
+          <p class="text-[18px] font-semibold whitespace-nowrap pt-1">$${p.price}</p>
+        </div>
+        <p class="mt-2 text-[14px] leading-[1.55] text-[#4A2A33]">${p.blurb}</p>
+        <ul class="mt-4 space-y-2 text-[13px]">
+          ${p.highlights.map((h) => `<li class="flex items-center gap-2"><i class="ti ti-${icon[h] || 'check'} text-[16px] text-[#7A5B64]"></i>${h}</li>`).join('')}
+        </ul>
+        <div class="mt-5 flex items-center gap-2">
+          ${p.colors.map(([n, hex]) => `<button data-color="${p.id}|${hex}" title="${n}" aria-label="${n}" class="w-6 h-6 rounded-full border-2 ${strap === hex ? 'border-[#2A0B14]' : 'border-white'} shadow-[0_0_0_1px_#E5DDD8]" style="background:${hex}"></button>`).join('')}
+          <span class="ml-1 text-[12px] text-[#6B4F57]">${p.colors.find((c) => c[1] === strap)[0]}</span>
+        </div>
+        <div class="mt-auto pt-6 flex items-center justify-between gap-3">
+          <label class="flex items-center gap-2 text-[13px] cursor-pointer select-none">
+            <input type="checkbox" data-compare="${p.id}" ${checked ? 'checked' : ''} class="w-4 h-4 accent-[#2A0B14]"> Compare
+          </label>
+          <div class="flex gap-2">
+            <a href="#" class="h-11 px-4 rounded-full border border-[#D9D0CB] bg-white text-[14px] font-medium flex items-center hover:bg-[#F3EFEC] transition">Details</a>
+            <button data-add="${p.id}" class="h-11 px-5 rounded-full bg-[#2A0B14] text-white text-[14px] font-medium hover:bg-[#45172A] transition">Add to bag</button>
+          </div>
+        </div>
+      </div>
+    </article>`;
+  }
+
+  function renderGrid() {
+    const list = products.filter((p) => state.filter === 'all' || p.goals.includes(state.filter));
+    const ordered = state.filter === 'all' ? [byId('ultra'), ...list.filter((p) => p.id !== 'ultra')] : list;
+    grid.innerHTML = ordered.map(card).join('');
+  }
+
+  function renderTray() {
+    const ids = [...state.compare];
+    tray.classList.toggle('hidden', !ids.length);
+    tray.classList.toggle('flex', !!ids.length);
+    trayItems.innerHTML = ids.map((id) => `<span class="h-9 pl-3 pr-1 rounded-full bg-[#F3EFEC] text-[13px] font-medium flex items-center gap-1">${byId(id).short}<button data-uncompare="${id}" class="w-7 h-7 rounded-full hover:bg-white" aria-label="Remove ${byId(id).short}"><i class="ti ti-x"></i></button></span>`).join('');
+    openCompare.disabled = ids.length < 2;
+  }
+
+  const yes = (v) => v ? `<i class="ti ti-circle-check-filled text-[#2BB673] text-[18px]"></i>` : `<span class="text-[#C9BEC1]">—</span>`;
+  function renderCompare() {
+    const ps = [...state.compare].map(byId);
+    const rows = [
+      ['Price', (p) => `$${p.price}`], ['Battery', (p) => `${p.battery} days`], ['Weight', (p) => p.weight],
+      ['Display', (p) => p.specs.display || 'Screenless'], ['GPS', (p) => p.specs.gps], ['Music storage', (p) => yes(p.specs.music)],
+      ['ECG', (p) => yes(p.specs.ecg)], ['Skin temperature', (p) => yes(p.specs.temp)], ['Water resistance', (p) => p.specs.water], ['Case', (p) => p.specs.material],
+    ];
+    compareBody.innerHTML = `<table class="w-full text-[14px]">
+      <thead><tr><th></th>${ps.map((p) => `<th class="pb-4 align-bottom"><div class="h-[120px] flex justify-center">${band(p, { cls: 'h-full w-auto' })}</div><p class="serif text-[20px] font-medium mt-2">${p.short}</p></th>`).join('')}</tr></thead>
+      <tbody>${rows.map(([l, f]) => `<tr class="border-t border-[#EFEAE6]"><td class="py-3 pr-4 text-[#6B4F57] whitespace-nowrap">${l}</td>${ps.map((p) => `<td class="py-3 text-center">${f(p)}</td>`).join('')}</tr>`).join('')}</tbody>
+    </table>`;
+  }
+
+  document.addEventListener('click', (e) => {
+    const t = e.target.closest('[data-f],[data-color],[data-add],[data-uncompare]');
+    if (!t) return;
+    if (t.dataset.f) { state.filter = t.dataset.f; renderFilters(); renderGrid(); }
+    if (t.dataset.color) { const [id, hex] = t.dataset.color.split('|'); state.color[id] = hex; renderGrid(); }
+    if (t.dataset.add) { state.bag++; bagCount.textContent = state.bag; bagCount.classList.replace('hidden', 'flex'); t.textContent = 'Added'; setTimeout(() => (t.textContent = 'Add to bag'), 1200); }
+    if (t.dataset.uncompare) { state.compare.delete(t.dataset.uncompare); renderGrid(); renderTray(); }
+  });
+  document.addEventListener('change', (e) => {
+    const id = e.target.dataset.compare;
+    if (!id) return;
+    if (e.target.checked) { if (state.compare.size >= 3) { e.target.checked = false; return; } state.compare.add(id); } else state.compare.delete(id);
+    renderTray();
+  });
+  openCompare.onclick = () => { renderCompare(); compareDlg.showModal(); };
+
+  renderFilters(); renderGrid(); renderTray();
+</script>
+</body></html>

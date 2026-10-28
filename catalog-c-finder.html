@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Aero Fit Finder</title>
+  <script src="https://unpkg.com/@tailwindcss/browser@4.3.3/dist/index.global.js" integrity="sha384-2ql948lIdLcGEE0/qxNiudyTjgauA3RDJERu5xW75kFCvSl5a9odyQYCb6tEjnmB" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=Inter:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.48.0/dist/tabler-icons.min.css">
+  <script src="assets/catalog/aerofit-catalog.js"></script>
+  <style>
+    html, body { margin: 0; padding: 0; background: #FAF8F6; }
+    .serif { font-family: 'Source Serif 4', serif; }
+    .sans { font-family: 'Inter', sans-serif; }
+    input[type=range] { -webkit-appearance: none; appearance: none; height: 6px; border-radius: 3px; background: linear-gradient(90deg, #2A0B14 var(--p), #E5DDD8 var(--p)); }
+    input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 22px; height: 22px; border-radius: 50%; background: #F8F38A; border: 2px solid #2A0B14; cursor: pointer; }
+    input[type=range]::-moz-range-thumb { width: 20px; height: 20px; border-radius: 50%; background: #F8F38A; border: 2px solid #2A0B14; cursor: pointer; }
+    .stage-band { animation: pop .5s cubic-bezier(.2,.8,.2,1); }
+    @keyframes pop { from { opacity: 0; transform: translateY(16px) rotate(-4deg); } to { opacity: 1; transform: none; } }
+    @media (prefers-reduced-motion: reduce) { .stage-band { animation: none; } }
+  </style>
+</head><body>
+<div class="sans bg-[#FAF8F6] text-[#2A0B14] antialiased pt-5 pb-5">
+
+  <!-- Product bar -->
+  <div class="mx-4 h-[68px] rounded-full bg-white shadow-[0_4px_18px_rgba(42,11,20,0.06)] border border-[#EFEAE6] pl-7 pr-2 flex items-center justify-between">
+    <div class="flex items-center gap-6">
+      <a href="index.html" class="serif text-[22px] font-medium tracking-tight flex items-center gap-2 whitespace-nowrap">
+        <svg viewBox="0 0 100 100" class="w-8 h-8" fill="none" aria-hidden="true"><defs><linearGradient id="af" x1="8" y1="92" x2="82" y2="10" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#E4470A"/><stop offset="1" stop-color="#FF9B2F"/></linearGradient></defs><g stroke="url(#af)" stroke-linecap="round" stroke-linejoin="round"><path d="M9 88 C 28 79, 46 71, 60 64 C 66 50, 71 31, 70 11" stroke-width="10"/><path d="M60 64 C 73 59, 86 60, 92 76" stroke-width="9"/><path d="M33 38 C 41 46, 50 54, 58 60" stroke-width="8"/></g><circle cx="49" cy="30" r="8.5" fill="url(#af)"/></svg>
+        Aero Fit
+      </a>
+      <nav class="hidden md:flex gap-2 text-[14px] font-medium">
+        <a class="h-10 px-4 rounded-full bg-[#F3EFEC] flex items-center hover:bg-[#ECE6E2] transition" href="index.html">Overview</a>
+        <a class="h-10 px-4 rounded-full bg-[#F3EFEC] flex items-center hover:bg-[#ECE6E2] transition" href="#">How it works</a>
+        <a class="h-10 px-4 rounded-full bg-[#F8F38A] flex items-center" href="#">Shop wearables</a>
+      </nav>
+    </div>
+    <div class="flex items-center gap-2">
+      <button class="h-[52px] w-[52px] rounded-full bg-[#F3EFEC] flex items-center justify-center text-[20px] relative" aria-label="Bag">
+        <i class="ti ti-shopping-bag"></i>
+        <span id="bagCount" class="absolute -top-0.5 -right-0.5 min-w-5 h-5 px-1 rounded-full bg-[#2A0B14] text-white text-[10px] font-semibold items-center justify-center hidden">0</span>
+      </button>
+      <button class="hidden sm:block h-[52px] px-6 rounded-full bg-[#2A0B14] text-white text-[15px] font-medium hover:bg-[#45172A] transition">Join Aero Fit free</button>
+    </div>
+  </div>
+
+  <!-- Intro -->
+  <section class="px-4 md:px-[80px] pt-16 pb-10 flex flex-wrap items-end justify-between gap-6">
+    <div>
+      <p class="text-[15px] font-medium">Aero Fit Finder</p>
+      <h1 class="serif mt-3 text-[44px] md:text-[60px] leading-[1.04] font-medium tracking-[-0.02em] max-w-[720px]">Tell us how you live. We'll pick the wearable.</h1>
+    </div>
+    <p class="text-[15px] leading-[1.6] text-[#4A2A33] max-w-[360px]">Five models, one membership. Adjust what matters and the lineup re-ranks itself in real time.</p>
+  </section>
+
+  <!-- Finder -->
+  <section class="px-4 md:px-[80px] grid lg:grid-cols-[360px_1fr] gap-5 items-start">
+    <!-- Controls -->
+    <aside class="lg:sticky lg:top-5 rounded-[28px] bg-[#F3EDE9] p-6 md:p-7">
+      <p class="text-[13px] font-medium text-[#6B4F57]">1 · What matters most?</p>
+      <div id="goals" class="mt-3 flex flex-wrap gap-2 text-[14px] font-medium"></div>
+
+      <div class="mt-8 flex items-baseline justify-between">
+        <p class="text-[13px] font-medium text-[#6B4F57]">2 · Budget up to</p>
+        <p id="budgetLabel" class="serif text-[26px] font-medium"></p>
+      </div>
+      <input id="budget" type="range" min="149" max="499" step="10" value="400" class="mt-3 w-full" aria-label="Budget">
+      <div class="mt-2 flex justify-between text-[12px] text-[#9A8E91]"><span>$149</span><span>$499</span></div>
+
+      <p class="mt-8 text-[13px] font-medium text-[#6B4F57]">3 · Must have</p>
+      <div id="musts" class="mt-3 space-y-2"></div>
+
+      <button id="reset" class="mt-7 text-[13px] underline underline-offset-2 text-[#6B4F57] hover:text-[#2A0B14]">Reset answers</button>
+    </aside>
+
+    <!-- Results -->
+    <div class="space-y-5 min-w-0">
+      <article id="stage" class="rounded-[28px] overflow-hidden transition-colors duration-500"></article>
+      <div>
+        <p class="px-1 text-[14px] font-medium">The rest of the lineup, ranked for you</p>
+        <div id="ranked" class="mt-3 grid sm:grid-cols-2 gap-3"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Full matrix -->
+  <section class="px-4 md:px-[80px] pt-28 pb-24">
+    <div class="flex flex-wrap items-end justify-between gap-4">
+      <div>
+        <p class="text-[14px] font-medium">Every spec, side by side</p>
+        <h2 class="serif mt-3 text-[40px] md:text-[48px] leading-[1.08] font-medium tracking-[-0.015em]">See exactly what you're trading</h2>
+      </div>
+      <p class="text-[13px] text-[#6B4F57] flex items-center gap-2"><span class="w-3 h-3 rounded-sm bg-[#F8F38A]"></span>Your match is highlighted</p>
+    </div>
+    <div class="mt-10 rounded-[24px] bg-white border border-[#EFEAE6] overflow-x-auto">
+      <table id="matrix" class="w-full min-w-[820px] text-[14px]"></table>
+    </div>
+  </section>
+
+  <footer class="mx-4 rounded-[28px] bg-[#F3EDE9] px-6 md:px-[80px] py-8 flex flex-wrap justify-between gap-4 text-[13px] text-[#6B4F57]">
+    <span>© 2026 Aero Fit, Inc. · Free 2-day shipping · 30-night wear test · 2-year warranty</span>
+    <span class="flex gap-6"><a href="#">Shipping</a><a href="#">Returns</a><a href="#">Warranty</a><a href="#">Privacy</a></span>
+  </footer>
+</div>
+
+<script>
+  const { products, band, byId } = window.AEROFIT;
+  const tint = { lite: '#F4EEE7', smart: '#FBE9E6', music: '#EFE9F5', pro: '#E7EEE9', ultra: '#FBE7DC' };
+  const goalDefs = [['sleep', 'Better sleep', 'moon-stars'], ['everyday', 'Everyday health', 'walk'], ['training', 'Training', 'barbell'], ['music', 'Phone-free music', 'headphones'], ['heart', 'Heart health', 'heart-rate-monitor'], ['adventure', 'Outdoor adventure', 'mountain']];
+  const mustDefs = [
+    ['display', 'A screen on my wrist', 'device-watch', (p) => !!p.specs.display],
+    ['gps', 'Built-in GPS', 'map-pin', (p) => p.specs.gps === 'Built-in' || p.specs.gps === 'Dual-band'],
+    ['music', 'Music storage', 'music', (p) => p.specs.music],
+    ['ecg', 'ECG', 'heart-rate-monitor', (p) => p.specs.ecg],
+  ];
+  const defaults = () => ({ goals: new Set(['training', 'heart']), budget: 400, musts: new Set(), pick: null, color: {}, bag: 0 });
+  let state = defaults();
+
+  function score(p) {
+    const g = [...state.goals];
+    const hit = g.filter((k) => p.goals.includes(k));
+    const missing = mustDefs.filter(([k, , , test]) => state.musts.has(k) && !test(p));
+    const over = p.price - state.budget;
+    const goalFit = g.length ? hit.length / g.length : 0.5;
+    let pct = Math.round(42 + 48 * goalFit + (over <= 0 ? 10 * (1 - p.price / state.budget / 2) : 0));
+    if (missing.length) pct = Math.min(pct, 35);
+    if (over > 0) pct = Math.min(pct, 45);
+    const reasons = [
+      ...hit.map((k) => goalDefs.find((d) => d[0] === k)[1]),
+      ...mustDefs.filter(([k, , , test]) => state.musts.has(k) && test(p)).map((d) => d[1]),
+    ];
+    const blockers = [...(over > 0 ? [`$${over} over budget`] : []), ...missing.map((d) => `No ${d[1].toLowerCase().replace('a screen on my wrist', 'screen')}`)];
+    const offGoal = g.length && !hit.length;
+    if (offGoal) blockers.push(`Not built for ${goalDefs.find((d) => d[0] === g[0])[1].toLowerCase()}`);
+    return { p, pct, reasons, blockers, fits: !missing.length && over <= 0 && !offGoal };
+  }
+
+  function rankAll() {
+    return products.map(score).sort((a, b) => b.pct - a.pct || a.p.price - b.p.price);
+  }
+
+  function ring(pct, color) {
+    const r = 26, c = 2 * Math.PI * r;
+    return `<svg viewBox="0 0 64 64" class="w-16 h-16 -rotate-90"><circle cx="32" cy="32" r="${r}" fill="none" stroke="#2A0B1415" stroke-width="6"/><circle cx="32" cy="32" r="${r}" fill="none" stroke="${color}" stroke-width="6" stroke-linecap="round" stroke-dasharray="${c * pct / 100} ${c}"/></svg>`;
+  }
+
+  function renderControls() {
+    goals.innerHTML = goalDefs.map(([k, l, ic]) => {
+      const on = state.goals.has(k);
+      return `<button data-goal="${k}" aria-pressed="${on}" class="h-10 px-4 rounded-full flex items-center gap-1.5 transition ${on ? 'bg-[#2A0B14] text-white' : 'bg-white hover:bg-[#FAF8F6]'}"><i class="ti ti-${ic} text-[16px]"></i>${l}</button>`;
+    }).join('');
+    budget.value = state.budget;
+    budget.style.setProperty('--p', ((state.budget - 149) / 350 * 100) + '%');
+    budgetLabel.textContent = '$' + state.budget;
+    musts.innerHTML = mustDefs.map(([k, l, ic]) => {
+      const on = state.musts.has(k);
+      return `<button data-must="${k}" aria-pressed="${on}" class="w-full h-12 px-4 rounded-[14px] bg-white flex items-center gap-3 text-[14px] font-medium hover:bg-[#FAF8F6] transition">
+        <i class="ti ti-${ic} text-[18px] text-[#7A5B64]"></i><span class="flex-1 text-left">${l}</span>
+        <span class="w-10 h-6 rounded-full p-0.5 transition ${on ? 'bg-[#2A0B14]' : 'bg-[#E5DDD8]'}"><span class="block w-5 h-5 rounded-full bg-white transition ${on ? 'translate-x-4' : ''}"></span></span>
+      </button>`;
+    }).join('');
+  }
+
+  function renderResults() {
+    const list = rankAll();
+    const top = state.pick ? list.find((s) => s.p.id === state.pick) : list[0];
+    const p = top.p, strap = state.color[p.id] || p.colors[0][1];
+    const isBest = top === list[0];
+    stage.style.background = tint[p.id];
+    stage.innerHTML = `
+      <div class="grid md:grid-cols-[minmax(240px,40%)_1fr]">
+        <div class="relative h-[340px] md:h-auto md:min-h-[460px] flex items-center justify-center">
+          <span class="absolute left-5 top-5 text-[12px] font-medium px-3 py-1 rounded-full ${isBest && top.fits ? 'bg-[#F8F38A]' : 'bg-white/80'}">${!isBest ? 'Your pick' : top.fits ? 'Best match' : 'Closest match'}</span>
+          <div class="stage-band h-[78%]" key="${p.id}">${band(p, { strap, cls: 'h-full w-auto drop-shadow-[0_24px_30px_rgba(42,11,20,0.16)]' })}</div>
+        </div>
+        <div class="bg-white/75 backdrop-blur m-2 rounded-[22px] p-6 md:p-8 flex flex-col">
+          <div class="flex items-start justify-between gap-4">
+            <div>
+              <p class="text-[13px] font-medium text-[#6B4F57]">${p.tag}</p>
+              <h2 class="serif mt-1 text-[36px] md:text-[42px] leading-[1.05] font-medium tracking-[-0.01em]">${p.name}</h2>
+            </div>
+            <div class="relative shrink-0">${ring(top.pct, top.fits ? '#2BB673' : '#E8920F')}<span class="absolute inset-0 flex items-center justify-center text-[15px] font-semibold">${top.pct}%</span></div>
+          </div>
+          <p class="mt-3 text-[15px] leading-[1.6] text-[#4A2A33] max-w-[480px]">${p.blurb}</p>
+          <div class="mt-5 flex flex-wrap gap-2">
+            ${top.reasons.map((r) => `<span class="h-8 px-3 rounded-full bg-[#E3F5EC] text-[#1E7A52] text-[12px] font-medium flex items-center gap-1"><i class="ti ti-check"></i>${r}</span>`).join('')}
+            ${top.blockers.map((r) => `<span class="h-8 px-3 rounded-full bg-[#FCEBD9] text-[#9A5A0B] text-[12px] font-medium flex items-center gap-1"><i class="ti ti-alert-circle"></i>${r}</span>`).join('')}
+            ${!top.reasons.length && !top.blockers.length ? `<span class="text-[13px] text-[#6B4F57]">Pick a goal to see why it fits.</span>` : ''}
+          </div>
+          <dl class="mt-6 grid grid-cols-3 gap-3 text-[12px]">
+            <div class="rounded-[14px] bg-[#FAF8F6] p-3"><dt class="text-[#6B4F57]">Battery</dt><dd class="mt-1 text-[18px] font-semibold">${p.battery} days</dd></div>
+            <div class="rounded-[14px] bg-[#FAF8F6] p-3"><dt class="text-[#6B4F57]">Weight</dt><dd class="mt-1 text-[18px] font-semibold">${p.weight}</dd></div>
+            <div class="rounded-[14px] bg-[#FAF8F6] p-3"><dt class="text-[#6B4F57]">Display</dt><dd class="mt-1 text-[18px] font-semibold truncate">${p.specs.display ? p.specs.display.replace('Sapphire ', '') : 'None'}</dd></div>
+          </dl>
+          <div class="mt-6 flex items-center gap-2">
+            ${p.colors.map(([n, hex]) => `<button data-color="${p.id}|${hex}" title="${n}" aria-label="${n}" class="w-7 h-7 rounded-full border-2 ${strap === hex ? 'border-[#2A0B14]' : 'border-white'} shadow-[0_0_0_1px_#E5DDD8]" style="background:${hex}"></button>`).join('')}
+            <span class="ml-1 text-[13px] text-[#6B4F57]">${p.colors.find((c) => c[1] === strap)[0]}</span>
+          </div>
+          <div class="mt-auto pt-7 flex flex-wrap items-center justify-between gap-3">
+            <p><span class="serif text-[30px] font-medium">$${p.price}</span><span class="text-[13px] text-[#6B4F57]"> + 1 month free membership</span></p>
+            <div class="flex gap-2">
+              ${state.pick ? `<button data-pick="" class="h-11 px-4 rounded-full border border-[#D9D0CB] bg-white text-[14px] font-medium hover:bg-[#F3EFEC] transition">Back to best match</button>` : ''}
+              <button data-add="${p.id}" class="h-11 px-5 rounded-full bg-[#2A0B14] text-white text-[14px] font-medium hover:bg-[#45172A] transition">Add to bag</button>
+            </div>
+          </div>
+        </div>
+      </div>`;
+
+    ranked.innerHTML = list.filter((s) => s !== top).map((s) => `
+      <button data-pick="${s.p.id}" class="group text-left rounded-[20px] bg-white border border-[#EFEAE6] p-3 pr-5 flex items-center gap-4 hover:shadow-[0_10px_30px_rgba(42,11,20,0.08)] transition ${s.fits ? '' : 'opacity-70'}">
+        <span class="w-[72px] h-[88px] rounded-[14px] flex items-center justify-center shrink-0" style="background:${tint[s.p.id]}"><span class="h-[80px] block">${band(s.p, { cls: 'h-full w-auto' })}</span></span>
+        <span class="flex-1 min-w-0">
+          <span class="flex items-baseline justify-between gap-2"><span class="serif text-[20px] font-medium">${s.p.short}</span><span class="text-[14px] font-semibold">$${s.p.price}</span></span>
+          <span class="mt-2 block h-1.5 rounded-full bg-[#F3EFEC] overflow-hidden"><span class="block h-full rounded-full ${s.fits ? 'bg-[#2BB673]' : 'bg-[#E8920F]'}" style="width:${s.pct}%"></span></span>
+          <span class="mt-1.5 block text-[12px] text-[#6B4F57] truncate">${s.pct}% match · ${s.blockers[0] || s.p.tag}</span>
+        </span>
+      </button>`).join('');
+
+    renderMatrix(p.id);
+  }
+
+  const yes = (v) => v ? `<i class="ti ti-circle-check-filled text-[#2BB673] text-[18px]"></i>` : `<span class="text-[#C9BEC1]">—</span>`;
+  const maxBattery = Math.max(...products.map((p) => p.battery));
+  function renderMatrix(hi) {
+    const rows = [
+      ['Price', (p) => `<span class="font-semibold">$${p.price}</span>`],
+      ['Battery', (p) => `<div class="flex items-center gap-2 justify-center"><span class="w-16 h-1.5 rounded-full bg-[#F3EFEC] overflow-hidden"><span class="block h-full bg-[#2A0B14]" style="width:${p.battery / maxBattery * 100}%"></span></span>${p.battery}d</div>`],
+      ['Weight', (p) => p.weight], ['Display', (p) => p.specs.display || 'Screenless'], ['GPS', (p) => p.specs.gps],
+      ['Music storage', (p) => yes(p.specs.music)], ['ECG', (p) => yes(p.specs.ecg)], ['Blood oxygen', (p) => yes(p.specs.spo2)],
+      ['Skin temperature', (p) => yes(p.specs.temp)], ['Water resistance', (p) => p.specs.water], ['Case', (p) => p.specs.material],
+    ];
+    const cell = (p) => p.id === hi ? 'bg-[#FDFBE0]' : '';
+    matrix.innerHTML = `
+      <thead><tr><th class="sticky left-0 bg-white"></th>${products.map((p) => `<th class="px-4 pt-6 pb-4 align-bottom ${cell(p)}"><button data-pick="${p.id}" class="w-full"><div class="h-[88px] flex justify-center">${band(p, { cls: 'h-full w-auto' })}</div><p class="serif text-[19px] font-medium mt-2">${p.short}</p></button></th>`).join('')}</tr></thead>
+      <tbody>${rows.map(([l, f]) => `<tr class="border-t border-[#EFEAE6]"><td class="sticky left-0 bg-white py-3.5 pl-6 pr-4 text-[#6B4F57] whitespace-nowrap">${l}</td>${products.map((p) => `<td class="py-3.5 px-4 text-center ${cell(p)}">${f(p)}</td>`).join('')}</tr>`).join('')}</tbody>`;
+  }
+
+  document.addEventListener('click', (e) => {
+    const t = e.target.closest('[data-goal],[data-must],[data-pick],[data-color],[data-add],#reset');
+    if (!t) return;
+    const d = t.dataset;
+    if (d.goal) { state.goals.has(d.goal) ? state.goals.delete(d.goal) : state.goals.add(d.goal); state.pick = null; }
+    if (d.must) { state.musts.has(d.must) ? state.musts.delete(d.must) : state.musts.add(d.must); state.pick = null; }
+    if ('pick' in d) { state.pick = d.pick || null; if (t.closest('#matrix')) stage.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+    if (d.color) { const [id, hex] = d.color.split('|'); state.color[id] = hex; }
+    if (d.add) { state.bag++; bagCount.textContent = state.bag; bagCount.classList.replace('hidden', 'flex'); }
+    if (t.id === 'reset') { const bag = state.bag; state = defaults(); state.bag = bag; }
+    renderControls(); renderResults();
+    if (d.add) { const b = stage.querySelector('[data-add]'); b.textContent = 'Added'; setTimeout(() => (b.textContent = 'Add to bag'), 1200); }
+  });
+  budget.addEventListener('input', () => { state.budget = +budget.value; state.pick = null; renderControls(); renderResults(); });
+
+  renderControls(); renderResults();
+</script>
+</body></html>

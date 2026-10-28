@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Aero Fit Finder</title>
+  <script src="https://unpkg.com/@tailwindcss/browser@4.3.3/dist/index.global.js" integrity="sha384-2ql948lIdLcGEE0/qxNiudyTjgauA3RDJERu5xW75kFCvSl5a9odyQYCb6tEjnmB" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=Inter:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.48.0/dist/tabler-icons.min.css">
+  <script src="assets/catalog/catalog-data.js"></script>
+  <style>
+    html, body { margin: 0; padding: 0; background: #FAF8F6; }
+    .serif { font-family: 'Source Serif 4', serif; }
+    .sans { font-family: 'Inter', sans-serif; }
+    .tile { background: #EFEBE6; }
+    .tile img { mix-blend-mode: multiply; }
+    .uc { transition: flex-grow .55s cubic-bezier(.2,.8,.2,1); }
+  </style>
+</head><body>
+<div class="sans bg-[#FAF8F6] text-[#2A0B14] antialiased pt-5">
+
+  <!-- Product bar -->
+  <header class="mx-4 h-[68px] rounded-full bg-white shadow-[0_4px_18px_rgba(42,11,20,0.06)] border border-[#EFEAE6] pl-7 pr-2 flex items-center justify-between">
+    <div class="flex items-center gap-6">
+      <a href="index.html" class="serif text-[22px] font-medium tracking-tight flex items-center gap-2 whitespace-nowrap">
+        <img src="public/aerofit-mark.svg" alt="" class="w-8 h-8"> Aero Fit
+      </a>
+      <nav class="hidden md:flex gap-2 text-[14px] font-medium">
+        <a class="h-10 px-4 rounded-full bg-[#F3EFEC] flex items-center hover:bg-[#ECE6E2] transition" href="index.html">Overview</a>
+        <a class="h-10 px-4 rounded-full bg-[#F3EFEC] flex items-center hover:bg-[#ECE6E2] transition" href="#">How it works</a>
+        <a class="h-10 px-4 rounded-full bg-[#F8F38A] flex items-center" href="#" aria-current="page">Shop wearables</a>
+      </nav>
+    </div>
+    <div class="flex items-center gap-2">
+      <button class="h-[52px] w-[52px] rounded-full bg-[#F3EFEC] flex items-center justify-center text-[20px] relative" aria-label="Bag">
+        <i class="ti ti-shopping-bag"></i>
+        <span id="bagCount" class="absolute -top-0.5 -right-0.5 min-w-5 h-5 px-1 rounded-full bg-[#2A0B14] text-white text-[10px] font-semibold items-center justify-center hidden">0</span>
+      </button>
+      <button class="h-[52px] px-6 rounded-full bg-[#2A0B14] text-white text-[15px] font-medium hover:bg-[#45172A] transition">Join Aero Fit free</button>
+    </div>
+  </header>
+
+  <!-- Use-case picker -->
+  <section class="mx-4 mt-5 rounded-[28px] bg-[#F3EDE9] px-6 md:px-[72px] pt-16 pb-10">
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+      <div>
+        <p class="text-[15px] font-medium">Shop wearables · Find your fit</p>
+        <h1 class="serif mt-4 text-[44px] md:text-[60px] leading-[1.04] font-medium tracking-[-0.02em]">What will you<br>wear it for?</h1>
+      </div>
+      <p class="text-[16px] leading-[1.6] text-[#4A2A33] max-w-[400px]">Tell us what matters most. We'll match you with the two bands built for it, then you can browse the rest.</p>
+    </div>
+    <div id="cases" class="mt-10 flex flex-col md:flex-row gap-3 md:h-[360px]" role="tablist" aria-label="Use case"></div>
+  </section>
+
+  <!-- Recommendation -->
+  <section id="rec" class="max-w-[1240px] mx-auto px-4 md:px-6 pt-20"></section>
+
+  <!-- Lineup intro -->
+  <section class="max-w-[1160px] mx-auto px-6 md:px-[60px] pt-32">
+    <p class="flex items-center gap-2 text-[16px] font-medium"><img src="public/aerofit-mark.svg" alt="" class="w-6 h-6"> The full lineup</p>
+    <h2 class="serif mt-4 text-[38px] md:text-[46px] leading-[1.12] font-medium tracking-[-0.01em] max-w-[760px]">Every band tracks sleep, strain and recovery. Here's what sets each one apart.</h2>
+  </section>
+  <section id="rows" class="max-w-[1160px] mx-auto px-6 md:px-[60px] pt-16 space-y-24"></section>
+
+  <!-- Membership band -->
+  <section class="mx-4 mt-32 rounded-[28px] bg-[#2A0B14] text-white px-6 md:px-[72px] py-16 grid lg:grid-cols-[1fr_1.4fr] gap-12 items-center">
+    <div>
+      <span class="inline-flex items-center gap-1.5 h-8 px-3 rounded-full bg-[#F8F38A] text-[#2A0B14] text-[12px] font-medium"><i class="ti ti-gift"></i> Membership</span>
+      <h2 class="serif mt-5 text-[40px] md:text-[52px] leading-[1.06] font-medium tracking-[-0.015em]">Any band.<br>Included.</h2>
+      <p class="mt-5 text-[15px] leading-[1.6] text-white/75 max-w-[380px]">Skip the upfront cost. Your band ships with your plan, and coaching, Recovery and Strain come with it.</p>
+    </div>
+    <div id="plans" class="grid sm:grid-cols-3 gap-3"></div>
+  </section>
+
+  <section class="pt-24 pb-20 text-center px-6">
+    <h2 class="serif text-[40px] md:text-[52px] leading-[1.1] font-medium tracking-[-0.015em]">Still deciding?</h2>
+    <p class="mt-4 text-[15px] text-[#4A2A33]">Put every spec side by side, or start with a month free.</p>
+    <div class="mt-8 flex justify-center gap-2">
+      <a href="catalog-1-shelf.html#compare" class="h-11 px-5 rounded-full border border-[#2A0B14] text-[14px] font-medium flex items-center hover:bg-[#2A0B14] hover:text-white transition">Compare all bands</a>
+      <button class="h-11 px-5 rounded-full bg-[#F8F38A] text-[14px] font-medium hover:bg-[#F2EB6A] transition">Try Aero Fit for free</button>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="mx-4 mb-5 rounded-[28px] bg-[#F3EDE9] px-8 md:px-[80px] pt-14 pb-8">
+    <div class="grid md:grid-cols-[1fr_auto] gap-10">
+      <a class="flex items-center gap-2.5" href="index.html"><img src="public/aerofit-mark.svg" alt="" class="w-10 h-10"><span class="serif text-[32px] font-medium tracking-tight">Aero Fit</span></a>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-[14px]">
+        <div><p class="text-[#7A5B64] font-medium mb-4">Memberships</p><ul class="space-y-3"><li><a href="#">Aero Fit One</a></li><li><a href="#">Aero Fit Peak</a></li><li><a href="#">Aero Fit Life</a></li></ul></div>
+        <div><p class="text-[#7A5B64] font-medium mb-4">Why Aero Fit</p><ul class="space-y-3"><li><a href="#">How it works</a></li><li><a href="#">Healthspan</a></li><li><a href="#">Heart Health</a></li></ul></div>
+        <div><p class="text-[#7A5B64] font-medium mb-4">Support</p><ul class="space-y-3"><li><a href="#">Help Center</a></li><li><a href="#">Sizing</a></li><li><a href="#">Accessories</a></li></ul></div>
+        <div><p class="text-[#7A5B64] font-medium mb-4">Connect</p><ul class="space-y-3"><li><a href="#">Instagram</a></li><li><a href="#">YouTube</a></li><li><a href="#">Contact</a></li></ul></div>
+      </div>
+    </div>
+    <div class="mt-12 min-h-14 rounded-full bg-white px-6 py-4 flex flex-wrap gap-4 items-center justify-between text-[12px] text-[#6B4F57]">
+      <div class="flex gap-5"><a href="#">Terms &amp; Conditions</a><a href="#">Privacy Policy</a><a href="#">Accessibility</a></div>
+      <span>© 2026 Aero Fit. All rights reserved.</span>
+    </div>
+    <p class="mt-6 px-2 text-[11px] leading-[1.7] text-[#7A5B64] max-w-[900px]">Aero Fit features are intended for general wellness and fitness purposes. They are not intended to diagnose, treat, cure, or prevent any disease.</p>
+  </footer>
+</div>
+
+<script>
+  const C = window.AEROFIT_CATALOG;
+  const P = C.PRODUCTS;
+  const row = key => C.SPEC_ROWS.find(r => r.key === key);
+  const cap = s => s[0].toUpperCase() + s.slice(1);
+  const val = v => v === true ? '<i class="ti ti-check" aria-label="Yes"></i>' : v === false ? '<span class="text-[#C9C0C2]" aria-label="No">—</span>' : v;
+  // Soft glow behind each band, borrowed from the homepage feature rows.
+  const GLOW = { lite: '#D9DBF5', smart: '#B9F0D9', pro: '#F8F38A', music: '#F8D0D8', ultra: '#EADFCB' };
+  const CASE_ICON = { sleep: 'ti-moon-stars', training: 'ti-run', music: 'ti-headphones', endurance: 'ti-mountain' };
+
+  const state = { use: 'training', colors: {}, bag: 0 };
+
+  function renderCases() {
+    document.getElementById('cases').innerHTML = C.USE_CASE_ORDER.map(id => {
+      const u = C.USE_CASES[id], on = id === state.use;
+      return `
+        <button data-use="${id}" role="tab" aria-selected="${on}" class="uc relative h-[180px] md:h-auto rounded-[22px] overflow-hidden text-left ${on ? 'md:flex-[2.2]' : 'md:flex-1'} flex-none">
+          <img src="${u.image}" alt="${u.alt}" class="absolute inset-0 w-full h-full object-cover transition duration-700 ${on ? 'scale-100' : 'scale-[1.06] hover:scale-100'}">
+          <div class="absolute inset-0 ${on ? 'bg-[linear-gradient(180deg,transparent_35%,rgba(42,11,20,0.8))]' : 'bg-[rgba(42,11,20,0.35)] hover:bg-[rgba(42,11,20,0.2)] transition'}"></div>
+          <div class="absolute left-5 right-5 bottom-5 text-white flex items-end justify-between gap-3">
+            <div>
+              <span class="w-10 h-10 rounded-full ${on ? 'bg-[#F8F38A] text-[#2A0B14]' : 'bg-white/20 backdrop-blur'} flex items-center justify-center text-[18px]"><i class="ti ${CASE_ICON[id]}"></i></span>
+              <p class="serif mt-3 text-[32px] leading-none font-medium">${cap(u.label)}</p>
+              ${on ? `<p class="mt-2 text-[13px] text-white/80">Matched: ${u.fit.map(f => P[f].name).join(' & ')}</p>` : ''}
+            </div>
+          </div>
+        </button>`;
+    }).join('');
+  }
+
+  function swatches(p) {
+    const ci = state.colors[p.id] ?? 0;
+    return `<div class="flex items-center gap-1.5">${p.colors.map((c, i) => `
+      <button data-color="${p.id}:${i}" aria-label="${c.name}" title="${c.name}" class="w-6 h-6 rounded-full border border-black/10 ${i === ci ? 'ring-2 ring-offset-2 ring-[#2A0B14]' : ''}" style="background:${c.hex}"></button>`).join('')}
+      <span class="ml-2 text-[12px] text-[#6B4F57]">${p.colors[ci].name}</span></div>`;
+  }
+
+  function price(p) {
+    const pl = C.PLANS[p.minPlan];
+    return `<p class="text-[28px] font-semibold leading-none">$${p.price}</p><p class="mt-1.5 text-[12px] text-[#6B4F57]">or included from $${pl.monthly}/mo with ${pl.name}</p>`;
+  }
+
+  function recCard(id, rank, u) {
+    const p = P[id], top = rank === 0;
+    return `
+      <article class="rounded-[28px] ${top ? 'bg-white shadow-[0_18px_50px_rgba(42,11,20,0.08)]' : 'bg-[#F3EDE9]'} p-3 grid ${top ? 'md:grid-cols-[1fr_1.05fr]' : ''} gap-2">
+        <div class="tile relative ${top ? 'min-h-[360px]' : 'aspect-[4/3]'} rounded-[22px] overflow-hidden">
+          <img src="${p.image}" alt="Aero Fit ${p.name}" class="absolute inset-0 w-full h-full object-cover">
+          <span class="absolute left-4 top-4 h-8 px-3 rounded-full ${top ? 'bg-[#F8F38A]' : 'bg-white'} text-[12px] font-medium flex items-center gap-1.5"><i class="ti ${top ? 'ti-star-filled' : 'ti-thumb-up'}"></i>${top ? 'Top pick' : 'Also great'} for ${u.label}</span>
+        </div>
+        <div class="p-4 md:p-6 flex flex-col">
+          <h3 class="serif text-[36px] leading-none font-medium tracking-[-0.01em]">Aero Fit ${p.name}</h3>
+          <p class="mt-3 text-[14px] leading-[1.55] text-[#4A2A33]">${p.tagline}</p>
+          <p class="mt-6 text-[12px] font-medium text-[#6B4F57]">What matters for ${u.label}</p>
+          <dl class="mt-2 divide-y divide-[#EFE8E4] text-[14px]">${u.highlightRows.map(k => `
+            <div class="py-2 flex justify-between gap-4"><dt class="text-[#4A2A33]">${row(k).label}</dt><dd class="font-semibold text-right">${val(row(k).values[id])}</dd></div>`).join('')}
+          </dl>
+          <div class="mt-5">${swatches(p)}</div>
+          <div class="mt-auto pt-6 flex items-end justify-between gap-4">
+            <div>${price(p)}</div>
+            <button data-add="${id}" class="h-12 px-5 rounded-full ${top ? 'bg-[#2A0B14] text-white hover:bg-[#45172A]' : 'border border-[#2A0B14] hover:bg-[#2A0B14] hover:text-white'} text-[14px] font-medium transition whitespace-nowrap"><span>Add to bag</span></button>
+          </div>
+        </div>
+      </article>`;
+  }
+
+  function renderRec() {
+    const u = C.USE_CASES[state.use];
+    document.getElementById('rec').innerHTML = `
+      <div class="flex items-end justify-between gap-4">
+        <h2 class="serif text-[36px] md:text-[44px] leading-[1.1] font-medium tracking-[-0.01em]">For ${u.label}, we'd pick</h2>
+        <p class="hidden md:block text-[14px] text-[#6B4F57]">Based on ${u.highlightRows.map(k => row(k).label.toLowerCase()).join(', ')}</p>
+      </div>
+      <div class="mt-8 grid lg:grid-cols-[1.75fr_1fr] gap-4">${u.fit.map((id, i) => recCard(id, i, u)).join('')}</div>`;
+  }
+
+  function renderRows() {
+    const u = C.USE_CASES[state.use];
+    document.getElementById('rows').innerHTML = C.COMPARISON_ORDER.map((id, i) => {
+      const p = P[id], flip = i % 2 === 1, fits = u.fit.includes(id);
+      const best = C.USE_CASE_ORDER.filter(c => C.USE_CASES[c].fit.includes(id));
+      const specs = p.keySpecs || [['battery', 'Battery'], ['gps', 'GPS'], ['weight', 'Weight']].map(([k, l]) => ({ label: l, value: row(k).values[id] }));
+      return `
+        <div class="grid md:grid-cols-[1fr_400px] gap-10 md:gap-16 items-center">
+          <div class="relative h-[420px] ${flip ? 'md:order-2' : ''}">
+            <div class="absolute inset-x-[6%] inset-y-[4%] rounded-full blur-[10px]" style="background:radial-gradient(circle, ${GLOW[id]} 0%, ${GLOW[id]}88 45%, transparent 70%)"></div>
+            <div class="tile absolute ${flip ? 'right-[6%]' : 'left-[6%]'} top-[4%] w-[62%] aspect-square rounded-[24px] overflow-hidden shadow-[0_18px_50px_rgba(42,11,20,0.10)]">
+              <img src="${p.image}" alt="Aero Fit ${p.name}" class="w-full h-full object-cover">
+            </div>
+            <div class="absolute ${flip ? 'left-0' : 'right-0'} bottom-[4%] w-[280px] rounded-[20px] bg-[#2A0B14] text-white p-5 shadow-[0_18px_40px_rgba(42,11,20,0.25)]">
+              <span class="inline-flex items-center gap-1 text-[11px] font-medium bg-[#F8F38A] text-[#2A0B14] rounded-full px-2 py-0.5"><i class="ti ti-bolt"></i> Why ${p.name}</span>
+              <p class="mt-3 text-[19px] leading-[1.35]">${cap(p.highlight)}.</p>
+            </div>
+          </div>
+          <div class="${flip ? 'md:order-1' : ''}">
+            ${fits ? `<span class="inline-flex items-center gap-1.5 h-7 px-3 rounded-full bg-[#F8F38A] text-[12px] font-medium mb-4"><i class="ti ti-check"></i> Fits ${u.label}</span>` : ''}
+            <h3 class="serif text-[44px] leading-[1.05] font-medium tracking-[-0.01em]">Aero Fit ${p.name}</h3>
+            <p class="mt-4 text-[15px] leading-[1.6] text-[#4A2A33]">${p.tagline}</p>
+            <dl class="mt-6 grid grid-cols-3 gap-2">${specs.map(s => `
+              <div class="rounded-[14px] bg-white border border-[#EFEAE6] px-3 py-2.5"><dt class="text-[11px] text-[#6B4F57]">${s.label}</dt><dd class="text-[15px] font-semibold">${s.value}</dd></div>`).join('')}
+            </dl>
+            <p class="mt-4 text-[13px] text-[#6B4F57]">Best for ${best.join(', ')}</p>
+            <div class="mt-5">${swatches(p)}</div>
+            <div class="mt-7 flex items-end justify-between gap-4">
+              <div>${price(p)}</div>
+              <button data-add="${id}" class="h-11 px-5 rounded-full bg-[#2A0B14] text-white text-[14px] font-medium hover:bg-[#45172A] transition whitespace-nowrap"><span>${p.shipNote ? 'Pre-order' : 'Add to bag'}</span></button>
+            </div>
+            ${p.shipNote ? `<p class="mt-3 text-[12px] text-[#6B4F57] flex items-center gap-1.5"><i class="ti ti-truck"></i>${p.shipNote}</p>` : ''}
+          </div>
+        </div>`;
+    }).join('');
+  }
+
+  function renderPlans() {
+    document.getElementById('plans').innerHTML = C.PLAN_TIERS.map(t => {
+      const pl = C.PLANS[t];
+      const incl = C.COMPARISON_ORDER.filter(id => P[id].minPlan <= t);
+      return `
+        <div class="rounded-[22px] p-5 ${t === 3 ? 'bg-[#F8F38A] text-[#2A0B14]' : 'bg-white/[0.07]'}">
+          <p class="serif text-[26px] font-medium">${pl.name}</p>
+          <p class="mt-3 text-[30px] font-semibold leading-none">$${pl.monthly}<span class="text-[14px] font-normal opacity-70">/mo</span></p>
+          <p class="mt-1 text-[12px] opacity-70">$${pl.yearly} yearly</p>
+          <ul class="mt-5 space-y-1.5 text-[13px]">${incl.map(id => `<li class="flex items-center gap-2"><i class="ti ti-check"></i>${P[id].name}</li>`).join('')}</ul>
+        </div>`;
+    }).join('');
+  }
+
+  function render() { renderCases(); renderRec(); renderRows(); }
+
+  document.addEventListener('click', e => {
+    const t = e.target.closest('button');
+    if (!t) return;
+    const d = t.dataset;
+    if (d.use) { if (d.use === state.use) return; state.use = d.use; render(); }
+    else if (d.color) { const [id, i] = d.color.split(':'); state.colors[id] = +i; render(); }
+    else if (d.add) {
+      state.bag++;
+      const b = document.getElementById('bagCount'); b.textContent = state.bag; b.classList.replace('hidden', 'flex');
+      const label = t.querySelector('span'); const was = label.textContent; label.textContent = 'Added'; setTimeout(() => label.textContent = was, 1200);
+    }
+  });
+
+  renderPlans();
+  render();
+</script>
+</body></html>
