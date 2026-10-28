@@ -36,6 +36,20 @@
   --color-accent-hover: #f2eb6a;
   --color-accent-pale: #fbf4b8;
   --color-highlight: #fbf7c8;
+  /* Band panel and footer accents, taken from the band colourways */
+  --color-band-slate: #5e6e7d;
+  --color-band-olive: #6b7b4e;
+  --color-ember: #c8553d;
+  --color-sage: #a3b47f;
+  /* Muted tints of the band colourways for the overview band panels */
+  --color-band-slate-soft: #dfe5eb;
+  --color-band-olive-soft: #e2e7d7;
+  --color-band-butter-soft: #f3efd4;
+  /* Score card readouts and their light section surface */
+  --color-pastel-red: #f2a39b;
+  --color-pastel-blue: #a8c8ec;
+  --color-pastel-blue-deep: #6f93c4;
+  --color-beige: #efe7da;
 
   /* Radii */
   --radius-thumb: 16px;
@@ -98,6 +112,28 @@
   grid-template-columns: 260px repeat(5, minmax(0, 1fr));
 }
 
+@utility no-scrollbar {
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@utility shape-star {
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+}
+
+@utility shape-sparkle {
+  clip-path: polygon(50% 0%, 60% 40%, 100% 50%, 60% 60%, 50% 100%, 40% 60%, 0% 50%, 40% 40%);
+}
+
+@utility bg-footer-glow {
+  background-image:
+    radial-gradient(circle at 15% 22%, rgb(248 243 138 / 0.07) 0%, transparent 38%),
+    radial-gradient(circle at 85% 78%, rgb(107 123 78 / 0.12) 0%, transparent 40%);
+}
+
 @layer base {
   html {
     scroll-behavior: smooth;
@@ -126,5 +162,55 @@
   .reveal[data-visible='true'] {
     opacity: 1;
     transform: none;
+  }
+
+  /* Scroll-scrubbed elements; styles are written every frame by the overview scenes. */
+  [data-scrub] {
+    will-change: transform, opacity;
+  }
+}
+
+/* Lenis smooth scroll (overview page) takes over from native smooth scrolling. */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+/* Day timeline moments: scroll writes --reach and --scroll-focus (0–1) inline on each moment; nothing else lights them. */
+.day-moment {
+  opacity: calc(0.35 + 0.65 * var(--reach, 1));
+}
+
+.day-moment-photo {
+  --focus: var(--scroll-focus, 1);
+  opacity: calc(0.45 + 0.55 * var(--focus));
+  filter: grayscale(calc((1 - var(--focus)) * 0.7)) brightness(calc(0.8 + 0.2 * var(--focus)));
+  transform: scale(calc(0.97 + 0.03 * var(--focus)));
+}
+
+/* Reduced motion: no pinning or stacking, every scene rendered in its end state. */
+@media (prefers-reduced-motion: reduce) {
+  .pin-wrap {
+    height: auto !important;
+  }
+
+  .pin-stage,
+  .stack-block {
+    position: relative !important;
+    top: auto !important;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
   }
 }

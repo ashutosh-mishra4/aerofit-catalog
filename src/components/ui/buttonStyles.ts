@@ -1,10 +1,11 @@
 import { cn } from '../../lib/cn'
 
-export type ButtonVariant = 'primary' | 'outline' | 'outlineSoft' | 'outlineLight' | 'accent'
+export type ButtonVariant = 'primary' | 'light' | 'outline' | 'outlineSoft' | 'outlineLight' | 'accent'
 export type ButtonSize = 'sm' | 'md' | 'lg'
 
 const VARIANTS: Record<ButtonVariant, string> = {
   primary: 'bg-ink text-white hover:bg-ink-hover',
+  light: 'bg-white text-ink hover:bg-chip',
   outline: 'border border-ink hover:bg-ink hover:text-white',
   outlineSoft: 'border border-ink hover:bg-white',
   outlineLight: 'border border-white/40 text-white hover:bg-white hover:text-ink',

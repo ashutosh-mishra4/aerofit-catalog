@@ -2,8 +2,8 @@ import { IconBrandInstagram, IconBrandYoutube, IconMail, IconMicrophone } from '
 import type { LinkGroup, NavLink, SocialLink } from '../types/catalog'
 
 export const ROUTES = {
-  shop: '/',
-  overview: '/overview',
+  overview: '/',
+  shop: '/shop',
   howItWorks: '/how-it-works',
 } as const
 
@@ -34,10 +34,10 @@ export const FOOTER_COLUMNS: LinkGroup[] = [
   {
     title: 'Memberships',
     links: [
-      { label: 'How it works', href: ROUTES.howItWorks },
       { label: 'Aero Fit One', href: plansHref },
       { label: 'Aero Fit Peak', href: plansHref },
       { label: 'Aero Fit Life', href: plansHref },
+      { label: 'Compare plans', href: plansHref },
     ],
   },
   {
@@ -64,7 +64,7 @@ export const LEGAL_LINKS: NavLink[] = [
   { label: 'Accessibility', href: '#' },
 ]
 
-export const FOOTER_COPYRIGHT = '© 2026 Aero Fit. All rights reserved.'
+export const FOOTER_COPYRIGHT = '© 2026 Aero Fit · membership plans are billed annually with a 12-month minimum term'
 
 export const FOOTER_DISCLAIMER =
-  'Aero Fit features are intended for general wellness and fitness purposes. They are not intended to diagnose, treat, cure, or prevent any disease. Membership plans are billed annually with a 12-month minimum term.'
+  'Aero Fit features are intended for general wellness and fitness purposes. They are not intended to diagnose, treat, cure, or prevent any disease.'

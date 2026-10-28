@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Aero Fit Overview — redesign</title>
+  <script src="https://unpkg.com/@tailwindcss/browser@4.3.3/dist/index.global.js" integrity="sha384-2ql948lIdLcGEE0/qxNiudyTjgauA3RDJERu5xW75kFCvSl5a9odyQYCb6tEjnmB" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=Inter:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.48.0/dist/tabler-icons.min.css">
+
+  <!-- Tokens copied 1:1 from src/index.css so every class here maps to the repo's design system. -->
+  <style type="text/tailwindcss">
+    @theme {
+      --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+      --font-serif: "Source Serif 4", ui-serif, Georgia, serif;
+
+      --text-display: 64px;
+      --text-display--line-height: 1.02;
+      --text-display--letter-spacing: -0.02em;
+      --text-heading: 46px;
+      --text-heading--line-height: 1.08;
+      --text-heading--letter-spacing: -0.01em;
+      --text-heading-sm: 44px;
+      --text-heading-sm--line-height: 1.08;
+      --text-heading-sm--letter-spacing: -0.01em;
+
+      --color-canvas: #faf8f6;
+      --color-ink: #2a0b14;
+      --color-ink-hover: #45172a;
+      --color-ink-soft: #4a2a33;
+      --color-muted: #6b4f57;
+      --color-subtle: #7a5b64;
+      --color-placeholder: #9a8e91;
+      --color-disabled: #c9c0c2;
+      --color-line: #efeae6;
+      --color-line-soft: #f3efec;
+      --color-line-strong: #e3ddda;
+      --color-panel-line: #f0ebe8;
+      --color-chip: #f3efec;
+      --color-chip-hover: #ece6e2;
+      --color-sand: #f3ede9;
+      --color-tile: #f4f1ee;
+      --color-accent: #f8f38a;
+      --color-accent-hover: #f2eb6a;
+      --color-accent-pale: #fbf4b8;
+      --color-highlight: #fbf7c8;
+
+      --radius-thumb: 16px;
+      --radius-panel: 18px;
+      --radius-tile: 20px;
+      --radius-float: 22px;
+      --radius-card: 24px;
+      --radius-section: 28px;
+
+      --shadow-nav: 0 4px 18px rgb(42 11 20 / 0.06);
+      --shadow-soft: 0 4px 18px rgb(42 11 20 / 0.05);
+      --shadow-float: 0 14px 40px rgb(42 11 20 / 0.16);
+
+      --container-page: 1248px;
+
+      --ease-out-soft: cubic-bezier(0.2, 0.7, 0.2, 1);
+      --animate-hero-zoom: hero-zoom 1.8s var(--ease-out-soft) both;
+
+      @keyframes hero-zoom {
+        from { transform: scale(1.08); }
+        to { transform: scale(1); }
+      }
+    }
+
+    @utility bg-hero-fade {
+      background-image: linear-gradient(90deg, rgb(250 248 246 / 0.96) 0%, rgb(250 248 246 / 0.82) 30%, rgb(250 248 246 / 0) 58%);
+    }
+    @utility bg-glow-thumb {
+      background-image: radial-gradient(circle, var(--color-accent) 0%, var(--color-accent-pale) 45%, var(--color-tile) 80%);
+    }
+    @utility bg-glow-feature {
+      background-image: radial-gradient(circle at 50% 55%, var(--color-accent) 0%, var(--color-accent-pale) 40%, var(--color-tile) 78%);
+    }
+
+    @layer base {
+      body { @apply bg-canvas font-sans text-ink antialiased; }
+      button { cursor: pointer; }
+      h1, h2, h3 { text-wrap: balance; }
+    }
+
+    @layer components {
+      .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s var(--ease-out-soft), transform .7s var(--ease-out-soft); transition-delay: var(--reveal-delay, 0ms); }
+      .reveal[data-visible='true'] { opacity: 1; transform: none; }
+    }
+  </style>
+
+  <style>
+    /* Lenis smooth scroll (replaces html { scroll-behavior: smooth } on this page). */
+    html.lenis, html.lenis body { height: auto; }
+    .lenis.lenis-smooth { scroll-behavior: auto !important; }
+    .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+
+    .no-scrollbar { scrollbar-width: none; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    [data-scrub] { will-change: transform, opacity; }
+
+    /* Section-level design notes, toggled from the bottom-left button. */
+    .note { display: none; }
+    body.show-notes .note { display: flex; }
+
+    /* Reduced motion: no pinning, everything shown in its end state. */
+    html.rm .pin-wrap { height: auto !important; }
+    html.rm .pin-stage { position: relative !important; }
+    html.rm .stack-block { position: relative !important; top: auto !important; transform: none !important; }
+    html.rm .reveal { opacity: 1; transform: none; transition: none; }
+  </style>
+</head>
+
+<body>
+<div class="overflow-x-clip py-5">
+
+  <!-- NAV — same markup as Navbar.tsx; only change is sticky + frosted. -->
+  <header id="nav" class="sticky top-3 z-50 mx-4 flex h-[68px] items-center justify-between rounded-full border border-line bg-white/85 pr-2 pl-7 shadow-nav backdrop-blur-md transition-[background-color]">
+    <div class="flex items-center gap-6">
+      <a href="#" class="flex items-center gap-2 whitespace-nowrap" aria-label="Aero Fit home">
+        <img src="public/aerofit-mark.svg" alt="" class="size-8">
+        <span class="font-serif text-[22px] font-medium tracking-tight">Aero Fit</span>
+      </a>
+      <nav aria-label="Primary" class="hidden gap-2 text-[14px] font-medium md:flex">
+        <a href="#" aria-current="page" class="flex h-10 items-center rounded-full bg-accent px-4">Overview</a>
+        <a href="#" class="flex h-10 items-center rounded-full bg-chip px-4 transition hover:bg-chip-hover">How it works</a>
+        <a href="#" class="flex h-10 items-center rounded-full bg-chip px-4 transition hover:bg-chip-hover">Shop bands</a>
+      </nav>
+    </div>
+    <div class="flex items-center gap-2">
+      <button type="button" class="flex h-[52px] items-center gap-2 rounded-full border border-line bg-white pr-2 pl-5 text-[14px] font-medium transition hover:bg-chip">
+        <i class="ti ti-shopping-bag text-[18px]" aria-hidden="true"></i> Cart
+        <span class="flex h-9 min-w-9 items-center justify-center rounded-full bg-chip px-2 text-[13px]">0</span>
+      </button>
+      <a href="#" class="hidden h-[52px] items-center justify-center rounded-full bg-ink px-6 text-[15px] font-medium whitespace-nowrap text-white transition hover:bg-ink-hover sm:inline-flex">Join Aero Fit free</a>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ============ 1. HERO ============ -->
+    <section id="hero" class="relative mx-4 mt-5 h-[calc(100svh-108px)] min-h-[600px] max-h-[860px] overflow-hidden rounded-section">
+      <span class="note absolute top-5 right-5 z-20 max-w-[300px] flex-col gap-1 rounded-panel bg-ink p-4 text-[12px] leading-[1.5] text-white"><b>1 · Hero</b>Full-height campaign panel like Ultrahuman's "Power Moves". On scroll the photo drifts and zooms, the copy lifts away and the panel pulls in at the sides.</span>
+      <div class="absolute inset-0 animate-hero-zoom">
+        <img id="heroImg" data-scrub src="https://kombai-assets.b-cdn.net/generated_assets/f9b46c42-f591-4385-bfc2-9b6663bcd54f/ff20317377ff42e99355401aec31e474.jpg" alt="Woman stretching on a coastal road at sunrise wearing an Aero Fit band" class="size-full object-cover object-[70%_center]" fetchpriority="high">
+      </div>
+      <div aria-hidden="true" class="absolute inset-0 bg-hero-fade"></div>
+
+      <div id="heroCopy" data-scrub class="relative flex h-full max-w-[720px] flex-col justify-end pb-14 pl-8 pr-6 lg:pb-[88px] lg:pl-[96px]">
+        <span class="reveal inline-flex w-fit items-center gap-2 rounded-full bg-white px-3 py-1.5 text-[13px] font-medium shadow-soft"><span aria-hidden="true" class="size-2 rounded-full bg-ink"></span>The Aero Fit system</span>
+        <h1 class="reveal mt-6 font-serif text-[44px] leading-[1.02] font-medium tracking-[-0.02em] lg:text-display" style="--reveal-delay:100ms">Know what your body<br>is ready for today.</h1>
+        <p class="reveal mt-5 max-w-[460px] text-[17px] leading-[1.55] text-ink-soft" style="--reveal-delay:200ms">Aero Fit bands read your sleep, heart and effort around the clock. Each morning the app gives you one call: push, hold steady or recover.</p>
+        <div class="reveal mt-7 flex flex-wrap items-center gap-5" style="--reveal-delay:300ms">
+          <a href="#" class="inline-flex h-11 items-center rounded-full bg-ink px-5 text-[14px] font-medium text-white transition hover:bg-ink-hover">See how membership works</a>
+          <a href="#bands" class="text-[14px] font-medium underline underline-offset-4 transition hover:opacity-70">Shop the five bands</a>
+        </div>
+      </div>
+
+      <div id="heroCard" data-scrub class="absolute right-6 bottom-6 hidden md:block">
+        <div class="reveal w-[340px] rounded-float bg-white/92 p-5 shadow-float backdrop-blur-md" style="--reveal-delay:450ms" role="img" aria-label="Example morning readout: Recovery 82%">
+          <div class="flex items-end justify-between">
+            <div><p class="text-[13px] text-muted">This morning</p><p class="font-serif text-[22px] leading-tight font-medium">Recovery</p></div>
+            <p class="text-[40px] leading-none font-semibold">82%</p>
+          </div>
+          <dl class="mt-5 space-y-3">
+            <div class="grid grid-cols-[84px_1fr_auto] items-center gap-3 text-[13px]"><dt class="text-muted">Sleep</dt><div class="h-1.5 overflow-hidden rounded-full bg-chip"><div class="h-full w-[86%] rounded-full bg-ink"></div></div><dd class="font-medium">7h 42m</dd></div>
+            <div class="grid grid-cols-[84px_1fr_auto] items-center gap-3 text-[13px]"><dt class="text-muted">HRV</dt><div class="h-1.5 overflow-hidden rounded-full bg-chip"><div class="h-full w-[72%] rounded-full bg-ink"></div></div><dd class="font-medium">64 ms</dd></div>
+            <div class="grid grid-cols-[84px_1fr_auto] items-center gap-3 text-[13px]"><dt class="text-muted">Resting HR</dt><div class="h-1.5 overflow-hidden rounded-full bg-chip"><div class="h-full w-[64%] rounded-full bg-ink"></div></div><dd class="font-medium">52 bpm</dd></div>
+          </dl>
+          <p class="mt-5 inline-flex rounded-full bg-accent px-3 py-1 text-[13px] font-medium">Green light for intervals</p>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ============ 2. SIGNAL COLLAGE (pinned) ============ -->
+    <div id="collage" class="pin-wrap relative h-[220vh]">
+      <div class="pin-stage sticky top-0 flex h-svh items-center justify-center overflow-hidden">
+        <span class="note absolute top-24 left-5 z-20 max-w-[300px] flex-col gap-1 rounded-panel bg-ink p-4 text-[12px] leading-[1.5] text-white"><b>2 · Signal collage</b>From Ultrahuman's "Every reading, built on evidence". Photo cards fan out from behind the headline as you scroll, each at its own speed. Replaces nothing — it's the new bridge from hero to the scores.</span>
+
+        <div id="collageCards" aria-hidden="true">
+          <!-- data-x / data-y = final offset from centre in % of stage width / height. data-s = drift speed. -->
+          <figure data-card data-x="-34" data-y="-24" data-s="1.2" data-w="210" data-h="150" class="absolute top-1/2 left-1/2 overflow-hidden rounded-tile shadow-soft" style="opacity:0">
+            <img src="https://images.pexels.com/photos/6963181/pexels-photo-6963181.jpeg?auto=compress&cs=tinysrgb&w=600&q=80" alt="" class="size-full object-cover">
+          </figure>
+          <figure data-card data-x="-27" data-y="20" data-s="0.8" data-w="250" data-h="170" class="absolute top-1/2 left-1/2 overflow-hidden rounded-tile shadow-soft" style="opacity:0">
+            <img src="https://kombai-assets.b-cdn.net/generated_assets/f9b46c42-f591-4385-bfc2-9b6663bcd54f/1f026a8f11f74e0cbbfa802834c37de1.jpg" alt="" class="size-full object-cover">
+          </figure>
+          <figure data-card data-x="-6" data-y="-36" data-s="1.4" data-w="150" data-h="112" class="absolute top-1/2 left-1/2 overflow-hidden rounded-tile shadow-soft" style="opacity:0">
+            <img src="https://kombai-assets.b-cdn.net/generated_assets/f9b46c42-f591-4385-bfc2-9b6663bcd54f/5c5f0134e1a34895b7cb2cd92d3ecde7.jpg" alt="" class="size-full object-cover">
+          </figure>
+          <figure data-card data-x="30" data-y="-25" data-s="1" data-w="180" data-h="180" class="absolute top-1/2 left-1/2 flex items-center justify-center overflow-hidden rounded-tile bg-glow-thumb shadow-soft" style="opacity:0">
+            <img src="https://kombai-assets.b-cdn.net/generated_assets/f9b46c42-f591-4385-bfc2-9b6663bcd54f/72180f80b3a64de99cbdef213dc621cd.jpg" alt="" class="size-[78%] object-contain mix-blend-multiply brightness-110">
+          </figure>
+          <figure data-card data-x="34" data-y="18" data-s="0.7" data-w="240" data-h="160" class="absolute top-1/2 left-1/2 overflow-hidden rounded-tile shadow-soft" style="opacity:0">
+            <img src="https://images.unsplash.com/photo-1630254608294-d844a0242357?auto=format&w=600&q=80&fit=crop" alt="" class="size-full object-cover">
+          </figure>
+          <figure data-card data-x="9" data-y="36" data-s="1.1" data-w="190" data-h="130" class="absolute top-1/2 left-1/2 overflow-hidden rounded-tile shadow-soft" style="opacity:0">
+            <img src="https://images.unsplash.com/photo-1745692607831-66df9207b8bc?auto=format&w=600&q=80&fit=crop" alt="" class="size-full object-cover">
+          </figure>
+          <!-- Two small readout chips, same treatment as the hero ReadoutCard -->
+          <div data-card data-x="-16" data-y="33" data-s="1.6" data-w="150" data-h="64" class="absolute top-1/2 left-1/2 flex flex-col justify-center rounded-thumb bg-white px-4 shadow-float" style="opacity:0">
+            <span class="text-[12px] text-muted">HRV</span><span class="text-[20px] leading-tight font-semibold">64 ms</span>
+          </div>
+          <div data-card data-x="19" data-y="-38" data-s="1.3" data-w="160" data-h="64" class="absolute top-1/2 left-1/2 flex flex-col justify-center rounded-thumb bg-white px-4 shadow-float" style="opacity:0">
+            <span class="text-[12px] text-muted">Resting HR</span><span class="text-[20px] leading-tight font-semibold">52 bpm</span>
+          </div>
+        </div>
+
+        <div id="collageText" data-scrub class="relative z-10 max-w-[560px] px-6 text-center">
+          <h2 class="font-serif text-[36px] leading-[1.08] font-medium tracking-[-0.01em] lg:text-heading">Built on what your body already tells you.</h2>
+          <p class="mx-auto mt-4 max-w-[400px] text-[15px] leading-[1.6] text-ink-soft">Heart rate, HRV, skin temperature and movement, read every few seconds, day and night.</p>
+          <a href="#scores" class="mt-7 inline-flex h-11 items-center rounded-full bg-ink px-5 text-[14px] font-medium text-white transition hover:bg-ink-hover">See the four scores</a>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ============ 3. ONE NUMBER (pinned counter) ============ -->
+    <div id="score" class="pin-wrap relative h-[260vh]">
+      <div class="pin-stage sticky top-0 h-svh overflow-hidden px-4">
+        <span class="note absolute top-24 right-5 z-20 max-w-[300px] flex-col gap-1 rounded-panel bg-ink p-4 text-[12px] leading-[1.5] text-white"><b>3 · One number</b>Ultrahuman's "15 DAYS" battery moment. Headline fades out, the score counts up, the arc fills and the band rises into frame. Then the three inputs pop in.</span>
+
+        <!-- Title layer: fades out first -->
+        <div id="scoreTitle" data-scrub class="absolute inset-x-0 top-[17%] z-10 px-6 text-center">
+          <p class="text-[13px] font-semibold tracking-[0.12em] text-muted uppercase">Every morning</p>
+          <h2 class="mx-auto mt-4 max-w-[640px] font-serif text-[36px] leading-[1.08] font-medium tracking-[-0.01em] lg:text-heading">One call before your feet hit the floor.</h2>
+        </div>
+
+        <!-- Stat row: fades in as title leaves -->
+        <div id="scoreStat" data-scrub class="absolute inset-x-0 top-[13%] z-10 grid grid-cols-[1fr_auto_1fr] items-center gap-4 px-6 opacity-0 sm:gap-10">
+          <p class="text-right text-[12px] font-semibold tracking-[0.12em] text-muted uppercase sm:text-[14px]">This morning</p>
+          <p class="font-serif text-[96px] leading-none font-medium tracking-[-0.03em] tabular-nums sm:text-[150px] lg:text-[190px]"><span id="scoreNum">0</span><span class="text-[0.4em] text-muted">%</span></p>
+          <p class="text-[12px] font-semibold tracking-[0.12em] text-muted uppercase sm:text-[14px]">Recovery</p>
+        </div>
+
+        <!-- Arc + rising "sun" disk with the band -->
+        <div class="absolute inset-x-0 bottom-0 mx-auto h-[54%] max-w-[1000px]">
+          <svg viewBox="0 0 1000 500" class="absolute bottom-0 left-1/2 h-full w-auto max-w-none -translate-x-1/2" aria-hidden="true">
+            <path d="M 40 500 A 460 460 0 0 1 960 500" fill="none" stroke="var(--color-line-strong)" stroke-width="14" stroke-linecap="round"/>
+            <path id="scoreArc" d="M 40 500 A 460 460 0 0 1 960 500" fill="none" stroke="var(--color-ink)" stroke-width="14" stroke-linecap="round" pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"/>
+          </svg>
+          <div id="scoreBand" data-scrub class="absolute bottom-0 left-1/2 aspect-square h-[150%] overflow-hidden rounded-full bg-glow-feature" style="transform: translate3d(-50%, 90%, 0)">
+            <img src="https://kombai-assets.b-cdn.net/generated_assets/f9b46c42-f591-4385-bfc2-9b6663bcd54f/7754f0f6d49a4ed38f644dce2670c620.jpg" alt="Aero Fit Smart showing the morning Recovery score" class="absolute top-[7%] left-1/2 w-[32%] -translate-x-1/2 mix-blend-multiply brightness-110">
+          </div>
+
+          <!-- Inputs: pop in at the end -->
+          <div data-chip class="absolute bottom-[40%] left-[2%] z-10 rounded-float bg-white p-4 shadow-float opacity-0 sm:left-0 sm:w-[200px]">
+            <p class="flex items-center gap-2 text-[13px] text-muted"><i class="ti ti-moon-stars" aria-hidden="true"></i>Sleep</p><p class="mt-1 text-[24px] leading-tight font-semibold">7h 42m</p>
+          </div>
+          <div data-chip class="absolute bottom-[12%] left-[4%] z-10 hidden rounded-float bg-white p-4 shadow-float opacity-0 sm:block sm:w-[200px]">
+            <p class="flex items-center gap-2 text-[13px] text-muted"><i class="ti ti-wave-sine" aria-hidden="true"></i>HRV</p><p class="mt-1 text-[24px] leading-tight font-semibold">64 ms</p>
+          </div>
+          <div data-chip class="absolute right-[2%] bottom-[40%] z-10 rounded-float bg-white p-4 shadow-float opacity-0 sm:right-0 sm:w-[200px]">
+            <p class="flex items-center gap-2 text-[13px] text-muted"><i class="ti ti-heartbeat" aria-hidden="true"></i>Resting HR</p><p class="mt-1 text-[24px] leading-tight font-semibold">52 bpm</p>
+          </div>
+          <p data-chip class="absolute right-[4%] bottom-[16%] z-10 hidden rounded-full bg-accent px-4 py-2 text-[14px] font-medium opacity-0 shadow-soft sm:block">Green light for intervals</p>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ============ 4. FOUR SCORES (dark, tabs + carousel) ============ -->
+    <section id="scores" class="relative mx-4 overflow-hidden rounded-section bg-ink py-16 text-white lg:py-24">
+      <span class="note absolute top-5 right-5 z-20 max-w-[300px] flex-col gap-1 rounded-panel bg-white p-4 text-[12px] leading-[1.5] text-ink"><b>4 · Four scores</b>Ultrahuman's dark "PRO beyond measure" block: tab pills drive a centred card carousel with a readout floating on each photo. Replaces today's MetricsSection list (same data).</span>
+
+      <div class="mx-auto max-w-page px-4 text-center">
+        <h2 class="reveal font-serif text-[36px] leading-[1.08] font-medium tracking-[-0.01em] lg:text-heading">Four numbers that run your day</h2>
+        <p class="reveal mx-auto mt-4 max-w-[460px] text-[15px] leading-[1.6] text-white/70" style="--reveal-delay:100ms">Every band measures the same signals and feeds the same scores. Higher-end bands add sensors, not a different app.</p>
+
+        <div role="tablist" aria-label="Scores" class="reveal mx-auto mt-9 inline-flex max-w-full gap-1 overflow-x-auto rounded-full bg-white/8 p-1 no-scrollbar" style="--reveal-delay:200ms">
+          <button role="tab" data-tab="0" class="h-10 shrink-0 rounded-full px-5 text-[14px] font-medium transition">Sleep</button>
+          <button role="tab" data-tab="1" class="h-10 shrink-0 rounded-full px-5 text-[14px] font-medium transition">Recovery</button>
+          <button role="tab" data-tab="2" class="h-10 shrink-0 rounded-full px-5 text-[14px] font-medium transition">Strain</button>
+          <button role="tab" data-tab="3" class="h-10 shrink-0 rounded-full px-5 text-[14px] font-medium transition">Heart</button>
+        </div>
+      </div>
+
+      <div id="track" data-lenis-prevent class="mt-12 flex snap-x snap-mandatory gap-5 overflow-x-auto scroll-smooth px-[calc((100%-min(760px,84vw))/2)] no-scrollbar">
+        <!-- Card: Sleep -->
+        <article data-slide class="w-[min(760px,84vw)] shrink-0 snap-center transition duration-500">
+          <div class="relative h-[300px] overflow-hidden rounded-card sm:h-[420px]">
+            <img src="https://images.pexels.com/photos/6963181/pexels-photo-6963181.jpeg?auto=compress&cs=tinysrgb&w=1200&q=80" alt="Hand reaching for the bedside in morning light" class="size-full object-cover">
+            <div class="absolute bottom-4 left-4 w-[230px] rounded-float bg-white/92 p-4 text-ink shadow-float backdrop-blur-md">
+              <p class="text-[12px] text-muted">Sleep Performance</p>
+              <p class="mt-0.5 text-[32px] leading-none font-semibold">86%</p>
+              <div class="mt-3 flex h-8 items-end gap-[3px]" aria-hidden="true">
+                <span class="h-[40%] flex-1 rounded-sm bg-chip"></span><span class="h-[70%] flex-1 rounded-sm bg-ink"></span><span class="h-[90%] flex-1 rounded-sm bg-ink"></span><span class="h-[55%] flex-1 rounded-sm bg-chip"></span><span class="h-[80%] flex-1 rounded-sm bg-ink"></span><span class="h-[35%] flex-1 rounded-sm bg-chip"></span><span class="h-[65%] flex-1 rounded-sm bg-ink"></span><span class="h-[95%] flex-1 rounded-sm bg-accent"></span><span class="h-[50%] flex-1 rounded-sm bg-chip"></span><span class="h-[75%] flex-1 rounded-sm bg-ink"></span>
+              </div>
+            </div>
+          </div>
+          <div class="mt-6 grid gap-4 sm:grid-cols-[1fr_1.2fr] sm:gap-10">
+            <h3 class="flex items-center gap-3 font-serif text-[26px] leading-tight font-medium"><span class="flex size-9 shrink-0 items-center justify-center rounded-full bg-accent text-ink"><i class="ti ti-moon-stars text-[17px]" aria-hidden="true"></i></span>Sleep Performance</h3>
+            <div>
+              <p class="text-[15px] leading-[1.6] text-white/70">How much of the sleep your body needed you actually got, split into light, deep and REM stages.</p>
+              <ul class="mt-4 flex flex-wrap gap-2"><li class="rounded-full bg-white/10 px-3 py-1 text-[12px] font-medium">Sleep stages</li><li class="rounded-full bg-white/10 px-3 py-1 text-[12px] font-medium">Skin temperature</li><li class="rounded-full bg-white/10 px-3 py-1 text-[12px] font-medium">Breathing rate</li></ul>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card: Recovery -->
+        <article data-slide class="w-[min(760px,84vw)] shrink-0 snap-center transition duration-500">
+          <div class="relative h-[300px] overflow-hidden rounded-card sm:h-[420px]">
+            <img src="https://images.unsplash.com/photo-1745692607831-66df9207b8bc?auto=format&w=1200&q=80&fit=crop" alt="Hiker resting on a mountain ridge" class="size-full object-cover">
+            <div class="absolute bottom-4 left-4 w-[230px] rounded-float bg-white/92 p-4 text-ink shadow-float backdrop-blur-md">
+              <p class="text-[12px] text-muted">Recovery</p>
+              <p class="mt-0.5 text-[32px] leading-none font-semibold">82%</p>
+              <div class="mt-3 h-1.5 overflow-hidden rounded-full bg-chip"><div class="h-full w-[82%] rounded-full bg-ink"></div></div>
+              <p class="mt-3 inline-flex rounded-full bg-accent px-2.5 py-0.5 text-[12px] font-medium">Ready to push</p>
+            </div>
+          </div>
+          <div class="mt-6 grid gap-4 sm:grid-cols-[1fr_1.2fr] sm:gap-10">
+            <h3 class="flex items-center gap-3 font-serif text-[26px] leading-tight font-medium"><span class="flex size-9 shrink-0 items-center justify-center rounded-full bg-accent text-ink"><i class="ti ti-bolt text-[17px]" aria-hidden="true"></i></span>Recovery</h3>
+            <div>
+              <p class="text-[15px] leading-[1.6] text-white/70">A morning read on how ready you are to take on load, so you know whether to push or back off.</p>
+              <ul class="mt-4 flex flex-wrap gap-2"><li class="rounded-full bg-white/10 px-3 py-1 text-[12px] font-medium">Heart rate variability</li><li class="rounded-full bg-white/10 px-3 py-1 text-[12px] font-medium">Resting heart rate</li><li class="rounded-full bg-white/10 px-3 py-1 text-[12px] font-medium">Sleep</li></ul>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card: Strain -->
+        <article data-slide class="w-[min(760px,84vw)] shrink-0 snap-center transition duration-500">
+          <div class="relative h-[300px] overflow-hidden rounded-card sm:h-[420px]">
+            <img src="https://images.unsplash.com/photo-1630254608294-d844a0242357?auto=format&w=1200&q=80&fit=crop" alt="Man training on a forest path" class="size-full object-cover">
+            <div class="absolute bottom-4 left-4 w-[230px] rounded-float bg-white/92 p-4 text-ink shadow-float backdrop-blur-md">
+              <p class="text-[12px] text-muted">Strain · 0–21</p>
+              <p class="mt-0.5 text-[32px] leading-none font-semibold">14.2</p>
+              <div class="mt-3 flex gap-1" aria-hidden="true"><span class="h-1.5 flex-1 rounded-full bg-ink"></span><span class="h-1.5 flex-1 rounded-full bg-ink"></span><span class="h-1.5 flex-1 rounded-full bg-ink"></span><span class="h-1.5 flex-1 rounded-full bg-accent"></span><span class="h-1.5 flex-1 rounded-full bg-chip"></span></div>
+              <p class="mt-3 text-[12px] text-muted">Target today: 13–15</p>
+            </div>
+          </div>
+          <div class="mt-6 grid gap-4 sm:grid-cols-[1fr_1.2fr] sm:gap-10">
+            <h3 class="flex items-center gap-3 font-serif text-[26px] leading-tight font-medium"><span class="flex size-9 shrink-0 items-center justify-center rounded-full bg-accent text-ink"><i class="ti ti-flame text-[17px]" aria-hidden="true"></i></span>Strain</h3>
+            <div>
+              <p class="text-[15px] leading-[1.6] text-white/70">Every workout, commute and flight of stairs adds up to one daily effort score on a 0–21 scale.</p>
+              <ul class="mt-4 flex flex-wrap gap-2"><li class="rounded-full bg-white/10 px-3 py-1 text-[12px] font-medium">Heart rate zones</li><li class="rounded-full bg-white/10 px-3 py-1 text-[12px] font-medium">Workout types</li><li class="rounded-full bg-white/10 px-3 py-1 text-[12px] font-medium">Steps</li></ul>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card: Heart -->
+        <article data-slide class="w-[min(760px,84vw)] shrink-0 snap-center transition duration-500">
+          <div class="relative h-[300px] overflow-hidden rounded-card sm:h-[420px]">
+            <img src="https://kombai-assets.b-cdn.net/generated_assets/f9b46c42-f591-4385-bfc2-9b6663bcd54f/1f026a8f11f74e0cbbfa802834c37de1.jpg" alt="Two runners checking their bands on a track at sunset" class="size-full object-cover">
+            <div class="absolute bottom-4 left-4 w-[230px] rounded-float bg-white/92 p-4 text-ink shadow-float backdrop-blur-md">
+              <p class="text-[12px] text-muted">Resting heart rate</p>
+              <p class="mt-0.5 text-[32px] leading-none font-semibold">52 <span class="text-[16px] font-medium text-muted">bpm</span></p>
+              <svg viewBox="0 0 200 40" class="mt-3 h-8 w-full" aria-hidden="true"><polyline fill="none" stroke="var(--color-ink)" stroke-width="2" stroke-linejoin="round" points="0,28 20,26 40,30 60,22 80,24 100,18 120,20 140,14 160,16 180,12 200,13"/></svg>
+            </div>
+          </div>
+          <div class="mt-6 grid gap-4 sm:grid-cols-[1fr_1.2fr] sm:gap-10">
+            <h3 class="flex items-center gap-3 font-serif text-[26px] leading-tight font-medium"><span class="flex size-9 shrink-0 items-center justify-center rounded-full bg-accent text-ink"><i class="ti ti-heartbeat text-[17px]" aria-hidden="true"></i></span>Heart health</h3>
+            <div>
+              <p class="text-[15px] leading-[1.6] text-white/70">Resting heart rate trends, plus ECG and Blood Pressure Insights on Pro and Ultra.</p>
+              <ul class="mt-4 flex flex-wrap gap-2"><li class="rounded-full bg-white/10 px-3 py-1 text-[12px] font-medium">Resting HR</li><li class="rounded-full bg-white/10 px-3 py-1 text-[12px] font-medium">ECG</li><li class="rounded-full bg-white/10 px-3 py-1 text-[12px] font-medium">Blood pressure</li></ul>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <!-- Pager: long pill = active (Ultrahuman pattern) + arrows -->
+      <div class="mx-auto mt-10 flex max-w-[min(760px,84vw)] items-center justify-between">
+        <div class="flex items-center gap-1.5" id="dots" aria-hidden="true">
+          <span class="h-1.5 w-1.5 rounded-full bg-white/30 transition-all duration-500"></span><span class="h-1.5 w-1.5 rounded-full bg-white/30 transition-all duration-500"></span><span class="h-1.5 w-1.5 rounded-full bg-white/30 transition-all duration-500"></span><span class="h-1.5 w-1.5 rounded-full bg-white/30 transition-all duration-500"></span>
+        </div>
+        <div class="flex gap-2">
+          <button id="prev" type="button" aria-label="Previous score" class="flex size-11 items-center justify-center rounded-full border border-white/20 transition hover:bg-white hover:text-ink"><i class="ti ti-chevron-left text-[18px]" aria-hidden="true"></i></button>
+          <button id="next" type="button" aria-label="Next score" class="flex size-11 items-center justify-center rounded-full border border-white/20 transition hover:bg-white hover:text-ink"><i class="ti ti-chevron-right text-[18px]" aria-hidden="true"></i></button>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ============ 5. A DAY ON THE BAND (pinned, scrubbed timeline) ============ -->
+    <div id="day" class="pin-wrap relative mt-4 lg:h-[240vh]">
+      <div class="pin-stage flex items-center lg:sticky lg:top-0 lg:h-svh">
+        <section class="relative mx-4 w-full rounded-section bg-sand px-6 py-16 lg:px-[80px] lg:py-20">
+          <span class="note absolute top-5 right-5 z-20 max-w-[300px] flex-col gap-1 rounded-panel bg-ink p-4 text-[12px] leading-[1.5] text-white"><b>5 · A day on the band</b>Same section as today, now pinned. Scrolling draws the line across the day and lights up each moment in turn, the way Ultrahuman ties copy to scroll position.</span>
+          <div class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+            <h2 class="max-w-[520px] font-serif text-[36px] leading-[1.08] font-medium tracking-[-0.01em] lg:text-heading-sm">A day on the band, from alarm to lights out</h2>
+            <p class="max-w-[380px] text-[15px] leading-[1.6] text-ink-soft">You wear it and forget it. Aero Fit only speaks up when there is something worth acting on.</p>
+          </div>
+
+          <ol class="relative mt-14 grid gap-10 md:grid-cols-2 lg:grid-cols-4 lg:gap-8">
+            <span aria-hidden="true" class="absolute top-[7px] right-0 left-0 hidden h-px bg-line-strong lg:block"></span>
+            <span id="dayFill" aria-hidden="true" class="absolute top-[6px] right-0 left-0 hidden h-[3px] origin-left rounded-full bg-ink lg:block" style="transform: scaleX(0)"></span>
+
+            <li data-moment class="relative transition-opacity duration-500">
+              <span aria-hidden="true" class="relative block size-[15px] rounded-full border-[3px] border-sand bg-ink"></span>
+              <p class="mt-5 text-[13px] font-semibold tracking-wide text-muted tabular-nums">6:40</p>
+              <div data-icon class="mt-3 flex size-11 items-center justify-center rounded-full bg-white transition-colors duration-500"><i class="ti ti-sunrise text-[20px]" aria-hidden="true"></i></div>
+              <h3 class="mt-4 font-serif text-[24px] leading-tight font-medium">Wake to a plan</h3>
+              <p class="mt-2 text-[14px] leading-[1.6] text-ink-soft">Your Recovery score is waiting, with a strain target sized to how well you slept.</p>
+            </li>
+            <li data-moment class="relative transition-opacity duration-500">
+              <span aria-hidden="true" class="relative block size-[15px] rounded-full border-[3px] border-sand bg-ink"></span>
+              <p class="mt-5 text-[13px] font-semibold tracking-wide text-muted tabular-nums">12:15</p>
+              <div data-icon class="mt-3 flex size-11 items-center justify-center rounded-full bg-white transition-colors duration-500"><i class="ti ti-tools-kitchen-2 text-[20px]" aria-hidden="true"></i></div>
+              <h3 class="mt-4 font-serif text-[24px] leading-tight font-medium">Steady through the day</h3>
+              <p class="mt-2 text-[14px] leading-[1.6] text-ink-soft">Strain builds quietly in the background. A nudge arrives if you have been still too long.</p>
+            </li>
+            <li data-moment class="relative transition-opacity duration-500">
+              <span aria-hidden="true" class="relative block size-[15px] rounded-full border-[3px] border-sand bg-ink"></span>
+              <p class="mt-5 text-[13px] font-semibold tracking-wide text-muted tabular-nums">18:30</p>
+              <div data-icon class="mt-3 flex size-11 items-center justify-center rounded-full bg-white transition-colors duration-500"><i class="ti ti-run text-[20px]" aria-hidden="true"></i></div>
+              <h3 class="mt-4 font-serif text-[24px] leading-tight font-medium">Train with feedback</h3>
+              <p class="mt-2 text-[14px] leading-[1.6] text-ink-soft">Live heart rate zones and GPS on your wrist, then a breakdown of what the session cost you.</p>
+            </li>
+            <li data-moment class="relative transition-opacity duration-500">
+              <span aria-hidden="true" class="relative block size-[15px] rounded-full border-[3px] border-sand bg-ink"></span>
+              <p class="mt-5 text-[13px] font-semibold tracking-wide text-muted tabular-nums">22:50</p>
+              <div data-icon class="mt-3 flex size-11 items-center justify-center rounded-full bg-white transition-colors duration-500"><i class="ti ti-activity-heartbeat text-[20px]" aria-hidden="true"></i></div>
+              <h3 class="mt-4 font-serif text-[24px] leading-tight font-medium">Wind down on time</h3>
+              <p class="mt-2 text-[14px] leading-[1.6] text-ink-soft">A bedtime suggestion based on tomorrow’s plan, so your sleep matches the day ahead.</p>
+            </li>
+          </ol>
+        </section>
+      </div>
+    </div>
+
+
+    <!-- ============ 6. BANDS — stacked sticky blocks ============ -->
+    <section id="bands" class="relative mx-auto mt-28 max-w-page px-4">
+      <span class="note absolute -top-14 right-4 z-20 max-w-[300px] flex-col gap-1 rounded-panel bg-ink p-4 text-[12px] leading-[1.5] text-white"><b>6 · Bands</b>Ultrahuman's Ring PRO / Ring AIR blocks. Product stays pinned on the left while detail tiles scroll on the right. Each block then holds still and the next one slides over it. Replaces BandsStripSection.</span>
+      <div class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between lg:gap-10">
+        <div>
+          <h2 class="reveal font-serif text-[36px] leading-[1.08] font-medium tracking-[-0.01em] lg:text-heading">Pick the hardware.<br>The coaching is the same.</h2>
+          <p class="reveal mt-3 max-w-[520px] text-[15px] leading-[1.6] text-ink-soft" style="--reveal-delay:100ms">Five bands, one membership. Here are three to start with, from an 18 g sleep tracker to a titanium GPS watch.</p>
+        </div>
+        <a href="#" class="reveal text-[14px] font-medium underline underline-offset-4 transition hover:opacity-70" style="--reveal-delay:150ms">Compare all five side by side</a>
+      </div>
+    </section>
+
+    <div id="stack" class="relative mt-10">
+
+      <!-- Block: Lite (sand) -->
+      <article data-block class="stack-block relative z-[1] mx-4 rounded-section bg-sand lg:sticky">
+        <div data-shade aria-hidden="true" class="pointer-events-none absolute inset-0 z-10 rounded-section bg-ink opacity-0"></div>
+        <div class="grid gap-4 p-4 lg:grid-cols-2 lg:p-6">
+          <div class="lg:sticky lg:top-[100px] lg:self-start">
+            <div class="flex h-[340px] items-center justify-center overflow-hidden rounded-card bg-glow-thumb lg:h-[520px]">
+              <img src="https://kombai-assets.b-cdn.net/generated_assets/f9b46c42-f591-4385-bfc2-9b6663bcd54f/da32fd7c279245b5ab743623f57ddf23.jpg" alt="Aero Fit Lite in Slate" class="size-[72%] object-contain mix-blend-multiply brightness-110">
+            </div>
+            <div class="mt-5 flex flex-wrap items-center justify-between gap-4 px-2">
+              <div>
+                <p class="font-serif text-[32px] leading-tight font-medium">Aero Fit Lite</p>
+                <p class="mt-1 text-[13px] text-muted">$149 or <span class="font-medium text-ink">$0 on One</span></p>
+              </div>
+              <div class="flex gap-2">
+                <a href="#" class="inline-flex h-11 items-center rounded-full bg-ink px-5 text-[14px] font-medium text-white transition hover:bg-ink-hover">Add to cart</a>
+                <a href="#" class="inline-flex h-11 items-center rounded-full border border-ink px-5 text-[14px] font-medium transition hover:bg-white">Details</a>
+              </div>
+            </div>
+          </div>
+          <div class="flex flex-col gap-4">
+            <div class="rounded-card bg-white p-8 lg:p-12">
+              <p class="font-serif text-[26px] leading-[1.3] font-medium lg:text-[32px]">Our lightest band. A screenless tracker for sleep, steps and daily recovery that you will forget you are wearing.</p>
+            </div>
+            <div class="rounded-card bg-white p-8 text-center lg:p-12">
+              <p class="text-[13px] font-semibold tracking-[0.12em] text-muted uppercase">As light as</p>
+              <p class="mt-2 font-serif text-[110px] leading-none font-medium tracking-[-0.03em] lg:text-[150px]"><span data-count="18">18</span><span class="text-[0.35em] text-muted"> g</span></p>
+              <p class="mt-3 text-[15px] text-ink-soft">With the strap on.</p>
+            </div>
+            <div class="rounded-card bg-white p-8 lg:p-12">
+              <p class="text-[13px] font-semibold tracking-[0.12em] text-muted uppercase">A closer look at Lite</p>
+              <ul class="mt-6 divide-y divide-line-strong">
+                <li class="flex gap-4 py-5 first:pt-0"><span class="flex size-10 shrink-0 items-center justify-center rounded-full bg-chip"><i class="ti ti-battery-4 text-[18px]" aria-hidden="true"></i></span><div><p class="text-[17px] font-semibold">5 days of battery</p><p class="mt-1 text-[14px] leading-[1.6] text-ink-soft">Charge once on the weekend and again mid-week.</p></div></li>
+                <li class="flex gap-4 py-5"><span class="flex size-10 shrink-0 items-center justify-center rounded-full bg-chip"><i class="ti ti-moon-stars text-[18px]" aria-hidden="true"></i></span><div><p class="text-[17px] font-semibold">Sleep stages and Sleep Performance</p><p class="mt-1 text-[14px] leading-[1.6] text-ink-soft">The same sleep scoring as every other band.</p></div></li>
+                <li class="flex gap-4 py-5 last:pb-0"><span class="flex size-10 shrink-0 items-center justify-center rounded-full bg-chip"><i class="ti ti-droplet text-[18px]" aria-hidden="true"></i></span><div><p class="text-[17px] font-semibold">Water resistant to 50 m</p><p class="mt-1 text-[14px] leading-[1.6] text-ink-soft">Wear it in the shower, the pool and the rain.</p></div></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Block: Pro (white) -->
+      <article data-block class="stack-block relative z-[2] mx-4 mt-4 rounded-section border border-line bg-white lg:sticky">
+        <div data-shade aria-hidden="true" class="pointer-events-none absolute inset-0 z-10 rounded-section bg-ink opacity-0"></div>
+        <div class="grid gap-4 p-4 lg:grid-cols-2 lg:p-6">
+          <div class="lg:sticky lg:top-[100px] lg:self-start">
+            <div class="flex h-[340px] items-center justify-center overflow-hidden rounded-card bg-glow-thumb lg:h-[520px]">
+              <img src="https://kombai-assets.b-cdn.net/generated_assets/f9b46c42-f591-4385-bfc2-9b6663bcd54f/72180f80b3a64de99cbdef213dc621cd.jpg" alt="Aero Fit Pro in Graphite" class="size-[72%] object-contain mix-blend-multiply brightness-110">
+            </div>
+            <div class="mt-5 flex flex-wrap items-center justify-between gap-4 px-2">
+              <div>
+                <p class="font-serif text-[32px] leading-tight font-medium">Aero Fit Pro</p>
+                <p class="mt-1 text-[13px] text-muted">$299 or <span class="font-medium text-ink">$0 on Peak</span></p>
+              </div>
+              <div class="flex gap-2">
+                <a href="#" class="inline-flex h-11 items-center rounded-full bg-ink px-5 text-[14px] font-medium text-white transition hover:bg-ink-hover">Add to cart</a>
+                <a href="#" class="inline-flex h-11 items-center rounded-full border border-ink px-5 text-[14px] font-medium transition hover:bg-tile">Details</a>
+              </div>
+            </div>
+          </div>
+          <div class="flex flex-col gap-4">
+            <div class="rounded-card bg-tile p-8 lg:p-12">
+              <p class="font-serif text-[26px] leading-[1.3] font-medium lg:text-[32px]">Built-in GPS and ECG for structured training without your phone.</p>
+            </div>
+            <div class="rounded-card bg-tile p-8 text-center lg:p-12">
+              <p class="text-[13px] font-semibold tracking-[0.12em] text-muted uppercase">Tracks up to</p>
+              <p class="mt-2 font-serif text-[110px] leading-none font-medium tracking-[-0.03em] lg:text-[150px]"><span data-count="120">120</span></p>
+              <p class="mt-3 text-[15px] text-ink-soft">workout types, from intervals to open-water swims.</p>
+            </div>
+            <div class="rounded-card bg-tile p-8 lg:p-12">
+              <p class="text-[13px] font-semibold tracking-[0.12em] text-muted uppercase">A closer look at Pro</p>
+              <ul class="mt-6 divide-y divide-line-strong">
+                <li class="flex gap-4 py-5 first:pt-0"><span class="flex size-10 shrink-0 items-center justify-center rounded-full bg-white"><i class="ti ti-map-pin text-[18px]" aria-hidden="true"></i></span><div><p class="text-[17px] font-semibold">Built-in GPS</p><p class="mt-1 text-[14px] leading-[1.6] text-ink-soft">Leave the phone at home and still get pace and route.</p></div></li>
+                <li class="flex gap-4 py-5"><span class="flex size-10 shrink-0 items-center justify-center rounded-full bg-white"><i class="ti ti-heart-rate-monitor text-[18px]" aria-hidden="true"></i></span><div><p class="text-[17px] font-semibold">ECG with Heart Screener</p><p class="mt-1 text-[14px] leading-[1.6] text-ink-soft">Plus Blood Pressure Insights in the app.</p></div></li>
+                <li class="flex gap-4 py-5 last:pb-0"><span class="flex size-10 shrink-0 items-center justify-center rounded-full bg-white"><i class="ti ti-battery-4 text-[18px]" aria-hidden="true"></i></span><div><p class="text-[17px] font-semibold">10 days of battery</p><p class="mt-1 text-[14px] leading-[1.6] text-ink-soft">A full training week and then some.</p></div></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Block: Ultra (ink) -->
+      <article data-block class="stack-block relative z-[3] mx-4 mt-4 rounded-section bg-ink text-white lg:sticky">
+        <div class="grid gap-4 p-4 lg:grid-cols-2 lg:p-6">
+          <div class="lg:sticky lg:top-[100px] lg:self-start">
+            <div class="relative flex h-[340px] items-center justify-center overflow-hidden rounded-card bg-glow-thumb lg:h-[520px]">
+              <img src="https://kombai-assets.b-cdn.net/generated_assets/f9b46c42-f591-4385-bfc2-9b6663bcd54f/76d7a24f75bc4dbeafec4d446b539a12.jpg" alt="Aero Fit Ultra in Titanium" class="size-[72%] object-contain mix-blend-multiply brightness-110">
+              <span class="absolute top-4 left-4 rounded-full bg-white px-3 py-1 text-[12px] font-medium text-ink">Ships Nov 4</span>
+            </div>
+            <div class="mt-5 flex flex-wrap items-center justify-between gap-4 px-2">
+              <div>
+                <p class="font-serif text-[32px] leading-tight font-medium">Aero Fit Ultra</p>
+                <p class="mt-1 text-[13px] text-white/60">$399 or <span class="font-medium text-white">$0 on Life</span></p>
+              </div>
+              <div class="flex gap-2">
+                <a href="#" class="inline-flex h-11 items-center rounded-full bg-accent px-5 text-[14px] font-medium text-ink transition hover:bg-accent-hover">Pre-order</a>
+                <a href="#" class="inline-flex h-11 items-center rounded-full border border-white/40 px-5 text-[14px] font-medium transition hover:bg-white hover:text-ink">Details</a>
+              </div>
+            </div>
+          </div>
+          <div class="flex flex-col gap-4">
+            <div class="rounded-card bg-white/6 p-8 ring-1 ring-white/10 lg:p-12">
+              <p class="font-serif text-[26px] leading-[1.3] font-medium lg:text-[32px]">Titanium case, dual-band GPS and two weeks of battery for multi-day races and long training blocks.</p>
+            </div>
+            <div class="relative overflow-hidden rounded-card bg-white/6 p-8 pb-28 text-center ring-1 ring-white/10 lg:p-12 lg:pb-36">
+              <svg viewBox="0 0 400 100" class="absolute bottom-0 left-1/2 w-[86%] -translate-x-1/2 opacity-70" aria-hidden="true">
+                <path d="M 10 100 A 190 92 0 0 1 390 100" fill="none" stroke="var(--color-accent)" stroke-width="2.5" stroke-dasharray="1.5 8" stroke-linecap="round"/>
+                <path d="M 70 100 A 130 58 0 0 1 330 100" fill="none" stroke="var(--color-accent)" stroke-width="2.5" stroke-dasharray="1.5 8" stroke-linecap="round" opacity=".5"/>
+              </svg>
+              <p class="relative text-[13px] font-semibold tracking-[0.12em] text-white/60 uppercase">Up to</p>
+              <p class="relative mt-2 font-serif text-[110px] leading-none font-medium tracking-[-0.03em] lg:text-[150px]"><span data-count="14">14</span><span class="text-[0.35em] text-white/60"> days</span></p>
+              <p class="relative mt-3 text-[15px] text-white/70">of battery on one charge.</p>
+            </div>
+            <div class="rounded-card bg-white/6 p-8 ring-1 ring-white/10 lg:p-12">
+              <p class="text-[13px] font-semibold tracking-[0.12em] text-white/60 uppercase">A closer look at Ultra</p>
+              <ul class="mt-6 divide-y divide-white/10">
+                <li class="flex gap-4 py-5 first:pt-0"><span class="flex size-10 shrink-0 items-center justify-center rounded-full bg-accent text-ink"><i class="ti ti-current-location text-[18px]" aria-hidden="true"></i></span><div><p class="text-[17px] font-semibold">Dual-band GPS</p><p class="mt-1 text-[14px] leading-[1.6] text-white/70">Holds a clean track under trees and between buildings.</p></div></li>
+                <li class="flex gap-4 py-5"><span class="flex size-10 shrink-0 items-center justify-center rounded-full bg-accent text-ink"><i class="ti ti-diamond text-[18px]" aria-hidden="true"></i></span><div><p class="text-[17px] font-semibold">Titanium and sapphire</p><p class="mt-1 text-[14px] leading-[1.6] text-white/70">A titanium case and a sapphire-covered AMOLED display.</p></div></li>
+                <li class="flex gap-4 py-5 last:pb-0"><span class="flex size-10 shrink-0 items-center justify-center rounded-full bg-accent text-ink"><i class="ti ti-droplet text-[18px]" aria-hidden="true"></i></span><div><p class="text-[17px] font-semibold">Water resistant to 100 m</p><p class="mt-1 text-[14px] leading-[1.6] text-white/70">Twice the rating of the rest of the range.</p></div></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <div class="mx-auto mt-6 flex max-w-page flex-col gap-3 px-8 text-[14px] text-ink-soft sm:flex-row sm:items-center sm:justify-between">
+      <p>Also in the lineup: <span class="font-medium text-ink">Smart</span>, with an always-on display, and <span class="font-medium text-ink">Music</span>, with 500 songs on your wrist.</p>
+      <a href="#" class="font-medium text-ink underline underline-offset-4 transition hover:opacity-70">See all five bands</a>
+    </div>
+
+
+    <!-- ============ 7. CTA (unchanged CtaBanner) ============ -->
+    <div class="reveal mx-4 mt-28">
+      <section class="grid overflow-hidden rounded-section bg-ink text-white lg:grid-cols-[1fr_480px]">
+        <div class="flex flex-col justify-center px-6 py-14 lg:px-[80px] lg:py-20">
+          <h2 class="max-w-[560px] font-serif text-[40px] leading-[1.08] font-medium lg:text-heading">You pay for the membership. The band comes with it.</h2>
+          <p class="mt-5 max-w-[480px] text-[16px] leading-[1.6] text-white/75">Plans start at $199 a year with Lite or Smart included at $0. One yearly charge, no separate bill for the hardware.</p>
+          <div class="mt-8 flex flex-wrap items-center gap-3">
+            <a href="#" class="inline-flex h-[52px] items-center rounded-full bg-accent px-6 text-[15px] font-medium text-ink transition hover:bg-accent-hover">How membership works</a>
+            <a href="#" class="inline-flex h-[52px] items-center rounded-full border border-white/40 px-6 text-[15px] font-medium text-white transition hover:bg-white hover:text-ink">Compare plans</a>
+          </div>
+        </div>
+        <img src="https://kombai-assets.b-cdn.net/generated_assets/f9b46c42-f591-4385-bfc2-9b6663bcd54f/5c5f0134e1a34895b7cb2cd92d3ecde7.jpg" alt="Aero Fit band in its open box with a welcome card" class="h-[320px] w-full object-cover lg:h-full" loading="lazy">
+      </section>
+    </div>
+  </main>
+
+  <!-- FOOTER (unchanged, trimmed for the mock) -->
+  <footer class="mx-4 mt-28 rounded-section bg-sand px-6 pt-14 pb-8 lg:px-[80px]">
+    <a href="#" class="flex items-center gap-2.5"><img src="public/aerofit-mark.svg" alt="" class="size-10"><span class="font-serif text-[32px] font-medium tracking-tight">Aero Fit</span></a>
+    <div class="mt-10 flex flex-col gap-2 rounded-[28px] bg-white px-6 py-4 text-[12px] text-muted sm:h-14 sm:flex-row sm:items-center sm:justify-between sm:rounded-full sm:py-0">
+      <span>Footer unchanged from the current site.</span><span>© 2026 Aero Fit. All rights reserved.</span>
+    </div>
+  </footer>
+</div>
+
+<!-- Design-notes toggle (mock only) -->
+<button id="notesBtn" type="button" aria-pressed="false" class="fixed right-5 bottom-5 z-[60] inline-flex h-11 items-center gap-2 rounded-full bg-white px-4 text-[13px] font-medium shadow-float ring-1 ring-line transition hover:bg-chip">
+  <i class="ti ti-notes text-[16px]" aria-hidden="true"></i><span>Show design notes</span>
+</button>
+
+<script>
+(() => {
+  const root = document.documentElement;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduce) root.classList.add('rm');
+
+  const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+  const range = (p, a, b) => clamp((p - a) / (b - a));
+  const ease = (t) => 1 - Math.pow(1 - t, 3);
+  const isDesktop = () => innerWidth >= 1024;
+
+  /** 0 → 1 while a tall wrapper's sticky stage is pinned. */
+  const pinProgress = (wrap) => {
+    if (reduce) return 1;
+    const total = wrap.offsetHeight - innerHeight;
+    return total > 0 ? clamp(-wrap.getBoundingClientRect().top / total) : 1;
+  };
+
+  /* ---------- smooth scroll (Lenis) ---------- */
+  let lenis = null;
+  if (!reduce && window.Lenis) {
+    lenis = new Lenis({ lerp: 0.1, smoothWheel: true });
+    const raf = (t) => { lenis.raf(t); requestAnimationFrame(raf); };
+    requestAnimationFrame(raf);
+    document.querySelectorAll('a[href^="#"]').forEach((a) => {
+      const id = a.getAttribute('href');
+      if (id.length > 1) a.addEventListener('click', (e) => { e.preventDefault(); lenis.scrollTo(id, { offset: -90 }); });
+    });
+  }
+
+  /* ---------- one-shot reveals (same as <Reveal>) ---------- */
+  const io = new IntersectionObserver((entries) => entries.forEach((en) => {
+    if (en.isIntersecting) { en.target.dataset.visible = 'true'; io.unobserve(en.target); }
+  }), { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+
+  /* ---------- elements ---------- */
+  const hero = document.getElementById('hero');
+  const heroImg = document.getElementById('heroImg');
+  const heroCopy = document.getElementById('heroCopy');
+  const heroCard = document.getElementById('heroCard');
+
+  const collage = document.getElementById('collage');
+  const cards = [...document.querySelectorAll('[data-card]')];
+  const collageText = document.getElementById('collageText');
+
+  const score = document.getElementById('score');
+  const scoreTitle = document.getElementById('scoreTitle');
+  const scoreStat = document.getElementById('scoreStat');
+  const scoreNum = document.getElementById('scoreNum');
+  const scoreArc = document.getElementById('scoreArc');
+  const scoreBand = document.getElementById('scoreBand');
+  const chips = [...document.querySelectorAll('[data-chip]')];
+
+  const day = document.getElementById('day');
+  const dayFill = document.getElementById('dayFill');
+  const moments = [...document.querySelectorAll('[data-moment]')];
+
+  const blocks = [...document.querySelectorAll('[data-block]')];
+
+  /* ---------- per-frame scroll scene ---------- */
+  function update() {
+    const vh = innerHeight;
+
+    // 1 · Hero: photo drifts + zooms, copy lifts away, panel pulls in.
+    const hp = reduce ? 0 : clamp(scrollY / hero.offsetHeight);
+    heroImg.style.transform = `translate3d(0, ${hp * 14}%, 0) scale(${1 + hp * 0.1})`;
+    heroCopy.style.transform = `translate3d(0, ${-hp * 90}px, 0)`;
+    heroCopy.style.opacity = 1 - range(hp, 0.15, 0.6);
+    heroCard.style.transform = `translate3d(0, ${-hp * 160}px, 0)`;
+    hero.style.clipPath = `inset(0 ${hp * 32}px round 28px)`;
+
+    // 2 · Collage: cards fan out from behind the headline, then keep drifting up.
+    const cp = pinProgress(collage);
+    const stageW = collage.clientWidth, stageH = vh;
+    const sizeK = stageW < 640 ? 0.62 : stageW < 1024 ? 0.82 : 1;
+    const spreadK = stageW < 640 ? 1.25 : 1;
+    const inP = ease(range(cp, 0, 0.45));
+    const outP = range(cp, 0.5, 1);
+    cards.forEach((c, i) => {
+      const x = +c.dataset.x / 100 * stageW * spreadK;
+      const y = +c.dataset.y / 100 * stageH;
+      const s = +c.dataset.s;
+      c.style.width = `${+c.dataset.w * sizeK}px`;
+      c.style.height = `${+c.dataset.h * sizeK}px`;
+      const k = inP + outP * 0.3 * s;
+      const lift = outP * 220 * s;
+      c.style.transform = `translate(-50%, -50%) translate3d(${x * k}px, ${y * k - lift}px, 0) scale(${0.5 + 0.5 * inP})`;
+      c.style.opacity = clamp(range(cp, 0.02 * i, 0.25 + 0.02 * i)) * (1 - range(cp, 0.85, 1) * 0.7);
+      c.style.zIndex = Math.round(s * 10);
+    });
+    collageText.style.opacity = range(cp, 0, 0.15) * (1 - range(cp, 0.82, 1));
+    collageText.style.transform = `translate3d(0, ${(1 - range(cp, 0, 0.2)) * 30 - outP * 40}px, 0)`;
+
+    // 3 · Score: title out → number counts up + arc fills + band rises → inputs pop in.
+    const sp = pinProgress(score);
+    const tOut = range(sp, 0.06, 0.2);
+    scoreTitle.style.opacity = 1 - tOut;
+    scoreTitle.style.transform = `translate3d(0, ${-24 * tOut}px, 0)`;
+    const sIn = range(sp, 0.16, 0.3);
+    scoreStat.style.opacity = sIn;
+    scoreStat.style.transform = `translate3d(0, ${(1 - sIn) * 24}px, 0)`;
+    const fill = ease(range(sp, 0.2, 0.62));
+    scoreNum.textContent = Math.round(82 * fill);
+    scoreArc.style.strokeDashoffset = 100 - 82 * fill;
+    // Disk centre sits on the bottom edge when risen (50%), starts well below (100%).
+    scoreBand.style.transform = `translate3d(-50%, ${50 + (1 - ease(range(sp, 0.05, 0.55))) * 50}%, 0)`;
+    chips.forEach((ch, i) => {
+      const cpi = ease(range(sp, 0.62 + i * 0.05, 0.76 + i * 0.05));
+      ch.style.opacity = cpi;
+      ch.style.transform = `translate3d(0, ${(1 - cpi) * 24}px, 0) scale(${0.94 + cpi * 0.06})`;
+    });
+
+    // 5 · Day: line draws across, moments light up in turn.
+    const dp = isDesktop() ? pinProgress(day) : 1;
+    const drawn = range(dp, 0.05, 0.9);
+    dayFill.style.transform = `scaleX(${drawn})`;
+    moments.forEach((m, i) => {
+      const on = drawn >= i / moments.length - 0.001 || !isDesktop();
+      m.style.opacity = on ? 1 : 0.35;
+      m.querySelector('[data-icon]').classList.toggle('bg-accent', on && isDesktop() && drawn < (i + 1) / moments.length);
+      m.querySelector('[data-icon]').classList.toggle('bg-white', !(on && isDesktop() && drawn < (i + 1) / moments.length));
+    });
+
+    // 6 · Bands: each block holds still at the bottom while the next slides over it.
+    blocks.forEach((b, i) => {
+      const next = blocks[i + 1];
+      if (!reduce && isDesktop()) {
+        b.style.top = `${Math.min(0, vh - b.offsetHeight - 24)}px`;
+      } else {
+        b.style.top = '';
+      }
+      if (!next) return;
+      const cover = isDesktop() && !reduce ? clamp(1 - next.getBoundingClientRect().top / vh) : 0;
+      b.style.transform = `scale(${1 - cover * 0.04})`;
+      const shade = b.querySelector('[data-shade]');
+      if (shade) shade.style.opacity = cover * 0.4;
+    });
+  }
+
+  let ticking = false;
+  const onScroll = () => { if (!ticking) { ticking = true; requestAnimationFrame(() => { update(); ticking = false; }); } };
+  if (lenis) lenis.on('scroll', onScroll);
+  addEventListener('scroll', onScroll, { passive: true });
+  addEventListener('resize', onScroll);
+  addEventListener('load', update);
+  update();
+
+  /* ---------- 4 · Score carousel ---------- */
+  const track = document.getElementById('track');
+  const slides = [...track.querySelectorAll('[data-slide]')];
+  const tabs = [...document.querySelectorAll('[data-tab]')];
+  const dots = [...document.querySelectorAll('#dots span')];
+  let active = -1;
+
+  function setActive(i) {
+    if (i === active) return;
+    active = i;
+    tabs.forEach((t, j) => {
+      const on = j === i;
+      t.setAttribute('aria-selected', on);
+      t.classList.toggle('bg-accent', on); t.classList.toggle('text-ink', on);
+      t.classList.toggle('text-white/70', !on); t.classList.toggle('hover:text-white', !on);
+    });
+    dots.forEach((d, j) => { d.style.width = j === i ? '28px' : '6px'; d.classList.toggle('bg-white', j === i); d.classList.toggle('bg-white/30', j !== i); });
+    slides.forEach((s, j) => { s.style.opacity = j === i ? 1 : 0.4; s.style.transform = j === i ? 'none' : 'scale(0.96)'; });
+  }
+  function goTo(i) {
+    i = (i + slides.length) % slides.length;
+    const s = slides[i];
+    track.scrollTo({ left: s.offsetLeft - (track.clientWidth - s.offsetWidth) / 2, behavior: reduce ? 'auto' : 'smooth' });
+    setActive(i);
+  }
+  track.addEventListener('scroll', () => {
+    const mid = track.scrollLeft + track.clientWidth / 2;
+    let best = 0, dist = Infinity;
+    slides.forEach((s, j) => { const d = Math.abs(s.offsetLeft + s.offsetWidth / 2 - mid); if (d < dist) { dist = d; best = j; } });
+    setActive(best);
+  }, { passive: true });
+  tabs.forEach((t, j) => t.addEventListener('click', () => goTo(j)));
+  document.getElementById('prev').addEventListener('click', () => goTo(active - 1));
+  document.getElementById('next').addEventListener('click', () => goTo(active + 1));
+  setActive(0);
+
+  /* ---------- design notes toggle ---------- */
+  const notesBtn = document.getElementById('notesBtn');
+  notesBtn.addEventListener('click', () => {
+    const on = document.body.classList.toggle('show-notes');
+    notesBtn.setAttribute('aria-pressed', on);
+    notesBtn.querySelector('span').textContent = on ? 'Hide design notes' : 'Show design notes';
+  });
+})();
+</script>
+</body>
+</html>

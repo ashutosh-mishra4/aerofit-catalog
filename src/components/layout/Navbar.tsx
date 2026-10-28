@@ -16,7 +16,7 @@ export function Navbar({ links, cta, cartCount, onCartClick }: NavbarProps) {
   const hasItems = cartCount > 0
 
   return (
-    <header className="mx-4 flex h-[68px] items-center justify-between rounded-full border border-line bg-white pr-2 pl-7 shadow-nav">
+    <header className="sticky top-3 z-50 mx-4 flex h-[68px] items-center justify-between rounded-full border border-line bg-white/85 pr-2 pl-7 shadow-nav backdrop-blur-md">
       <div className="flex items-center gap-6">
         <Logo />
         <nav aria-label="Primary" className="hidden gap-2 text-[14px] font-medium md:flex">
