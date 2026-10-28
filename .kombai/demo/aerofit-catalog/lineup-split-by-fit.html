@@ -1,0 +1,63 @@
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&family=Inter:wght@400;500;600&display=swap');
+@import url("https://cdn.jsdelivr.net/npm/lucide-static@1.48.0/font/lucide.css");
+.serif{font-family:'Source Serif 4',serif}.sans{font-family:'Inter',sans-serif}.tnum{font-variant-numeric:tabular-nums}
+.ring-arc{transition:stroke-dashoffset 1s cubic-bezier(.16,.84,.44,1)}
+.fade{animation:fd .5s cubic-bezier(.16,.84,.44,1) both}@keyframes fd{from{opacity:0;transform:translateY(12px)}}
+</style>
+<section class="sans bg-[#FAF8F6] text-[#2A0B14] py-20 px-16" data-kid="1" data-name="band lineup section" id="lineup">
+<h2 class="serif text-[56px] leading-none font-medium tracking-[-0.02em]" data-kid="1-1" data-name="big feature headline with highlighted phrase">Five bands, <span class="italic text-[#C8553D]" data-kid="1-1-1" data-name="highlighted one-app phrase in headline">one app</span></h2>
+<div class="mt-8 flex flex-wrap items-center gap-2" data-dynamic="true" data-kid="1-2" data-name="usage and purchase mode filter bar" data-reason="entire button controls replaced by script from JS state on load and clicks" id="bar"></div>
+<p class="mt-4 text-[15px] text-[#2A0B14]/70" data-dynamic="true" data-kid="1-3" data-name="filter description caption" data-reason="text re-rendered by render() from JS use-case state on load and clicks" id="cap"></p>
+<div class="mt-6 grid grid-cols-2 gap-6" data-dynamic="true" data-kid="1-4" data-name="featured band cards grid" data-reason="card markup replaced by script from JS data on load and state changes" id="top"></div>
+<div class="mt-10" data-dynamic="true" data-kid="1-5" data-name="rest of lineup container" data-reason="children replaceable by script render" id="restWrap"><p class="text-[13px] font-medium text-[#2A0B14]/65 mb-2" data-dynamic="true" data-kid="1-5-1" data-name="rest of lineup section label" data-reason="text re-rendered by render() script on load and state changes" id="restLabel"></p><div class="bg-white rounded-[16px] divide-y divide-[#2A0B14]/8" data-dynamic="true" data-kid="1-5-2" data-name="remaining bands list card" data-reason="children replaced by script from JS data on load and state changes" id="rest"></div></div>
+</section>
+<script>
+const IMG={lite:'https://kombai-assets.b-cdn.net/generated_assets/f9b46c42-f591-4385-bfc2-9b6663bcd54f/da32fd7c279245b5ab743623f57ddf23.jpg',smart:'https://kombai-assets.b-cdn.net/generated_assets/f9b46c42-f591-4385-bfc2-9b6663bcd54f/7754f0f6d49a4ed38f644dce2670c620.jpg',pro:'https://kombai-assets.b-cdn.net/generated_assets/f9b46c42-f591-4385-bfc2-9b6663bcd54f/72180f80b3a64de99cbdef213dc621cd.jpg',music:'https://kombai-assets.b-cdn.net/generated_assets/f9b46c42-f591-4385-bfc2-9b6663bcd54f/46a42b1d18d34403be756d1c74222484.jpg',ultra:'https://kombai-assets.b-cdn.net/generated_assets/f9b46c42-f591-4385-bfc2-9b6663bcd54f/76d7a24f75bc4dbeafec4d446b539a12.jpg'};
+const TINT={endurance:['oklch(32.1% 0.0529 284.5)','#fff'],training:['oklch(83.3% 0.0912 176.1)','#2A0B14'],sleep:['oklch(74.7% 0.0954 257.1)','#2A0B14'],music:['oklch(81.5% 0.0815 352.9)','#2A0B14'],all:['oklch(81.5% 0.0815 352.9)','#2A0B14']};
+const P=[
+{id:'ultra',n:'Ultra',b:'Ships Nov 4',t:'Titanium case, dual-band GPS and 14 days of battery for multi-day races.',why:'14-day battery, dual-band GPS',bat:14,p:399,min:3,c:[['Titanium','#8B8A87'],['Black','#1F1F1F'],['Trail','#6B7B4E']]},
+{id:'pro',n:'Pro',b:'Training',t:'Built-in GPS and ECG for structured training without your phone.',why:'Built-in GPS and ECG',bat:10,p:279,min:2,c:[['Graphite','#2E2E30'],['Volt','#E3E86A'],['Stone','#BDB5AC']]},
+{id:'lite',n:'Lite',b:'Lightest',t:'Featherweight tracking for sleep, steps and daily recovery.',why:'18 g, the lightest band',bat:5,p:149,min:1,c:[['Slate','#5E6E7D'],['Black','#1F1F1F'],['Sand','#D8C8B2']]},
+{id:'smart',n:'Smart',b:'Everyday',t:'Everyday sleep, strain and recovery on an always-on display.',why:'24 g with skin temperature',bat:7,p:199,min:1,c:[['Black','#1F1F1F'],['Mist','#C8CDD2'],['Plum','#5B2439']]},
+{id:'music',n:'Music',b:'Offline',t:'Stores 500 songs and plays to Bluetooth headphones on the run.',why:'4 GB of onboard music',bat:6,p:299,min:2,c:[['Black','#1F1F1F'],['Ember','#C8553D'],['Ice','#DDE6EE']]}];
+P.forEach(p=>{p.ci=0;p.s='M'});
+const USE={all:{l:'All bands',fit:['ultra','pro'],cap:'Ultra and Pro are the most capable bands'},sleep:{l:'Sleep',fit:['lite','smart'],cap:'Lite and Smart suit this best'},training:{l:'Training',fit:['pro','ultra'],cap:'Pro and Ultra suit this best'},music:{l:'Music',fit:['music','pro'],cap:'Music and Pro suit this best'},endurance:{l:'Endurance',fit:['ultra','pro'],cap:'Ultra and Pro suit this best'}};
+const PL={1:['One',16,199],2:['Peak',25,299],3:['Life',33,399]};const SZ={S:'130–160 mm',M:'150–190 mm',L:'180–220 mm'};
+let use='endurance',mode='out',plan=2,cart={},exp={};
+const $=i=>document.getElementById(i),byId=i=>P.find(p=>p.id===i);
+function price(p,big){const cls=big?'serif text-[34px] font-medium tnum':'serif text-[20px] font-medium tnum';
+ if(mode==='out')return `<span class="${cls}">$${p.p}</span>`;
+ return plan>=p.min?`<span class="${cls}">$0</span><span class="text-[13px] opacity-75 ml-1.5">band with ${PL[plan][0]}</span>`:`<span class="text-[14px] font-medium text-[#C8553D]">Needs ${PL[p.min][0]}</span>`}
+function btn(p,dark){return mode==='mem'&&plan<p.min?`<button data-pl="${p.min}" class="h-9 px-4 rounded-full border ${dark?'border-white/50':'border-[#2A0B14]/30'} text-[13px] font-medium">Switch to ${PL[p.min][0]}</button>`:`<button data-add="${p.id}" class="h-9 px-4 rounded-full bg-[#F8F38A] text-[#2A0B14] text-[13px] font-medium inline-flex items-center gap-1.5"><i class="icon-plus"></i>${cart[p.id]?'Added '+cart[p.id]:'Add'}</button>`}
+function ringSvg(p,col){const C=2*Math.PI*46,off=C*(1-p.bat/14);return `<svg viewBox="0 0 100 100" class="absolute inset-0 w-full h-full -rotate-90"><circle cx="50" cy="50" r="46" fill="none" stroke="${col}" stroke-opacity=".18" stroke-width="1.6"/><circle class="ring-arc" cx="50" cy="50" r="46" fill="none" stroke="${col}" stroke-width="1.6" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${off}"/></svg>`}
+function config(p){return `<div class="flex items-center gap-3"><div class="flex gap-1">${p.c.map((c,j)=>`<button data-c="${p.id}" data-i="${j}" aria-label="${c[0]}" class="w-7 h-7 rounded-full p-[3px] border-2 ${j===p.ci?'border-current':'border-transparent'}"><span class="block w-full h-full rounded-full ring-1 ring-black/10" style="background:${c[1]}"></span></button>`).join('')}</div><div class="h-9 p-1 rounded-full bg-black/5 flex">${['S','M','L'].map(s=>`<button data-s="${p.id}" data-v="${s}" title="${SZ[s]}" class="w-8 rounded-full text-[12px] font-medium ${s===p.s?'bg-white text-[#2A0B14] shadow-sm':'opacity-70'}">${s}</button>`).join('')}</div><span class="text-[12px] opacity-75">${p.c[p.ci][0]} · fits ${SZ[p.s]}</span></div>`}
+function render(){
+ const U=USE[use];const [tc,tx]=TINT[use];
+ $('bar').innerHTML=Object.keys(USE).map(k=>`<button data-u="${k}" class="h-10 px-5 rounded-full text-[14px] font-medium transition ${k===use?'bg-[#C8553D] text-white':'bg-white hover:bg-[#F8F38A]'}">${USE[k].l}</button>`).join('')+'<span class="w-px h-8 bg-[#2A0B14]/15 mx-2"></span>'+[['out','Buy outright'],['mem','With membership']].map(([k,l])=>`<button data-m="${k}" class="h-10 px-5 rounded-full text-[14px] font-medium ${mode===k?'bg-[#F8F38A]':'border border-[#2A0B14]/20'}">${l}</button>`).join('')+(mode==='mem'?[1,2,3].map(t=>`<button data-pl="${t}" class="h-10 px-4 rounded-full text-[13px] ${t===plan?'ring-1 ring-[#2A0B14] font-medium bg-white':'text-[#2A0B14]/70 hover:bg-white'}">${PL[t][0]} · $${PL[t][2]}/yr</button>`).join(''):'');
+ $('cap').textContent=U.cap+'.';
+ $('top').innerHTML=U.fit.map(byId).map((p,i)=>`<article class="fade bg-white rounded-[16px] overflow-hidden shadow-[0_30px_60px_-30px_rgba(42,11,20,0.35)]" style="animation-delay:${i*.08}s">
+  <div class="relative h-[340px] flex items-center justify-center" style="background:linear-gradient(180deg,${tc} 0%,${tc} 55%,#fff 100%);color:${tx}">
+   <span class="absolute left-5 top-5 text-[12px] font-medium px-3 py-1 rounded-full bg-white/85 text-[#2A0B14]">${p.b}</span>
+   <span class="absolute right-5 top-5 text-[12px] font-medium tnum">${p.bat} days</span>
+   <div class="relative w-[260px] h-[260px] flex items-center justify-center">${ringSvg(p,tx)}<span class="w-[210px] h-[210px] rounded-full bg-white flex items-center justify-center overflow-hidden"><img src="${IMG[p.id]}" alt="Aero Fit ${p.n} in ${p.c[p.ci][0]}" class="w-[190px] h-[190px] object-contain mix-blend-multiply brightness-110 contrast-[1.05]" decoding="async" loading="lazy"></span></div>
+  </div>
+  <div class="p-6 pt-2">
+   <div class="flex items-end justify-between"><div><h3 class="serif text-[32px] font-medium leading-none">Aero Fit ${p.n}</h3><p class="mt-2 text-[13px] font-medium px-2.5 py-0.5 rounded-full inline-block" style="background:${tc};color:${tx}">${p.why}</p></div><div class="text-right">${price(p,true)}</div></div>
+   <p class="mt-3 text-[14px] text-[#2A0B14]/75">${p.t}</p>
+   <div class="mt-5 flex items-center justify-between">${config(p)}${btn(p)}</div>
+  </div></article>`).join('');
+ const rest=P.filter(p=>!U.fit.includes(p.id));
+ $('restLabel').textContent='Also in the lineup';
+ $('rest').innerHTML=rest.map(p=>`<div class="px-5">
+  <div class="h-[64px] flex items-center gap-4"><img src="${IMG[p.id]}" alt="Aero Fit ${p.n}" class="w-11 h-11 object-contain mix-blend-multiply" decoding="async" loading="lazy">
+   <p class="serif text-[20px] font-medium w-[180px]">Aero Fit ${p.n}</p><p class="text-[13px] text-[#2A0B14]/70 flex-1 truncate">${p.t}</p><span class="text-[12px] text-[#2A0B14]/65 tnum w-[70px]">${p.bat} days</span>
+   <div class="w-[200px] text-right">${price(p)}</div>
+   <button data-x="${p.id}" class="h-9 px-3 rounded-full text-[13px] border border-[#2A0B14]/20 inline-flex items-center gap-1">Options <i class="icon-chevron-down ${exp[p.id]?'rotate-180':''}"></i></button>${btn(p)}</div>
+  ${exp[p.id]?`<div class="pb-4 pl-[60px]">${config(p)}</div>`:''}</div>`).join('');
+}
+document.addEventListener('click',e=>{const t=e.target.closest('button');if(!t)return;const d=t.dataset;
+ if(d.u)use=d.u;else if(d.m)mode=d.m;else if(d.pl){plan=+d.pl;mode='mem'}else if(d.c)byId(d.c).ci=+d.i;else if(d.s)byId(d.s).s=d.v;else if(d.x)exp[d.x]=!exp[d.x];else if(d.add)cart[d.add]=(cart[d.add]||0)+1;
+ render();if(!d.u)document.querySelectorAll('.fade').forEach(x=>x.style.animation='none')});
+render();
+</script>

@@ -1,0 +1,82 @@
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400;1,8..60,500&family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.48.0/dist/tabler-icons.min.css');
+.serif{font-family:'Source Serif 4',serif}.sans{font-family:'Inter',sans-serif}
+.grid-scene{perspective:1500px}
+.band{transform-style:preserve-3d;transform:rotateX(calc(var(--my,0) * -6deg)) rotateY(calc(var(--mx,0) * 6deg));transition:transform .3s cubic-bezier(.16,.84,.44,1),opacity .3s ease}
+.band:hover{transform:rotateX(calc(var(--my,0) * -6deg)) rotateY(calc(var(--mx,0) * 6deg)) translateZ(50px) scale(1.02)}
+.band .peek{opacity:0;pointer-events:none;transition:opacity .4s ease}.band:hover .peek,.band:focus-within .peek{opacity:1}
+.starshape{clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%)}
+@media(max-width:700px){.band:hover{transform:none}}
+</style>
+<div class="sans bg-[#FAF8F6] text-[#2A0B14] antialiased overflow-x-clip pb-4 pt-4" data-kid="1" data-name="page wrapper">
+<section class="relative mx-4 rounded-[28px] overflow-hidden bg-white text-[#2A0B14] py-16 md:py-24" data-kid="1-1" data-name="band lineup section" id="lineup">
+<div class="max-w-[1240px] mx-auto px-6 md:px-8" data-kid="1-1-1" data-name="section content container">
+<div class="flex justify-between items-end gap-10 mb-9" data-kid="1-1-1-1" data-name="section heading row" id="catHead">
+<h2 class="mt-3 serif text-[52px] md:text-[76px] leading-[0.98] font-medium tracking-[-0.03em]" data-kid="1-1-1-1-1" data-name="section headline"><span class="block" data-kid="1-1-1-1-1-1" data-name="headline first line">Five bands,</span><span class="block italic text-[#C8553D]" data-kid="1-1-1-1-1-2" data-name="headline italic accent line">one app.</span></h2>
+</div>
+<div aria-label="Filter and payment options" class="flex flex-wrap items-center gap-3 mb-12" data-dynamic="true" data-kid="1-1-1-2" data-name="filter and payment toolbar" data-reason="buttons injected on every render from JS filter/mode/plan state" id="pills"></div>
+<div class="grid-scene" data-kid="1-1-1-3" data-name="3d tilt scene container"><div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8" data-dynamic="true" data-kid="1-1-1-3-1" data-name="band product card grid" data-reason="card list injected on every render from JS product and filter state" id="bandGrid" style="transform-style:preserve-3d"></div></div>
+<p class="mt-9 flex items-center gap-2.5 text-[14px] italic text-[#6B4F57]" data-kid="1-1-1-4" data-name="shelf interaction hint text"><span aria-hidden="true" class="starshape w-3.5 h-3.5 bg-[#C8553D]" data-kid="1-1-1-4-1" data-name="decorative star icon"></span>tilt your cursor across the shelf — hover any band to peek at its specs</p>
+<p aria-live="polite" class="sr-only" data-dynamic="true" data-kid="1-1-1-5" data-name="screen reader cart status message" data-reason="text written by script when items are added to cart" id="cartFeedback" role="status"></p>
+</div>
+</section>
+</div>
+<script>
+(function(){
+const IMG={lite:'https://kombai-assets.b-cdn.net/generated_assets/f9b46c42-f591-4385-bfc2-9b6663bcd54f/da32fd7c279245b5ab743623f57ddf23.jpg',smart:'https://kombai-assets.b-cdn.net/generated_assets/f9b46c42-f591-4385-bfc2-9b6663bcd54f/7754f0f6d49a4ed38f644dce2670c620.jpg',pro:'https://kombai-assets.b-cdn.net/generated_assets/f9b46c42-f591-4385-bfc2-9b6663bcd54f/72180f80b3a64de99cbdef213dc621cd.jpg',music:'https://kombai-assets.b-cdn.net/generated_assets/f9b46c42-f591-4385-bfc2-9b6663bcd54f/46a42b1d18d34403be756d1c74222484.jpg',ultra:'https://kombai-assets.b-cdn.net/generated_assets/f9b46c42-f591-4385-bfc2-9b6663bcd54f/76d7a24f75bc4dbeafec4d446b539a12.jpg'};
+const P=[
+{id:'ultra',n:'Ultra',tag:'Ships Nov 4',line:'Titanium case, dual-band GPS and 14 days of battery for multi-day races.',peek:['14-day battery','Dual-band GPS','100 m water','Titanium · 32 g'],price:399,min:3,c:[['Titanium','#8B8A87'],['Black','#1F1F1F'],['Trail','#6B7B4E']],ci:0,s:'M',tile:'radial-gradient(circle at 50% 55%,#F8F38A 0%,#FBF4B8 40%,#F4F1EE 78%)',tc:'#F8F38A'},
+{id:'pro',n:'Pro',tag:'Training',line:'Built-in GPS and ECG for structured training without your phone.',peek:['10-day battery','Built-in GPS','ECG Heart Screener','Aluminum · 27 g'],price:279,min:2,c:[['Graphite','#2E2E30'],['Volt','#E3E86A'],['Stone','#BDB5AC']],ci:0,s:'M',tile:'radial-gradient(circle at 50% 55%,#EEF0E4 0%,#E3E7D6 55%,#D9DEC8 100%)',tc:'#A3B47F'},
+{id:'lite',n:'Lite',tag:'Lightest',line:'Featherweight tracking for sleep, steps and daily recovery.',peek:['5-day battery','GPS via phone','Mono OLED','Polymer · 18 g'],price:149,min:1,c:[['Slate','#5E6E7D'],['Black','#1F1F1F'],['Sand','#D8C8B2']],ci:0,s:'M',tile:'radial-gradient(circle at 50% 55%,#F0F2F4 0%,#E3E7EB 55%,#D6DCE2 100%)',tc:'#B9C3CD'},
+{id:'smart',n:'Smart',tag:'Everyday',line:'Everyday sleep, strain and recovery on an always-on display.',peek:['7-day battery','Skin temperature','AMOLED display','Aluminum · 24 g'],price:199,min:1,c:[['Black','#1F1F1F'],['Mist','#C8CDD2'],['Plum','#5B2439']],ci:0,s:'M',tile:'radial-gradient(circle at 50% 55%,#F6EEF0 0%,#EFE3E6 55%,#E6D6DA 100%)',tc:'#E3C3CB'},
+{id:'music',n:'Music',tag:'Offline',line:'Stores 500 songs and plays to Bluetooth headphones on the run.',peek:['6-day battery','4 GB · ~500 songs','Bluetooth audio','Aluminum · 28 g'],price:299,min:2,c:[['Black','#1F1F1F'],['Ember','#C8553D'],['Ice','#DDE6EE']],ci:0,s:'M',tile:'radial-gradient(circle at 50% 55%,#FBEDE7 0%,#F6E0D8 55%,#EFD2C7 100%)',tc:'#E8907A'}];
+const PL={1:['One',16,199],2:['Peak',25,299],3:['Life',33,399]};
+const USE={sleep:{fit:['lite','smart']},training:{fit:['pro','ultra']},music:{fit:['music','pro']},endurance:{fit:['ultra','pro']}};
+const SIZE={S:'130–160 mm',M:'150–190 mm',L:'180–220 mm'};
+let mode='out',plan=2,filter='all',cart=0,addedId='';
+const $=id=>document.getElementById(id),byId=id=>P.find(p=>p.id===id);
+function priceLine(p){
+ if(mode==='out')return `<span class="serif text-[24px] font-semibold text-[#2A0B14]">$${p.price}</span>`;
+ if(plan>=p.min)return `<span class="serif text-[24px] font-semibold text-[#2A0B14]">$0</span><span class="text-[12px] text-[#6B4F57] ml-1">with ${PL[plan][0]}</span>`;
+ return `<span class="text-[13px] font-medium text-[#C8553D]">Needs ${PL[p.min][0]}</span>`;
+}
+function renderLineup(){
+ const f=(k,l)=>`<button type="button" data-act="filter" data-f="${k}" aria-pressed="${filter===k}" class="h-10 px-5 rounded-full text-[14px] font-medium transition ${filter===k?'bg-[#C8553D] text-white':'bg-[#F3EFEC] text-[#2A0B14] hover:bg-[#F8F38A]'}">${l}</button>`;
+ const m=(k,l)=>`<button type="button" data-act="mode" data-mode="${k}" aria-pressed="${mode===k}" class="h-10 px-5 rounded-full text-[14px] font-medium transition ${mode===k?'bg-[#F8F38A] text-[#2A0B14]':'border border-[#2A0B14]/20 text-[#2A0B14] hover:bg-[#F3EFEC]'}">${l}</button>`;
+ $('pills').innerHTML=f('all','All bands')+f('sleep','Sleep')+f('training','Training')+f('music','Music')+f('endurance','Endurance')+'<span class="w-px h-9 bg-[#2A0B14]/15 mx-1.5" aria-hidden="true"></span>'+m('out','Buy outright')+m('mem','With membership')+(mode==='mem'?[1,2,3].map(t=>`<button type="button" data-act="plan" data-plan="${t}" aria-pressed="${t===plan}" class="h-10 px-4 rounded-full text-[13px] transition ${t===plan?'bg-[#2A0B14]/[0.06] ring-1 ring-[#2A0B14] text-[#2A0B14] font-medium':'border border-[#2A0B14]/15 text-[#4A2A33] hover:bg-[#F3EFEC]'}">${PL[t][0]} · $${PL[t][2]}/yr</button>`).join(''):'');
+ $('bandGrid').innerHTML=P.map(p=>{
+  const dim=filter!=='all'&&!USE[filter].fit.includes(p.id),fit=filter!=='all'&&!dim,blocked=mode==='mem'&&plan<p.min;
+  return `<article class="band ${dim?'!opacity-35':''}" data-name="${p.n} band card">
+   <div class="relative aspect-[4/5] rounded-[22px] overflow-hidden shadow-[0_10px_28px_rgba(42,11,20,0.08)] flex items-center justify-center" style="background:${p.tile}">
+    <img src="${IMG[p.id]}" alt="Aero Fit ${p.n} in ${p.c[p.ci][0]}" class="w-[78%] h-[78%] object-contain mix-blend-multiply brightness-110 contrast-[1.05]" decoding="async" loading="lazy">
+    <span class="absolute left-4 top-4 text-[12px] font-medium bg-white/90 text-[#2A0B14] rounded-full px-3 py-1">${p.tag}</span>
+    ${fit?`<span class="absolute left-4 bottom-4 text-[12px] font-medium bg-[#F8F38A] text-[#2A0B14] rounded-full px-3 py-1">Good for ${filter}</span>`:''}
+    <div class="peek absolute inset-3 rounded-[16px] bg-[#FAF8F6]/95 text-[#2A0B14] p-6 flex flex-col justify-end"><p class="text-[11px] font-semibold tracking-[0.24em] uppercase text-[#6B7B4E] mb-3">At a glance</p>${p.peek.map(s=>`<p class="serif italic text-[22px] leading-[1.3]">${s}</p>`).join('')}</div>
+   </div>
+   <div class="mt-4">
+    <h3 class="serif text-[28px] font-medium leading-none">Aero Fit ${p.n}</h3>
+    <p class="mt-2 text-[14px] italic text-[#6B4F57] leading-[1.45]">${p.line}</p>
+    <div class="mt-3 flex items-center justify-between"><span class="text-[12px] font-semibold px-3 py-1 rounded-full" style="background:${p.tc}40;color:#2A0B14">${p.c[p.ci][0]}</span><div class="flex items-baseline">${priceLine(p)}</div></div>
+    <div class="mt-4 flex flex-wrap items-center gap-2">
+     <div class="flex gap-1">${p.c.map((c,j)=>`<button type="button" data-act="color" data-id="${p.id}" data-i="${j}" aria-label="${p.n}: ${c[0]}" aria-pressed="${j===p.ci}" title="${c[0]}" class="w-7 h-7 rounded-full p-[3px] border-2 ${j===p.ci?'border-[#2A0B14]':'border-transparent'}"><span class="block w-full h-full rounded-full ring-1 ring-black/10" style="background:${c[1]}"></span></button>`).join('')}</div>
+     <div class="h-10 p-1 rounded-full bg-[#F3EFEC] flex ml-1">${['S','M','L'].map(s=>`<button type="button" data-act="size" data-id="${p.id}" data-s="${s}" aria-label="${p.n}: size ${s}" aria-pressed="${s===p.s}" title="${SIZE[s]}" class="w-8 rounded-full text-[12px] font-medium ${s===p.s?'bg-white text-[#2A0B14] shadow-[0_1px_4px_rgba(42,11,20,0.12)]':'text-[#6B4F57]'}">${s}</button>`).join('')}</div>
+     ${blocked?`<button type="button" data-act="plan" data-plan="${p.min}" class="ml-auto h-10 px-4 rounded-full border border-[#2A0B14]/30 text-[13px] font-medium">Switch to ${PL[p.min][0]}</button>`:`<button type="button" data-act="add" data-id="${p.id}" aria-label="Add Aero Fit ${p.n} to cart" class="ml-auto h-10 px-4 rounded-full bg-[#F8F38A] text-[#2A0B14] text-[13px] font-medium hover:bg-[#F2EB6A] transition flex items-center gap-1.5">${addedId===p.id?'Added':'Add'} <i class="ti ${addedId===p.id?'ti-check':'ti-plus'}" aria-hidden="true"></i></button>`}
+    </div>
+   </div></article>`;
+ }).join('');
+ bindTilt();
+}
+function bindTilt(){
+ const grid=$('bandGrid'),cards=grid.querySelectorAll('.band');
+ grid.onmousemove=e=>{const r=grid.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;cards.forEach(b=>{b.style.setProperty('--mx',x);b.style.setProperty('--my',y)})};
+ grid.onmouseleave=()=>cards.forEach(b=>{b.style.setProperty('--mx',0);b.style.setProperty('--my',0)});
+}
+document.getElementById('lineup').addEventListener('click',e=>{
+ const t=e.target.closest('[data-act]');if(!t)return;const a=t.dataset.act,p=byId(t.dataset.id);
+ if(a==='filter'){filter=t.dataset.f;addedId=''}else if(a==='mode'){mode=t.dataset.mode;addedId=''}else if(a==='plan'){plan=+t.dataset.plan;mode='mem';addedId=''}else if(a==='color'){p.ci=+t.dataset.i;addedId=''}else if(a==='size'){p.s=t.dataset.s;addedId=''}else if(a==='add'){cart++;addedId=p.id;$('cartFeedback').textContent=`Aero Fit ${p.n}, ${p.c[p.ci][0]}, size ${p.s} added to cart. ${cart} item${cart===1?'':'s'} in cart.`}
+ renderLineup();
+});
+renderLineup();
+})();
+</script>
