@@ -367,6 +367,7 @@ function priceLine(p){
  return `<span class="text-[13px] font-medium text-[#C8553D]">Needs ${PL[p.min][0]}</span>`;
 }
 function renderLineup(){
+ if(!$('lineNote')||!$('bandGrid'))return;
  $('lineNote').innerHTML=mode==='out'?'Every band runs the same Aero Fit app, coaching and Recovery scores. Buy one outright and add a membership any time.':`On ${PL[plan][0]} ($${PL[plan][2]}/yr) bands it covers are $0. 12-month minimum.`;
  const f=(k,l)=>`<button data-act="filter" data-f="${k}" class="h-10 px-5 rounded-full text-[14px] font-medium transition ${filter===k?'bg-[#C8553D] text-white':'bg-[#F3EFEC] text-[#2A0B14] hover:bg-[#F8F38A]'}">${l}</button>`;
  const m=(k,l)=>`<button data-act="mode" data-mode="${k}" class="h-10 px-5 rounded-full text-[14px] font-medium transition ${mode===k?'bg-[#F8F38A] text-[#2A0B14]':'border border-[#2A0B14]/20 text-[#2A0B14] hover:bg-[#F3EFEC]'}">${l}</button>`;

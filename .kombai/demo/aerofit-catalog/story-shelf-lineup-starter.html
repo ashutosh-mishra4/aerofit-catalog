@@ -1,0 +1,63 @@
+<!-- Starter lineup for Story Shelf in P1. Replaces the source <section id="lineup"> and is itself replaced by Price Matrix in P4. -->
+<section class="relative mx-4 mt-4 rounded-[28px] overflow-hidden bg-white text-[#2A0B14] py-24" data-kid="1-2" data-name="band lineup section" id="lineup">
+<div class="max-w-[1240px] mx-auto px-8" data-kid="1-2-1" data-name="lineup content container">
+<div class="grid grid-cols-[1fr_360px] items-end gap-10" data-kid="1-2-1-1" data-name="lineup header row" id="catHead">
+<h2 class="serif text-[64px] leading-[0.98] font-medium tracking-[-0.03em]" data-kid="1-2-1-1-1" data-name="lineup headline">Five bands, <span class="italic text-[#C8553D]" data-kid="1-2-1-1-1-1" data-name="headline accent">one app.</span></h2>
+<p class="text-[15px] leading-[1.55] text-[#6B4F57]" data-kid="1-2-1-1-2" data-name="lineup intro">Every band runs the same Aero Fit app, coaching and Recovery scores. Buy one outright and add a membership any time.</p>
+</div>
+<div class="mt-10 flex items-center justify-between gap-6 border-b border-[#2A0B14]/10" data-kid="1-2-1-2" data-name="lineup controls row">
+<div role="tablist" aria-label="Filter by goal" class="flex items-center gap-7" data-dynamic="true" data-kid="1-2-1-2-1" data-name="goal tabs" data-reason="tabs rendered by script from goal state" id="luTabs"></div>
+<div class="mb-3 h-10 p-1 rounded-full bg-[#F3EFEC] flex" data-dynamic="true" data-kid="1-2-1-2-2" data-name="payment toggle" data-reason="toggle rendered by script from payment state" id="luMode"></div>
+</div>
+<div class="mt-8 grid grid-cols-5 gap-4" data-dynamic="true" data-kid="1-2-1-3" data-name="band row" data-reason="cards rendered by script from product, goal and payment state" id="luGrid"></div>
+<p aria-live="polite" role="status" class="sr-only" data-dynamic="true" data-kid="1-2-1-4" data-name="cart status message" data-reason="text written by script on add to cart" id="luStatus"></p>
+</div>
+</section>
+<script>
+/* starter lineup */
+(function(){
+const IMG={lite:'https://kombai-assets.b-cdn.net/generated_assets/f9b46c42-f591-4385-bfc2-9b6663bcd54f/da32fd7c279245b5ab743623f57ddf23.jpg',smart:'https://kombai-assets.b-cdn.net/generated_assets/f9b46c42-f591-4385-bfc2-9b6663bcd54f/7754f0f6d49a4ed38f644dce2670c620.jpg',pro:'https://kombai-assets.b-cdn.net/generated_assets/f9b46c42-f591-4385-bfc2-9b6663bcd54f/72180f80b3a64de99cbdef213dc621cd.jpg',music:'https://kombai-assets.b-cdn.net/generated_assets/f9b46c42-f591-4385-bfc2-9b6663bcd54f/46a42b1d18d34403be756d1c74222484.jpg',ultra:'https://kombai-assets.b-cdn.net/generated_assets/f9b46c42-f591-4385-bfc2-9b6663bcd54f/76d7a24f75bc4dbeafec4d446b539a12.jpg'};
+const P=[
+{id:'ultra',n:'Ultra',tag:'Ships Nov 4',line:'Titanium case, dual-band GPS and 14 days of battery for multi-day races.',price:399,min:3,c:[['Titanium','#8B8A87'],['Black','#1F1F1F'],['Trail','#6B7B4E']],ci:0},
+{id:'pro',n:'Pro',tag:'Training',line:'Built-in GPS and ECG for structured training without your phone.',price:279,min:2,c:[['Graphite','#2E2E30'],['Volt','#E3E86A'],['Stone','#BDB5AC']],ci:0},
+{id:'lite',n:'Lite',tag:'Lightest',line:'Featherweight tracking for sleep, steps and daily recovery.',price:149,min:1,c:[['Slate','#5E6E7D'],['Black','#1F1F1F'],['Sand','#D8C8B2']],ci:0},
+{id:'smart',n:'Smart',tag:'Everyday',line:'Everyday sleep, strain and recovery on an always-on display.',price:199,min:1,c:[['Black','#1F1F1F'],['Mist','#C8CDD2'],['Plum','#5B2439']],ci:0},
+{id:'music',n:'Music',tag:'Offline',line:'Stores 500 songs and plays to Bluetooth headphones on the run.',price:299,min:2,c:[['Black','#1F1F1F'],['Ember','#C8553D'],['Ice','#DDE6EE']],ci:0}];
+const FIT={sleep:['lite','smart'],training:['pro','ultra'],music:['music','pro'],endurance:['ultra','pro']};
+const GOALS=[['all','All bands'],['sleep','Sleep'],['training','Training'],['music','Music'],['endurance','Endurance']];
+const PLAN={1:'One',2:'Peak',3:'Life'};
+let goal='all',mode='out',cart=0;
+const $=id=>document.getElementById(id),byId=id=>P.find(p=>p.id===id);
+function price(p){
+ if(mode==='out')return `<span class="serif text-[22px] font-semibold">$${p.price}</span>`;
+ if(p.min<=2)return `<span class="serif text-[22px] font-semibold">$0</span><span class="ml-1 text-[12px] text-[#6B4F57]">with Peak</span>`;
+ return `<span class="text-[13px] font-medium text-[#C8553D]">Needs ${PLAN[p.min]}</span>`;
+}
+function render(){
+ $('luTabs').innerHTML=GOALS.map(([k,l])=>`<button type="button" role="tab" data-lu="goal" data-v="${k}" aria-selected="${goal===k}" class="relative pb-3 text-[15px] font-medium transition ${goal===k?'text-[#2A0B14]':'text-[#6B4F57] hover:text-[#2A0B14]'}">${l}${goal===k?'<span class="absolute left-0 right-0 -bottom-px h-[2px] bg-[#C8553D]"></span>':''}</button>`).join('');
+ $('luMode').innerHTML=[['out','Buy outright'],['mem','With Peak']].map(([k,l])=>`<button type="button" data-lu="mode" data-v="${k}" aria-pressed="${mode===k}" class="px-4 rounded-full text-[13px] font-medium transition ${mode===k?'bg-white text-[#2A0B14] shadow-[0_1px_4px_rgba(42,11,20,0.12)]':'text-[#6B4F57]'}">${l}</button>`).join('');
+ $('luGrid').innerHTML=P.map(p=>{
+  const dim=goal!=='all'&&!FIT[goal].includes(p.id),blocked=mode==='mem'&&p.min>2;
+  return `<article class="rounded-[20px] bg-[#FAF8F6] p-4 flex flex-col transition-opacity duration-300 ${dim?'opacity-35':''}" data-name="${p.n} band card">
+   <div class="relative aspect-square rounded-[14px] bg-white flex items-center justify-center">
+    <img src="${IMG[p.id]}" alt="Aero Fit ${p.n} in ${p.c[p.ci][0]}" class="w-[80%] h-[80%] object-contain mix-blend-multiply brightness-110" decoding="async" loading="lazy">
+    <span class="absolute left-3 top-3 text-[11px] font-medium bg-[#F3EFEC] rounded-full px-2.5 py-0.5">${p.tag}</span>
+   </div>
+   <h3 class="mt-4 serif text-[22px] font-medium leading-none">Aero Fit ${p.n}</h3>
+   <p class="mt-2 text-[13px] leading-[1.45] text-[#6B4F57] line-clamp-2 min-h-[38px]">${p.line}</p>
+   <div class="mt-3 flex items-center gap-1.5">${p.c.map((c,j)=>`<button type="button" data-lu="color" data-id="${p.id}" data-i="${j}" aria-label="${p.n}: ${c[0]}" aria-pressed="${j===p.ci}" title="${c[0]}" class="w-6 h-6 rounded-full p-[2px] border-2 ${j===p.ci?'border-[#2A0B14]':'border-transparent'}"><span class="block w-full h-full rounded-full ring-1 ring-black/10" style="background:${c[1]}"></span></button>`).join('')}<span class="ml-1 text-[12px] text-[#6B4F57]">${p.c[p.ci][0]}</span></div>
+   <div class="mt-auto pt-4 flex items-center justify-between">
+    <div class="flex items-baseline">${price(p)}</div>
+    ${blocked?'':`<button type="button" data-lu="add" data-id="${p.id}" aria-label="Add Aero Fit ${p.n} to cart" class="w-10 h-10 rounded-full bg-[#F8F38A] hover:bg-[#F2EB6A] transition flex items-center justify-center"><i class="ti ti-plus text-[16px]" aria-hidden="true"></i></button>`}
+   </div></article>`;
+ }).join('');
+}
+$('lineup').addEventListener('click',e=>{
+ const t=e.target.closest('[data-lu]');if(!t)return;const a=t.dataset.lu,p=byId(t.dataset.id);
+ if(a==='goal')goal=t.dataset.v;else if(a==='mode')mode=t.dataset.v;else if(a==='color')p.ci=+t.dataset.i;
+ else if(a==='add'){cart++;const cc=$('cartCount');if(cc){cc.textContent=cart;cc.className='min-w-9 h-9 px-2 rounded-full bg-[#F8F38A] text-[13px] font-medium flex items-center justify-center';}$('luStatus').textContent=`Aero Fit ${p.n}, ${p.c[p.ci][0]}, added to cart. ${cart} item${cart===1?'':'s'} in cart.`;}
+ render();
+});
+render();
+})();
+</script>

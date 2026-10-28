@@ -1,0 +1,496 @@
+{
+  "meta": {
+    "name": "Aero Fit product catalog content",
+    "version": "1.1.0",
+    "purpose": "Single source of truth for product, pricing, membership, spec and copy content on the product-catalog page. Reuse this in every new catalog design instead of inventing content.",
+    "extractedFrom": [
+      { "canvas": ".kombai/canvas/AeroFit-Catalog.canvas", "nodeId": "var_catalog_editorial", "label": "Aero Fit Catalog — Editorial Field Guide" },
+      { "canvas": ".kombai/canvas/AeroFit-Catalog.canvas", "nodeId": "var_catalog_colour", "label": "Aero Fit Catalog — Colour Drop" },
+      { "canvas": ".kombai/canvas/AeroFit-Catalog.canvas", "nodeId": "var_catalog_shelf", "label": "Aero Fit Catalog — Story Shelf" }
+    ],
+    "brandSpelling": "Aero Fit",
+    "currency": "USD",
+    "placeholderNotice": "Prices and specs are draft placeholders agreed in the designs. Replace with real numbers here and every design picks them up.",
+    "usageNotes": [
+      "Content only. This file has no images, videos or other asset URLs.",
+      "Product ids are lite, smart, pro, music, ultra. Keys match src/types/catalog.ts (ProductId, PlanTier, UseCaseId, SpecKey).",
+      "Price, membership tier, colors, sizes, taglines and the 16-row spec table are identical in all three designs.",
+      "Some fields appear in only one or two designs. Their 'seenIn' note lists which. Treat them as optional.",
+      "Availability: only Ultra has an explicit status (pre-order, ships Nov 4). Pro shows 'In stock'. The others are in stock by implication.",
+      "Known mismatch with src/data/catalog.ts: the code has Pro at $299 and Music at $279. All three designs use Pro $279 and Music $299. This file follows the designs."
+    ]
+  },
+
+  "brand": {
+    "name": "Aero Fit",
+    "tagline": "five bands · one app · since 2016",
+    "taglineSeenIn": ["shelf"],
+    "sharedAppPromise": "Every band runs the same Aero Fit app, coaching and Recovery scores.",
+    "wellnessDisclaimer": "Aero Fit features are intended for general wellness and fitness purposes. They are not intended to diagnose, treat, cure, or prevent any disease."
+  },
+
+  "ordering": {
+    "lineup": ["ultra", "pro", "lite", "smart", "music"],
+    "comparisonColumns": ["lite", "smart", "pro", "music", "ultra"],
+    "footerShop": ["lite", "smart", "pro", "music", "ultra"],
+    "featuredBand": "ultra",
+    "notes": "Lineup order = featured Ultra first, then Pro, Lite, Smart, Music. Comparison and footer go lightest to most capable."
+  },
+
+  "purchaseOptions": {
+    "modes": [
+      { "id": "outright", "label": "Buy outright" },
+      { "id": "membership", "label": "With membership" }
+    ],
+    "defaultMode": "outright",
+    "defaultMembershipPlan": "peak",
+    "returns": "Free returns",
+    "outrightPriceNote": "One-time · free returns",
+    "addToCartLabel": "Add {band} to cart",
+    "addToCartShortLabel": "Add",
+    "switchPlanLabel": "Switch to {plan}"
+  },
+
+  "sizes": {
+    "options": [
+      { "id": "S", "wristMm": "130–160 mm" },
+      { "id": "M", "wristMm": "150–190 mm" },
+      { "id": "L", "wristMm": "180–220 mm" }
+    ],
+    "default": "M",
+    "fitNoteTemplate": "Size {size} fits wrists {wristMm}"
+  },
+
+  "bands": [
+    {
+      "id": "ultra",
+      "name": "Ultra",
+      "fullName": "Aero Fit Ultra",
+      "badge": "Ships Nov 4",
+      "tagline": "Titanium case, dual-band GPS and 14 days of battery for multi-day races and long training blocks.",
+      "taglineShort": "Titanium case, dual-band GPS and 14 days of battery for multi-day races.",
+      "price": 399,
+      "membership": { "minTier": 3, "minPlan": "life", "includedWith": ["life"] },
+      "availability": { "status": "preorder", "shipsFrom": "November 4", "shortLabel": "Ships Nov 4", "preorderCta": "Pre-order Ultra" },
+      "colors": [
+        { "name": "Titanium", "hex": "#8B8A87" },
+        { "name": "Black", "hex": "#1F1F1F" },
+        { "name": "Trail", "hex": "#6B7B4E" }
+      ],
+      "keySpecs": [
+        { "value": "14 days", "label": "Battery" },
+        { "value": "100 m", "label": "Water" },
+        { "value": "Dual-band", "label": "GPS" }
+      ],
+      "highlights": ["14-day battery", "Dual-band GPS", "100 m water"],
+      "glance": ["14-day battery", "Dual-band GPS", "100 m water", "Titanium · 32 g"],
+      "cardNote": "Ships from November 4",
+      "recommendationReason": "14-day battery, dual-band GPS",
+      "imageAltTemplate": "Aero Fit Ultra in {color}",
+      "hero": {
+        "headline": "Built for the long way round.",
+        "sub": "14 days on a charge with dual-band GPS. Ultra and Pro suit this best.",
+        "cta": "View Ultra",
+        "collageLine": "14 days, dual-band GPS · Ships Nov 4"
+      }
+    },
+    {
+      "id": "pro",
+      "name": "Pro",
+      "fullName": "Aero Fit Pro",
+      "badge": "Training",
+      "tagline": "Built-in GPS and ECG for structured training without your phone.",
+      "price": 279,
+      "membership": { "minTier": 2, "minPlan": "peak", "includedWith": ["peak", "life"] },
+      "availability": { "status": "in_stock", "shortLabel": "In stock" },
+      "colors": [
+        { "name": "Graphite", "hex": "#2E2E30" },
+        { "name": "Volt", "hex": "#E3E86A" },
+        { "name": "Stone", "hex": "#BDB5AC" }
+      ],
+      "highlights": ["Built-in GPS", "ECG Heart Screener", "10-day battery"],
+      "glance": ["10-day battery", "Built-in GPS", "ECG Heart Screener", "Aluminum · 27 g"],
+      "cardNote": "In stock · free returns",
+      "recommendationReason": "built-in GPS and ECG",
+      "imageAltTemplate": "Aero Fit Pro in {color}",
+      "hero": {
+        "headline": "Leave the phone in the locker.",
+        "sub": "Built-in GPS and ECG for structured training. Pro and Ultra suit this best.",
+        "cta": "View Pro",
+        "collageLine": "Built-in GPS and ECG"
+      }
+    },
+    {
+      "id": "lite",
+      "name": "Lite",
+      "fullName": "Aero Fit Lite",
+      "badge": "Lightest",
+      "tagline": "Featherweight tracking for sleep, steps and daily recovery.",
+      "price": 149,
+      "membership": { "minTier": 1, "minPlan": "one", "includedWith": ["one", "peak", "life"] },
+      "availability": { "status": "in_stock", "shortLabel": "In stock" },
+      "colors": [
+        { "name": "Slate", "hex": "#5E6E7D" },
+        { "name": "Black", "hex": "#1F1F1F" },
+        { "name": "Sand", "hex": "#D8C8B2" }
+      ],
+      "highlights": ["18 g with band", "Sleep & recovery", "5-day battery"],
+      "glance": ["5-day battery", "GPS via phone", "Mono OLED", "Polymer · 18 g"],
+      "cardNote": "18 g · the lightest band",
+      "recommendationReason": "18 g, the lightest band",
+      "imageAltTemplate": "Aero Fit Lite in {color}",
+      "hero": {
+        "headline": "Wear it to bed. Wake up knowing.",
+        "sub": "Featherweight sleep, steps and recovery tracking. Lite and Smart suit this best.",
+        "cta": "View Lite",
+        "collageLine": "Featherweight sleep and recovery tracking"
+      }
+    },
+    {
+      "id": "smart",
+      "name": "Smart",
+      "fullName": "Aero Fit Smart",
+      "badge": "Everyday",
+      "tagline": "Everyday sleep, strain and recovery on an always-on display.",
+      "price": 199,
+      "membership": { "minTier": 1, "minPlan": "one", "includedWith": ["one", "peak", "life"] },
+      "availability": { "status": "in_stock", "shortLabel": "In stock" },
+      "colors": [
+        { "name": "Black", "hex": "#1F1F1F" },
+        { "name": "Mist", "hex": "#C8CDD2" },
+        { "name": "Plum", "hex": "#5B2439" }
+      ],
+      "highlights": ["Always-on AMOLED", "Skin temperature", "7-day battery"],
+      "glance": ["7-day battery", "Skin temperature", "AMOLED display", "Aluminum · 24 g"],
+      "cardNote": "24 g · skin temperature",
+      "recommendationReason": "24 g with skin temperature",
+      "imageAltTemplate": "Aero Fit Smart in {color}",
+      "hero": {
+        "headline": "One display, all day.",
+        "sub": "Everyday sleep, strain and recovery on an always-on display. Smart and Lite suit this best.",
+        "cta": "View Smart",
+        "collageLine": "Always-on display, skin temperature"
+      }
+    },
+    {
+      "id": "music",
+      "name": "Music",
+      "fullName": "Aero Fit Music",
+      "badge": "Offline",
+      "tagline": "Stores 500 songs and plays to Bluetooth headphones on the run.",
+      "price": 299,
+      "membership": { "minTier": 2, "minPlan": "peak", "includedWith": ["peak", "life"] },
+      "availability": { "status": "in_stock", "shortLabel": "In stock" },
+      "colors": [
+        { "name": "Black", "hex": "#1F1F1F" },
+        { "name": "Ember", "hex": "#C8553D" },
+        { "name": "Ice", "hex": "#DDE6EE" }
+      ],
+      "highlights": ["4 GB · ~500 songs", "Bluetooth audio", "6-day battery"],
+      "glance": ["6-day battery", "4 GB · ~500 songs", "Bluetooth audio", "Aluminum · 28 g"],
+      "cardNote": "4 GB · ~500 songs",
+      "recommendationReason": "4 GB of onboard music",
+      "imageAltTemplate": "Aero Fit Music in {color}",
+      "hero": {
+        "headline": "500 songs. Zero phones.",
+        "sub": "Stores 4 GB and plays to Bluetooth headphones on the run. Music and Pro suit this best.",
+        "cta": "View Music",
+        "collageLine": "500 songs, Bluetooth headphones"
+      }
+    }
+  ],
+
+  "memberships": {
+    "minimumTermMonths": 12,
+    "billing": "Billed annually with a 12-month minimum term",
+    "bandPriceWithMembership": "$0",
+    "plans": [
+      {
+        "tier": 1,
+        "id": "one",
+        "name": "One",
+        "fullName": "Aero Fit One",
+        "monthly": 16,
+        "yearly": 199,
+        "bandsIncluded": ["lite", "smart"],
+        "bandsSummary": "Lite or Smart included",
+        "description": "Sleep, Recovery and Strain scores, plus daily coaching in the app.",
+        "descriptionSeenIn": ["shelf"]
+      },
+      {
+        "tier": 2,
+        "id": "peak",
+        "name": "Peak",
+        "fullName": "Aero Fit Peak",
+        "monthly": 25,
+        "yearly": 299,
+        "bandsIncluded": ["lite", "smart", "pro", "music"],
+        "bandsSummary": "Lite, Smart, Pro or Music included",
+        "description": "Everything in One, plus training plans, ECG history and music sync.",
+        "descriptionSeenIn": ["shelf"]
+      },
+      {
+        "tier": 3,
+        "id": "life",
+        "name": "Life",
+        "fullName": "Aero Fit Life",
+        "monthly": 33,
+        "yearly": 399,
+        "bandsIncluded": ["lite", "smart", "pro", "music", "ultra"],
+        "bandsSummary": "Any band, including Ultra",
+        "description": "Everything in Peak, plus the Ultra, expedition maps and priority support.",
+        "descriptionSeenIn": ["shelf"]
+      }
+    ],
+    "planButtonTemplate": "{plan} · ${yearly}/yr",
+    "planPriceLineTemplate": "${monthly}/mo · ${yearly}/yr"
+  },
+
+  "pricingCopy": {
+    "outright": { "price": "${price}", "note": "One-time · free returns" },
+    "membershipIncluded": { "price": "$0 band", "note": "With {plan} · ${yearly}/yr (${monthly}/mo)" },
+    "membershipNotIncluded": { "title": "Included with {minPlan}", "note": "Not part of {plan}" },
+    "compactMembershipLabel": "$0 with {plan}",
+    "compactBlockedLabel": "Needs {minPlan}",
+    "tableHeaderCellIncluded": "$0 band",
+    "tableHeaderCellBlocked": "Needs {minPlan}",
+    "heroCardPriceLine": "${price}, or included with {minPlan}",
+    "lineupNote": {
+      "outright": "Every band runs the same Aero Fit app, coaching and Recovery scores. Buy one outright and add a membership any time.",
+      "membershipExample": "On a membership the band is included. Example: Pro on Peak is $0 for the band, $299 billed today, 12-month minimum.",
+      "membershipShort": "On {plan} (${yearly}/yr) bands it covers are $0. 12-month minimum."
+    }
+  },
+
+  "useCases": [
+    {
+      "id": "sleep",
+      "label": "Sleep",
+      "cardTitle": "Shop for sleep",
+      "caption": "Lite and Smart suit this best",
+      "fit": ["lite", "smart"],
+      "highlightRows": ["sleep", "temp", "weight", "battery"],
+      "fitBadgeTemplate": "Good for sleep"
+    },
+    {
+      "id": "training",
+      "label": "Training",
+      "cardTitle": "Shop for training",
+      "caption": "Pro and Ultra suit this best",
+      "fit": ["pro", "ultra"],
+      "highlightRows": ["gps", "modes", "ecg", "recovery"],
+      "fitBadgeTemplate": "Good for training"
+    },
+    {
+      "id": "music",
+      "label": "Music",
+      "cardTitle": "Shop for music",
+      "caption": "Music and Pro suit this best",
+      "fit": ["music", "pro"],
+      "highlightRows": ["storage", "bluetooth", "gps"],
+      "fitBadgeTemplate": "Good for music"
+    },
+    {
+      "id": "endurance",
+      "label": "Endurance",
+      "cardTitle": "Shop for endurance",
+      "caption": "Ultra and Pro suit this best",
+      "fit": ["ultra", "pro"],
+      "highlightRows": ["battery", "gps", "water", "case"],
+      "fitBadgeTemplate": "Good for endurance"
+    }
+  ],
+  "defaultUseCase": "endurance",
+
+  "specTable": {
+    "columns": ["lite", "smart", "pro", "music", "ultra"],
+    "totalRows": 16,
+    "primaryRows": 8,
+    "showAllLabel": "Show all 16 specs",
+    "showFewerLabel": "Show fewer specs",
+    "valueLegend": "true = check mark, false = dash, strings render as text",
+    "rows": [
+      { "key": "battery", "label": "Battery life", "primary": true, "values": { "lite": "5 days", "smart": "7 days", "pro": "10 days", "music": "6 days", "ultra": "14 days" } },
+      { "key": "gps", "label": "GPS", "primary": true, "values": { "lite": "Via phone", "smart": "Via phone", "pro": "Built-in", "music": "Built-in", "ultra": "Dual-band" } },
+      { "key": "ecg", "label": "ECG with Heart Screener", "primary": true, "values": { "lite": false, "smart": false, "pro": true, "music": false, "ultra": true } },
+      { "key": "storage", "label": "Onboard music", "primary": true, "values": { "lite": false, "smart": false, "pro": false, "music": "4 GB · ~500 songs", "ultra": false } },
+      { "key": "case", "label": "Case material", "primary": true, "values": { "lite": "Polymer", "smart": "Aluminum", "pro": "Aluminum", "music": "Aluminum", "ultra": "Titanium" } },
+      { "key": "weight", "label": "Weight with band", "primary": true, "values": { "lite": "18 g", "smart": "24 g", "pro": "27 g", "music": "28 g", "ultra": "32 g" } },
+      { "key": "outright", "label": "Buy outright", "primary": true, "values": { "lite": "$149", "smart": "$199", "pro": "$279", "music": "$299", "ultra": "$399" } },
+      { "key": "included", "label": "Included with membership", "primary": true, "values": { "lite": "One, Peak, Life", "smart": "One, Peak, Life", "pro": "Peak, Life", "music": "Peak, Life", "ultra": "Life only" } },
+      { "key": "display", "label": "Display", "primary": false, "values": { "lite": "Mono OLED", "smart": "AMOLED", "pro": "AMOLED", "music": "AMOLED", "ultra": "AMOLED, sapphire" } },
+      { "key": "water", "label": "Water resistance", "primary": false, "values": { "lite": "50 m", "smart": "50 m", "pro": "50 m", "music": "50 m", "ultra": "100 m" } },
+      { "key": "sleep", "label": "Sleep stages & Sleep Performance", "primary": false, "values": { "lite": true, "smart": true, "pro": true, "music": true, "ultra": true } },
+      { "key": "recovery", "label": "Recovery & Strain scores", "primary": false, "values": { "lite": true, "smart": true, "pro": true, "music": true, "ultra": true } },
+      { "key": "temp", "label": "Skin temperature", "primary": false, "values": { "lite": false, "smart": true, "pro": true, "music": true, "ultra": true } },
+      { "key": "bp", "label": "Blood Pressure Insights", "primary": false, "values": { "lite": false, "smart": false, "pro": true, "music": false, "ultra": true } },
+      { "key": "modes", "label": "Workout types", "primary": false, "values": { "lite": "20", "smart": "40", "pro": "120", "music": "80", "ultra": "150" } },
+      { "key": "bluetooth", "label": "Bluetooth headphones", "primary": false, "values": { "lite": false, "smart": false, "pro": false, "music": true, "ultra": false } }
+    ],
+    "metrics": {
+      "batteryDays": { "lite": 5, "smart": 7, "pro": 10, "music": 6, "ultra": 14 },
+      "weightGrams": { "lite": 18, "smart": 24, "pro": 27, "music": 28, "ultra": 32 },
+      "waterResistanceMeters": { "lite": 50, "smart": 50, "pro": 50, "music": 50, "ultra": 100 },
+      "workoutTypes": { "lite": 20, "smart": 40, "pro": 120, "music": 80, "ultra": 150 }
+    },
+    "intro": "The rows that decide most purchases come first. Rows for {useCase} are highlighted.",
+    "headingPrimary": "How the five differ.",
+    "specCountLabel": "Specs side by side"
+  },
+
+  "bandFinder": {
+    "seenIn": ["colour", "shelf"],
+    "eyebrow": "Find your band · three questions",
+    "resultEyebrow": "Start by comparing",
+    "resultCtaTemplate": "Compare {bandA} and {bandB}",
+    "resultPayNoteOutright": "${priceA} and ${priceB} outright",
+    "resultPayNoteMembership": "{band} from $0 on {minPlan}",
+    "defaultAnswers": { "use": "training", "night": "light", "pay": "mem" },
+    "questions": [
+      {
+        "id": "use",
+        "title": "What will you use it for most?",
+        "helper": "Pick the one that fills most of your week. Battery is usually the deciding row.",
+        "options": [
+          { "value": "sleep", "label": "Sleep" },
+          { "value": "training", "label": "Training" },
+          { "value": "music", "label": "Music on runs" },
+          { "value": "endurance", "label": "Long days outdoors" }
+        ]
+      },
+      {
+        "id": "night",
+        "title": "How do you feel about wearing it overnight?",
+        "helper": "Sleep stages need it on your wrist all night. Every gram counts at 3 am.",
+        "options": [
+          { "value": "light", "label": "I want the lightest band" },
+          { "value": "any", "label": "Weight doesn't matter" }
+        ]
+      },
+      {
+        "id": "pay",
+        "title": "How would you like to pay?",
+        "helper": "Buy the band outright, or get it included with a 12-month membership.",
+        "options": [
+          { "value": "out", "label": "Buy the band outright" },
+          { "value": "mem", "label": "Include it in a membership" }
+        ]
+      }
+    ],
+    "recommendations": {
+      "sleep": { "light": ["lite", "smart"], "any": ["smart", "pro"] },
+      "training": { "light": ["pro", "smart"], "any": ["pro", "ultra"] },
+      "music": { "light": ["music", "smart"], "any": ["music", "pro"] },
+      "endurance": { "light": ["pro", "smart"], "any": ["ultra", "pro"] }
+    }
+  },
+
+  "stories": [
+    {
+      "id": "pro-training",
+      "seenIn": ["shelf"],
+      "band": "pro",
+      "bigNumber": "120",
+      "bigNumberLabel": "workout types tracked on Aero Fit Pro",
+      "headline": "Built-in GPS and ECG",
+      "text": "Structured training without your phone. 10 days of battery, Heart Screener and Blood Pressure Insights included."
+    },
+    {
+      "id": "ultra-endurance",
+      "seenIn": ["shelf"],
+      "band": "ultra",
+      "bigNumber": "14",
+      "bigNumberUnit": "days",
+      "bigNumberLabel": "on a single charge, Aero Fit Ultra",
+      "quote": "A week of trail miles fits between charges.",
+      "supportingLine": "Titanium case · dual-band GPS · 100 m water"
+    },
+    {
+      "id": "ultra-preorder",
+      "seenIn": ["shelf"],
+      "band": "ultra",
+      "eyebrow": "Aero Fit Ultra",
+      "headline": "Ships from November 4",
+      "text": "$399 one-time with free returns — or $0 for the band on an Aero Fit Life membership.",
+      "primaryCta": "Pre-order Ultra",
+      "secondaryCta": "See memberships"
+    }
+  ],
+
+  "sectionCopy": {
+    "shopFor": {
+      "seenIn": ["editorial"],
+      "heading": "Which band belongs in your day?",
+      "intro": "Pick what you do most. We'll point out the bands that suit it in the lineup and comparison below."
+    },
+    "lineup": {
+      "heading": "Five bands, one app",
+      "note": "Every band runs the same Aero Fit app, coaching and Recovery scores. Buy one outright and add a membership any time."
+    },
+    "compare": {
+      "heading": "How the five differ.",
+      "toggleLabelOutright": "Buy outright",
+      "toggleLabelMembership": "With {plan} membership"
+    },
+    "filters": {
+      "seenIn": ["shelf"],
+      "pills": ["All bands", "Sleep", "Training", "Music", "Endurance"]
+    },
+    "tickerFeatures": {
+      "seenIn": ["colour"],
+      "items": ["Sleep stages", "Recovery & Strain", "Skin temperature", "ECG Heart Screener", "Dual-band GPS", "14-day battery", "One app, five bands"]
+    }
+  },
+
+  "navigation": {
+    "primaryLinksByDesign": {
+      "editorial": [
+        { "label": "Overview", "href": "#" },
+        { "label": "How it works", "href": "#" },
+        { "label": "Shop bands", "href": "#", "active": true }
+      ],
+      "colour": [
+        { "label": "Overview", "href": "#" },
+        { "label": "How it works", "href": "#" },
+        { "label": "Shop bands", "href": "#", "active": true }
+      ],
+      "shelf": [
+        { "label": "Lineup", "href": "#lineup" },
+        { "label": "Band finder", "href": "#guide" },
+        { "label": "Memberships", "href": "#plans" },
+        { "label": "Compare", "href": "#compare", "active": true }
+      ]
+    },
+    "cart": { "label": "Cart", "icon": "shopping-bag", "initialCount": 0 },
+    "primaryAction": { "label": "Join Aero Fit free" }
+  },
+
+  "footer": {
+    "columns": [
+      {
+        "title": "Shop",
+        "links": ["Aero Fit Lite", "Aero Fit Smart", "Aero Fit Pro", "Aero Fit Music", "Aero Fit Ultra"]
+      },
+      {
+        "title": "Memberships",
+        "links": ["Aero Fit One", "Aero Fit Peak", "Aero Fit Life", "Compare plans"]
+      },
+      {
+        "title": "Support",
+        "links": ["Help Center", "Sizing guide", "Accessories", "Download App"]
+      },
+      {
+        "title": "Connect",
+        "social": [
+          { "label": "Instagram", "icon": "brand-instagram" },
+          { "label": "YouTube", "icon": "brand-youtube" },
+          { "label": "Podcast", "icon": "microphone" },
+          { "label": "Contact", "icon": "mail" }
+        ]
+      }
+    ],
+    "disclaimer": "Aero Fit features are intended for general wellness and fitness purposes. They are not intended to diagnose, treat, cure, or prevent any disease.",
+    "finePrint": "© 2026 Aero Fit · membership plans are billed annually with a 12-month minimum term",
+    "legalLinks": ["Terms & Conditions", "Privacy Policy", "Accessibility"]
+  }
+}
