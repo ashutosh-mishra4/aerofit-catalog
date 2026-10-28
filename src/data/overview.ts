@@ -55,9 +55,8 @@ export const METRICS: Metric[] = [
     label: 'Sleep Performance',
     value: '86',
     unit: '%',
-    description: 'How much of the sleep your body needed you actually got, split into light, deep and REM stages.',
     sources: ['Sleep stages', 'Skin temperature', 'Breathing rate'],
-    image: `${LIFESTYLE_CDN}/a01a86b9ff904c068d38a21a52bd3be1.jpg`,
+    image: `${ASSET_CDN}/989e11cd96844ee89265373e9d45e84c.jpg`,
     imageAlt: 'Woman resting with her Aero Fit Lite',
     imagePosition: 'object-[75%_center]',
     readout: {
@@ -82,7 +81,6 @@ export const METRICS: Metric[] = [
     label: 'Recovery',
     value: '82',
     unit: '%',
-    description: 'A morning read on how ready you are to take on load, so you know whether to push or back off.',
     sources: ['Heart rate variability', 'Resting heart rate', 'Sleep'],
     image: `${LIFESTYLE_CDN}/87d408f175064ec88d083cb4a3861585.jpg`,
     imageAlt: 'Woman with morning coffee wearing her Aero Fit Smart',
@@ -95,7 +93,6 @@ export const METRICS: Metric[] = [
     label: 'Strain',
     readoutLabel: 'Strain · 0–21',
     value: '14.2',
-    description: 'Every workout, commute and flight of stairs adds up to one daily effort score on a 0–21 scale.',
     sources: ['Heart rate zones', 'Workout types', 'Steps'],
     image: `${LIFESTYLE_CDN}/356b3e3c8d704bf4887b81203fda5357.jpg`,
     imageAlt: 'Runner wearing Aero Fit Pro in the blocks on a track',
@@ -109,7 +106,6 @@ export const METRICS: Metric[] = [
     readoutLabel: 'Resting heart rate',
     value: '52',
     unit: 'bpm',
-    description: 'Resting heart rate trends, plus ECG and Blood Pressure Insights on Pro and Ultra.',
     sources: ['Resting HR', 'ECG', 'Blood pressure'],
     image: `${LIFESTYLE_CDN}/b676a18a466145849599dd16012925dc.jpg`,
     imageAlt: 'Athlete checking her pulse on her Aero Fit Pro',
@@ -153,7 +149,6 @@ export const BAND_SHOWCASES: BandShowcase[] = [
     photoAlt: 'Aero Fit Lite on morning linen sheets',
     statement:
       'Our lightest band. A screenless tracker for sleep, steps and daily recovery that you will forget you are wearing.',
-    stat: { label: 'As light as', value: '18', unit: 'g', note: 'With the strap on.' },
     highlights: [
       { icon: IconBattery4, title: '5 days of battery', description: 'Charge once on the weekend and again mid-week.' },
       { icon: IconMoonStars, title: 'Sleep stages and Sleep Performance', description: 'The same sleep scoring as every other band.' },
@@ -167,7 +162,6 @@ export const BAND_SHOWCASES: BandShowcase[] = [
     photo: `${LIFESTYLE_CDN}/356b3e3c8d704bf4887b81203fda5357.jpg`,
     photoAlt: 'Runner wearing Aero Fit Pro on a track',
     statement: 'Built-in GPS and ECG for structured training without your phone.',
-    stat: { label: 'Tracks up to', value: '120', note: 'workout types, from intervals to open-water swims.' },
     highlights: [
       { icon: IconMapPin, title: 'Built-in GPS', description: 'Leave the phone at home and still get pace and route.' },
       { icon: IconHeartRateMonitor, title: 'ECG with Heart Screener', description: 'Plus Blood Pressure Insights in the app.' },
@@ -181,7 +175,6 @@ export const BAND_SHOWCASES: BandShowcase[] = [
     photo: `${LIFESTYLE_CDN}/1554a09252854047951ad166e87cafc5.jpg`,
     photoAlt: 'Aero Fit Ultra on a mossy summit rock',
     statement: 'Titanium case, dual-band GPS and two weeks of battery for multi-day races and long training blocks.',
-    stat: { label: 'Up to', value: '14', unit: 'days', note: 'of battery on one charge.', withArcs: true },
     highlights: [
       { icon: IconCurrentLocation, title: 'Dual-band GPS', description: 'Holds a clean track under trees and between buildings.' },
       { icon: IconDiamond, title: 'Titanium and sapphire', description: 'A titanium case and a sapphire-covered AMOLED display.' },

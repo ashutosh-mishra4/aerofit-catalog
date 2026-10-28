@@ -19,7 +19,6 @@ export interface Metric {
   readoutLabel?: string
   value: string
   unit?: string
-  description: string
   sources: string[]
   image: string
   imageAlt: string
@@ -68,7 +67,6 @@ export interface BandShowcase {
   photo: string
   photoAlt: string
   statement: string
-  stat: { label: string; value: string; unit?: string; note: string; withArcs?: boolean }
   highlights: Array<{ icon: Icon; title: string; description: string }>
   ctaLabel: string
 }
