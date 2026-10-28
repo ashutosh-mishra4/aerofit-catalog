@@ -28,7 +28,7 @@ const CARD_STYLES: Record<CollageItem['kind'], string> = {
   stat: 'flex flex-col justify-center rounded-thumb bg-white px-4 shadow-float',
 }
 
-/** Pinned scene: photo and stat cards fan out from behind the headline, each at its own speed. */
+/** Pinned scene: photo and stat cards fan out from behind the headline, each at its own speed, then fade out as the pin ends. */
 export function SignalCollageSection() {
   const wrapRef = useRef<HTMLDivElement>(null)
   const textRef = useRef<HTMLDivElement>(null)
@@ -44,8 +44,10 @@ export function SignalCollageSection() {
     const stageH = window.innerHeight
     const sizeK = stageW < 640 ? 0.62 : stageW < 1024 ? 0.82 : 1
     const spreadK = stageW < 640 ? 1.25 : 1
-    const fanIn = easeOutCubic(range(p, 0, 0.45))
-    const driftOut = range(p, 0.5, 1)
+    const fanIn = easeOutCubic(range(p, 0, 0.4))
+    const driftOut = range(p, 0.45, 0.78)
+    // Fully gone by 0.78: the next section overlaps the last screen of this pin and fades its headline in from there.
+    const fadeOut = range(p, 0.58, 0.78)
 
     COLLAGE_ITEMS.forEach((item, i) => {
       const card = cardRefs.current[i]
@@ -57,16 +59,16 @@ export function SignalCollageSection() {
       card.style.width = `${item.width * sizeK}px`
       card.style.height = `${item.height * sizeK}px`
       card.style.transform = `translate(-50%, -50%) translate3d(${x * reach}px, ${y * reach - lift}px, 0) scale(${0.5 + 0.5 * fanIn})`
-      card.style.opacity = String(clamp(range(p, 0.02 * i, 0.25 + 0.02 * i)) * (1 - range(p, 0.85, 1) * 0.7))
+      card.style.opacity = String(clamp(range(p, 0.02 * i, 0.25 + 0.02 * i)) * (1 - fadeOut))
       card.style.zIndex = String(Math.round(item.speed * 10))
     })
 
-    text.style.opacity = String(range(p, 0, 0.15) * (1 - range(p, 0.82, 1)))
+    text.style.opacity = String(range(p, 0, 0.15) * (1 - range(p, 0.52, 0.7)))
     text.style.transform = `translate3d(0, ${(1 - range(p, 0, 0.2)) * 30 - driftOut * 40}px, 0)`
   })
 
   return (
-    <div ref={wrapRef} className="pin-wrap relative h-[220vh]">
+    <div ref={wrapRef} className="pin-wrap relative h-[240vh]">
       <div className="pin-stage sticky top-0 flex h-svh items-center justify-center overflow-hidden">
         <div aria-hidden>
           {COLLAGE_ITEMS.map((item, i) => (

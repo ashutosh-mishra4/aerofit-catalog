@@ -41,6 +41,15 @@
   --color-band-olive: #6b7b4e;
   --color-ember: #c8553d;
   --color-sage: #a3b47f;
+  /* Muted tints of the band colourways for the overview band panels */
+  --color-band-slate-soft: #dfe5eb;
+  --color-band-olive-soft: #e2e7d7;
+  --color-band-butter-soft: #f3efd4;
+  /* Score card readouts and their light section surface */
+  --color-pastel-red: #f2a39b;
+  --color-pastel-blue: #a8c8ec;
+  --color-pastel-blue-deep: #6f93c4;
+  --color-beige: #efe7da;
 
   /* Radii */
   --radius-thumb: 16px;
@@ -173,6 +182,18 @@ html.lenis body {
 
 .lenis.lenis-smooth [data-lenis-prevent] {
   overscroll-behavior: contain;
+}
+
+/* Day timeline moments: scroll writes --reach and --scroll-focus (0–1) inline on each moment; nothing else lights them. */
+.day-moment {
+  opacity: calc(0.35 + 0.65 * var(--reach, 1));
+}
+
+.day-moment-photo {
+  --focus: var(--scroll-focus, 1);
+  opacity: calc(0.45 + 0.55 * var(--focus));
+  filter: grayscale(calc((1 - var(--focus)) * 0.7)) brightness(calc(0.8 + 0.2 * var(--focus)));
+  transform: scale(calc(0.97 + 0.03 * var(--focus)));
 }
 
 /* Reduced motion: no pinning or stacking, every scene rendered in its end state. */

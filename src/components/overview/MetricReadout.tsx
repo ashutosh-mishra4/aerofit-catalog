@@ -1,10 +1,18 @@
 import { cn } from '../../lib/cn'
 import type { Metric, ReadoutTone } from '../../types/content'
 
-const TONE_CLASSES: Record<ReadoutTone, string> = {
+/** Sleep bars read in blues: the standout night in pastel blue, the rest in a deeper pastel blue. */
+const BAR_TONES: Record<ReadoutTone, string> = {
+  chip: 'bg-chip',
+  ink: 'bg-pastel-blue-deep',
+  accent: 'bg-pastel-blue',
+}
+
+/** Strain segments: today's position in pastel red. */
+const SEGMENT_TONES: Record<ReadoutTone, string> = {
   chip: 'bg-chip',
   ink: 'bg-ink',
-  accent: 'bg-accent',
+  accent: 'bg-pastel-red',
 }
 
 /** Floating app readout pinned to the corner of a score card photo. */
@@ -22,7 +30,7 @@ export function MetricReadout({ metric }: { metric: Metric }) {
       {readout.kind === 'bars' && (
         <div className="mt-3 flex h-8 items-end gap-[3px]" aria-hidden>
           {readout.bars.map((bar, i) => (
-            <span key={i} className={cn('flex-1 rounded-sm', TONE_CLASSES[bar.tone])} style={{ height: `${bar.level}%` }} />
+            <span key={i} className={cn('flex-1 rounded-sm', BAR_TONES[bar.tone])} style={{ height: `${bar.level}%` }} />
           ))}
         </div>
       )}
@@ -40,7 +48,7 @@ export function MetricReadout({ metric }: { metric: Metric }) {
         <>
           <div className="mt-3 flex gap-1" aria-hidden>
             {readout.segments.map((tone, i) => (
-              <span key={i} className={cn('h-1.5 flex-1 rounded-full', TONE_CLASSES[tone])} />
+              <span key={i} className={cn('h-1.5 flex-1 rounded-full', SEGMENT_TONES[tone])} />
             ))}
           </div>
           <p className="mt-3 text-[12px] text-muted">{readout.caption}</p>

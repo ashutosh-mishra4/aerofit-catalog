@@ -80,7 +80,7 @@ export function ScoresTrackSection() {
   return (
     <div ref={wrapRef} id={OVERVIEW_SECTION_IDS.scores} className="pin-wrap relative lg:h-[380vh]">
       <div className="pin-stage flex flex-col justify-center lg:sticky lg:top-0 lg:h-svh">
-        <section className="relative mx-4 overflow-hidden rounded-section bg-ink py-16 text-white lg:py-14">
+        <section className="relative mx-4 overflow-hidden rounded-section bg-beige py-16 text-ink lg:py-14">
           <Reveal className="mx-auto max-w-page px-4 text-center">
             <h2 className="font-serif text-[36px] leading-[1.08] font-medium tracking-[-0.01em] text-balance lg:text-heading">
               A band that understands your body
@@ -122,10 +122,9 @@ export function ScoresTrackSection() {
                       {metric.label}
                     </h3>
                     <div>
-                      <p className="text-[15px] leading-[1.6] text-white/70">{metric.description}</p>
-                      <ul className="mt-4 flex flex-wrap gap-2" aria-label={`${metric.label} is based on`}>
+                      <ul className="flex flex-wrap gap-2" aria-label={`${metric.label} is based on`}>
                         {metric.sources.map((source) => (
-                          <li key={source} className="rounded-full bg-white/10 px-3 py-1 text-[12px] font-medium">
+                          <li key={source} className="rounded-full bg-white px-3 py-1 text-[12px] font-medium">
                             {source}
                           </li>
                         ))}

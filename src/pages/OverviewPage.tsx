@@ -26,17 +26,18 @@ export function OverviewPage() {
       <DayTimelineSection />
       <BandsStackSection />
       <CtaBanner
+        tone="soft"
         title="You pay for the membership. The band comes with it."
         description={`Plans start at ${formatPrice(PLANS[1].yearly)} a year with Lite or Smart included at $0. One yearly charge, no separate bill for the hardware.`}
         image={{ src: HOW_IT_WORKS_IMAGE, alt: 'Aero Fit band in its open box with a welcome card' }}
         actions={
           <>
-            <Link to={ROUTES.howItWorks} className={buttonClasses({ variant: 'accent', size: 'lg' })}>
+            <Link to={ROUTES.howItWorks} className={buttonClasses({ variant: 'primary', size: 'lg' })}>
               How membership works
             </Link>
             <Link
               to={`${ROUTES.howItWorks}#${PLANS_ANCHOR}`}
-              className={buttonClasses({ variant: 'outlineLight', size: 'lg' })}
+              className={buttonClasses({ variant: 'outlineSoft', size: 'lg' })}
             >
               Compare plans
             </Link>

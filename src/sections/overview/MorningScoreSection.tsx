@@ -3,7 +3,7 @@ import { PRODUCTS } from '../../data/catalog'
 import { MORNING_READOUT, MORNING_RECOVERY } from '../../data/overview'
 import { useScrollFrame } from '../../hooks/useScrollFrame'
 import { cn } from '../../lib/cn'
-import { easeOutCubic, pinProgress, prefersReducedMotion, range } from '../../lib/scroll'
+import { clamp, easeOutCubic, pinProgress, prefersReducedMotion, range } from '../../lib/scroll'
 
 /** Where each input chip lands around the arc, in readout row order. */
 const CHIP_POSITIONS = [
@@ -27,10 +27,13 @@ export function MorningScoreSection() {
   useScrollFrame(() => {
     const wrap = wrapRef.current
     if (!wrap || !titleRef.current || !statRef.current || !numberRef.current || !arcRef.current || !diskRef.current) return
-    const p = prefersReducedMotion() ? 1 : pinProgress(wrap)
+    const reduced = prefersReducedMotion()
+    const p = reduced ? 1 : pinProgress(wrap)
+    // The stage slides up over the collage's tail; the headline crossfades in over the last 40% of that rise.
+    const arriving = reduced ? 0 : clamp(wrap.getBoundingClientRect().top / (window.innerHeight * 0.4))
 
     const titleOut = range(p, 0.06, 0.2)
-    titleRef.current.style.opacity = String(1 - titleOut)
+    titleRef.current.style.opacity = String((1 - titleOut) * (1 - arriving))
     titleRef.current.style.transform = `translate3d(0, ${-24 * titleOut}px, 0)`
 
     const statIn = range(p, 0.16, 0.3)
@@ -56,7 +59,9 @@ export function MorningScoreSection() {
   }
 
   return (
-    <div ref={wrapRef} className="pin-wrap relative h-[260vh]">
+    // Overlaps the collage by a full screen, so this stage is already pinned the moment the collage releases.
+    // Nothing here is interactive; letting clicks through keeps the collage CTA usable under the overlap.
+    <div ref={wrapRef} className="pin-wrap pointer-events-none relative h-[260vh] motion-safe:-mt-[100svh]">
       <div className="pin-stage sticky top-0 h-svh overflow-hidden px-4">
         <div ref={titleRef} data-scrub className="absolute inset-x-0 top-[17%] z-10 px-6 text-center">
           <p className="text-[13px] font-semibold tracking-[0.12em] text-muted uppercase">Every morning</p>
